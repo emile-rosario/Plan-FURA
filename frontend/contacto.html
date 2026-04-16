@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contacto — Funerarias Rancier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--primary:#006ab4;--secondary:#00a9e1;--accent:#67ccdb;--white:#ffffff}
+    body{font-family:'DM Sans',sans-serif;background:var(--white);color:#333}
+    .serif{font-family:'Playfair Display',serif}
+    .blue-line{height:2px;background:linear-gradient(90deg,transparent,var(--secondary),transparent)}
+    .nav-link{color:#555;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:color .2s}
+    .nav-link:hover,.nav-link.active{color:var(--primary)}
+    .form-input{width:100%;background:#f0f8ff;border:1px solid #d0e8f5;color:#333;padding:.875rem 1rem;border-radius:6px;font-size:.875rem;transition:border-color .2s;font-family:'DM Sans',sans-serif;outline:none}
+    .form-input:focus{border-color:var(--secondary);box-shadow:0 0 0 3px rgba(0,169,225,.1)}
+    .form-input.error{border-color:#EF4444}
+    .form-input::placeholder{color:#999}
+    .form-label{display:block;color:var(--primary);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:600}
+    .form-error{color:#F87171;font-size:.75rem;margin-top:.3rem}
+    .btn-primary{background:var(--secondary);color:var(--white);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem;padding:1rem 2.5rem;border-radius:6px;transition:all .3s;cursor:pointer;border:none}
+    .btn-primary:hover{background:var(--primary);transform:translateY(-1px);box-shadow:0 8px 30px rgba(0,106,180,.3)}
+    .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
+    .btn-outline{border:2px solid var(--secondary);color:var(--secondary);background:transparent;padding:.8rem 2rem;border-radius:6px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;transition:all .3s;display:inline-block;text-align:center}
+    .btn-outline:hover{background:rgba(0,169,225,.08);border-color:var(--primary);color:var(--primary)}
+    .contact-info-item{display:flex;gap:1rem;padding:1.25rem;border:1px solid #e0f0f8;border-radius:8px;transition:border-color .2s;background:#fff}
+    .contact-info-item:hover{border-color:rgba(0,169,225,.4)}
+    .whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:999;width:60px;height:60px;border-radius:50%;background:#25D366;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,.4);transition:transform .3s}
+    .whatsapp-float:hover{transform:scale(1.1)}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-gray-100" style="background:rgba(255,255,255,.95);backdrop-filter:blur(16px)">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 flex items-center justify-center rounded-lg" style="background:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>
+        <span class="serif font-semibold text-base" style="color:var(--primary)">Funerarias <span style="color:var(--secondary)">Rancier</span></span>
+      </a>
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Inicio</a><a href="planes-funerarios.html" class="nav-link">Planes</a><a href="catalogo.html" class="nav-link">Catálogo</a><a href="servicios.html" class="nav-link">Servicios</a><a href="contacto.html" class="nav-link active">Contacto</a>
+      </nav>
+      <div class="hidden lg:flex gap-4">
+        <a href="login.html" data-auth="login" class="btn-outline text-xs">Acceso Cliente</a>
+        <a href="dashboard.html" data-auth="logout" class="hidden btn-primary text-xs px-4 py-2">Mi Cuenta</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="pt-32 pb-14 text-center relative" style="background:linear-gradient(180deg,#ffffff 0%,#e8f4fd 100%)">
+  <div class="max-w-2xl mx-auto px-6">
+    <p class="text-xs tracking-[.3em] uppercase mb-4 font-semibold" style="color:var(--secondary)">Estamos aquí para usted</p>
+    <h1 class="serif text-5xl font-bold mb-4" style="color:var(--primary)">Contacto</h1>
+    <div class="blue-line w-24 mx-auto mb-5"></div>
+    <p class="text-gray-500 text-sm">Disponibles 24 horas, los 7 días de la semana.</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+
+      <!-- INFO (2/5) -->
+      <div class="lg:col-span-2 space-y-4">
+        <h2 class="serif text-2xl font-semibold mb-6" style="color:var(--primary)">Información de Contacto</h2>
+
+        <div class="contact-info-item">
+          <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-lg" style="background:rgba(103,204,219,.12)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Teléfono</p>
+            <a href="tel:8095642200" class="text-sm font-medium hover:underline" style="color:var(--primary)">(809) 564-2200</a>
+            <span class="text-gray-400 mx-1">|</span>
+            <a href="tel:8095692693" class="text-sm font-medium hover:underline" style="color:var(--primary)">(809) 569-2693</a>
+            <p class="text-gray-400 text-xs mt-0.5">Disponible 24/7</p>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-lg" style="background:rgba(103,204,219,.12)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Correo Electrónico</p>
+            <a href="mailto:funerariarancier@gmail.com" class="text-sm font-medium hover:underline" style="color:var(--primary)">funerariarancier@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-lg" style="background:rgba(103,204,219,.12)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Sede Principal</p>
+            <p class="text-sm font-medium" style="color:var(--primary)">Calle San José #27, Enriquillo de Herrera</p>
+            <p class="text-gray-400 text-xs">Santo Domingo Oeste, Rep. Dominicana</p>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-lg" style="background:rgba(103,204,219,.12)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Sucursal</p>
+            <p class="text-sm font-medium" style="color:var(--primary)">Autopista Duarte #160, Laguna Salada</p>
+            <p class="text-gray-400 text-xs">Valverde, Rep. Dominicana</p>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-lg" style="background:rgba(103,204,219,.12)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Horario</p>
+            <p class="text-sm font-medium" style="color:var(--primary)">Oficinas: 8:00 AM – 6:00 PM</p>
+            <p class="text-gray-400 text-xs">Emergencias: 24 horas, 365 días</p>
+          </div>
+        </div>
+
+        <!-- WhatsApp CTA -->
+        <a href="https://wa.me/18095692693?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n." target="_blank" rel="noopener"
+           class="flex items-center gap-3 p-4 border border-emerald-200 rounded-lg hover:border-emerald-400 transition-colors mt-6 bg-white">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#22C55E"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+          <div>
+            <p class="text-emerald-600 text-sm font-semibold">Escribir por WhatsApp</p>
+            <p class="text-emerald-500 text-xs">Respuesta inmediata</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- FORM (3/5) -->
+      <div class="lg:col-span-3">
+        <div class="border border-gray-200 rounded-xl p-8 bg-white shadow-sm">
+          <h2 class="serif text-2xl font-semibold mb-1" style="color:var(--primary)">Enviar Mensaje</h2>
+          <p class="text-gray-400 text-sm mb-8">Le responderemos en el menor tiempo posible.</p>
+
+          <div id="success-msg" class="hidden p-5 border rounded-lg mb-6 text-center" style="background:rgba(103,204,219,.08);border-color:rgba(0,169,225,.3)">
+            <p class="serif text-xl font-semibold mb-1" style="color:var(--primary)">✓ Mensaje enviado</p>
+            <p class="text-gray-500 text-sm">Gracias por contactarnos. Le responderemos pronto.</p>
+          </div>
+
+          <form id="contact-form" onsubmit="handleContacto(event)" novalidate>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label class="form-label">Nombre Completo *</label>
+                <input id="c-nombre" type="text" class="form-input" placeholder="Juan Pérez" required minlength="2"/>
+                <p class="form-error hidden" id="err-nombre"></p>
+              </div>
+              <div>
+                <label class="form-label">Correo Electrónico *</label>
+                <input id="c-email" type="email" class="form-input" placeholder="tu@correo.com" required/>
+                <p class="form-error hidden" id="err-email"></p>
+              </div>
+              <div>
+                <label class="form-label">Teléfono</label>
+                <input id="c-telefono" type="tel" class="form-input" placeholder="(809) 564-2200"/>
+              </div>
+              <div>
+                <label class="form-label">Asunto</label>
+                <select id="c-asunto" class="form-input">
+                  <option value="">Seleccionar asunto...</option>
+                  <option>Información sobre planes funerarios</option>
+                  <option>Catálogo de ataúdes</option>
+                  <option>Servicio de velación</option>
+                  <option>Traslado o ambulancia</option>
+                  <option>Emergencia</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="form-label">Mensaje *</label>
+                <textarea id="c-mensaje" class="form-input" rows="5" placeholder="Escriba su mensaje aquí..." required minlength="10" style="resize:vertical"></textarea>
+                <p class="form-error hidden" id="err-mensaje"></p>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-6">
+              <p class="text-gray-400 text-xs">* Campos requeridos</p>
+              <button type="submit" id="btn-enviar" class="btn-primary">Enviar Mensaje</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Google Maps -->
+        <div class="mt-8 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.9!2d-69.97!3d18.49!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sSanto+Domingo+Oeste!5e0!3m2!1ses!2sdo!4v1700000000000" width="100%" height="300" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-8 border-t border-gray-200 text-center text-gray-400 text-xs" style="background:#f8fbff">
+  <p>&copy; 2026 Funerarias Rancier. Todos los derechos reservados. RNC: 131-97317-5</p>
+</footer>
+
+<a href="https://wa.me/18095692693?text=Hola%2C%20necesito%20informaci%C3%B3n." target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+
+<script src="assets/js/api.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  if (params.get('ataud')) {
+    document.getElementById('c-asunto').value = '';
+    const opt = document.createElement('option');
+    opt.value = opt.textContent = `Información sobre: ${params.get('ataud')}`;
+    document.getElementById('c-asunto').appendChild(opt);
+    document.getElementById('c-asunto').value = opt.value;
+  }
+  function showErr(id, msg) { const inp = document.getElementById(id.replace('err-','c-')); if(inp) inp.classList.add('error'); const el = document.getElementById(id); if(el){el.textContent=msg;el.classList.remove('hidden');} }
+  function clearErrs() { document.querySelectorAll('.form-error').forEach(e=>{e.classList.add('hidden');e.textContent='';}); document.querySelectorAll('.form-input.error').forEach(e=>e.classList.remove('error')); }
+  function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+  async function handleContacto(e) {
+    e.preventDefault(); clearErrs();
+    const nombre=document.getElementById('c-nombre').value.trim(), email=document.getElementById('c-email').value.trim(), telefono=document.getElementById('c-telefono').value.trim(), asunto=document.getElementById('c-asunto').value, mensaje=document.getElementById('c-mensaje').value.trim();
+    let valid=true;
+    if(nombre.length<2){showErr('err-nombre','El nombre debe tener al menos 2 caracteres.');valid=false;}
+    if(!validateEmail(email)){showErr('err-email','Ingresa un correo válido.');valid=false;}
+    if(mensaje.length<10){showErr('err-mensaje','El mensaje debe tener al menos 10 caracteres.');valid=false;}
+    if(!valid) return;
+    const btn=document.getElementById('btn-enviar'); UI.loading(btn,true,'Enviando...');
+    const{ok,data}=await API.contacto({nombre,email,telefono:telefono||null,asunto:asunto||null,mensaje});
+    UI.loading(btn,false);
+    if(ok){document.getElementById('contact-form').classList.add('hidden');document.getElementById('success-msg').classList.remove('hidden');}
+    else{const detail=data?.detail;UI.toast(Array.isArray(detail)?detail.map(d=>d.msg).join('. '):(detail||'Error al enviar el mensaje.'),'error');}
+  }
+</script>
+</body>
+</html>

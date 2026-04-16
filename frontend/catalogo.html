@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catálogo de Ataúdes — Funerarias Rancier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{primary:{DEFAULT:"#006ab4",light:"#00a9e1",accent:"#67ccdb"}},fontFamily:{serif:["Playfair Display","Georgia","serif"],sans:["DM Sans","system-ui","sans-serif"]}}}}</script>
+  <style>
+    :root{--primary:#006ab4;--secondary:#00a9e1;--accent:#67ccdb;--white:#ffffff}
+    body{font-family:'DM Sans',sans-serif;background:var(--white);color:#333}
+    .serif{font-family:'Playfair Display',serif}
+    .blue-line{height:2px;background:linear-gradient(90deg,transparent,var(--secondary),transparent)}
+    .nav-link{color:#555;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:color .2s}
+    .nav-link:hover,.nav-link.active{color:var(--primary)}
+    .btn-primary{background:var(--secondary);color:var(--white);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;padding:.75rem 1.5rem;border-radius:6px;transition:all .3s;display:inline-block;text-align:center}
+    .btn-primary:hover{background:var(--primary);transform:translateY(-1px)}
+    .btn-outline{border:2px solid var(--secondary);color:var(--secondary);background:transparent;padding:.75rem 1.5rem;border-radius:6px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;transition:all .3s;display:inline-block;text-align:center}
+    .btn-outline:hover{background:rgba(0,169,225,.08);border-color:var(--primary);color:var(--primary)}
+    .product-card{transition:transform .3s,box-shadow .3s;cursor:pointer;border:1px solid #e0f0f8}
+    .product-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,106,180,.08)}
+    .product-card:hover .card-cta{opacity:1;transform:translateY(0)}
+    .card-cta{opacity:0;transform:translateY(8px);transition:all .25s}
+    .filter-pill{padding:.4rem 1rem;border:1px solid #d0e8f5;border-radius:6px;color:#888;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;background:white}
+    .filter-pill.active,.filter-pill:hover{border-color:var(--secondary);color:var(--primary);background:rgba(103,204,219,.08)}
+    #modal-overlay{transition:opacity .25s}
+    #modal-box{transition:transform .3s,opacity .3s}
+    .whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:999;width:60px;height:60px;border-radius:50%;background:#25D366;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,.4);transition:transform .3s}
+    .whatsapp-float:hover{transform:scale(1.1)}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-gray-100" style="background:rgba(255,255,255,.95);backdrop-filter:blur(16px)">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 flex items-center justify-center rounded-lg" style="background:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>
+        <span class="serif font-semibold text-base" style="color:var(--primary)">Funerarias <span style="color:var(--secondary)">Rancier</span></span>
+      </a>
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Inicio</a><a href="planes-funerarios.html" class="nav-link">Planes</a><a href="catalogo.html" class="nav-link active">Catálogo</a><a href="servicios.html" class="nav-link">Servicios</a><a href="contacto.html" class="nav-link">Contacto</a>
+      </nav>
+      <div class="hidden lg:flex gap-4">
+        <a href="login.html" data-auth="login" class="btn-outline text-xs">Acceso Cliente</a>
+        <a href="dashboard.html" data-auth="logout" class="hidden btn-primary text-xs">Mi Cuenta</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="pt-32 pb-14 text-center relative" style="background:linear-gradient(180deg,#ffffff 0%,#e8f4fd 100%)">
+  <div class="max-w-2xl mx-auto px-6">
+    <p class="text-xs tracking-[.3em] uppercase mb-4 font-semibold" style="color:var(--secondary)">Fabricación Propia</p>
+    <h1 class="serif text-5xl lg:text-6xl font-bold mb-4" style="color:var(--primary)">Catálogo de Ataúdes</h1>
+    <div class="blue-line w-24 mx-auto mb-5"></div>
+    <p class="text-gray-500 text-sm">Somos fabricantes de ataúdes metálicos. 5 modelos exclusivos con la máxima calidad y durabilidad.</p>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-10">
+      <div class="flex flex-wrap gap-2">
+        <button class="filter-pill active" data-filter="all">Todos</button>
+        <button class="filter-pill" data-filter="madera">Madera</button>
+        <button class="filter-pill" data-filter="metal">Metal</button>
+        <button class="filter-pill" data-filter="eco">Ecológico</button>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-gray-400 text-xs uppercase tracking-wider">Ordenar:</span>
+        <select id="sort-select" class="bg-white border border-gray-200 text-gray-600 text-xs px-3 py-2 rounded-lg focus:border-blue-400 focus:outline-none">
+          <option value="precio-asc">Precio: Menor a mayor</option>
+          <option value="precio-desc">Precio: Mayor a menor</option>
+          <option value="nombre">Nombre A-Z</option>
+        </select>
+      </div>
+    </div>
+    <p class="text-gray-400 text-xs uppercase tracking-widest mb-8" id="count-label">Cargando...</p>
+    <div id="productos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="col-span-3 flex justify-center py-16"><div class="w-10 h-10 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="modal-overlay" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" style="background:rgba(0,0,0,.5);backdrop-filter:blur(8px)">
+  <div id="modal-box" class="max-w-2xl w-full border border-gray-200 rounded-xl relative overflow-hidden bg-white shadow-2xl">
+    <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-primary z-10 p-2">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="modal-content" class="p-8"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="py-8 border-t border-gray-200 text-center text-gray-400 text-xs" style="background:#f8fbff">
+  <p>&copy; 2026 Funerarias Rancier · <a href="contacto.html" class="hover:text-primary">Contacto</a></p>
+</footer>
+
+<a href="https://wa.me/18095692693" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+
+<script src="assets/js/api.js"></script>
+<script>
+let allProducts=[];let activeFilter='all';
+const materialGroups={madera:['pino','caoba','cerezo','madera'],metal:['acero','bronce','metal'],eco:['bambú','bambu','ecológico','natural']};
+function matchFilter(c){if(activeFilter==='all')return true;const mat=c.material.toLowerCase();return(materialGroups[activeFilter]||[]).some(k=>mat.includes(k));}
+function sortProducts(products){const val=document.getElementById('sort-select').value;return[...products].sort((a,b)=>{if(val==='precio-asc')return a.precio-b.precio;if(val==='precio-desc')return b.precio-a.precio;return a.nombre.localeCompare(b.nombre);});}
+function renderProducts(){
+  const filtered=sortProducts(allProducts.filter(matchFilter));const grid=document.getElementById('productos-grid');
+  document.getElementById('count-label').textContent=`${filtered.length} producto${filtered.length!==1?'s':''} encontrado${filtered.length!==1?'s':''}`;
+  if(!filtered.length){grid.innerHTML=`<div class="col-span-3 py-12 text-center text-gray-500 text-sm">No hay productos en esta categoría.</div>`;return;}
+  grid.innerHTML=filtered.map(c=>`
+    <div class="product-card rounded-xl overflow-hidden bg-white" onclick="openModal(${c.id})">
+      <div class="relative h-56 flex items-center justify-center" style="background:linear-gradient(135deg,#e8f4fd,#d0ecf9)">
+        ${c.imagen_url?`<img src="${c.imagen_url}" alt="${c.nombre}" class="h-full w-full object-cover"/>`:`<div class="flex flex-col items-center gap-2 opacity-30"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg><span class="text-xs tracking-widest uppercase" style="color:var(--primary)">Rancier</span></div>`}
+        ${c.destacado?`<span class="absolute top-3 left-3 text-white text-xs font-bold px-2 py-1 tracking-wider uppercase rounded" style="background:var(--secondary)">Destacado</span>`:''}
+        ${!c.disponible?`<div class="absolute inset-0 bg-white/70 flex items-center justify-center"><span class="text-gray-400 text-xs uppercase tracking-widest">No disponible</span></div>`:''}
+      </div>
+      <div class="p-6">
+        <p class="text-xs tracking-widest uppercase mb-2 font-semibold" style="color:var(--secondary)">${c.material}</p>
+        <h3 class="serif text-lg font-semibold mb-2 leading-snug" style="color:var(--primary)">${c.nombre}</h3>
+        ${c.descripcion?`<p class="text-gray-500 text-xs leading-relaxed mb-4">${c.descripcion.slice(0,80)}...</p>`:''}
+        <div class="flex items-center justify-between mt-4">
+          <span class="serif text-xl font-bold" style="color:var(--primary)">${Fmt.precio(c.precio)}</span>
+          <button class="card-cta text-xs tracking-widest uppercase font-semibold pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Ver detalles →</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function openModal(id){
+  const c=allProducts.find(p=>p.id===id);if(!c)return;
+  document.getElementById('modal-content').innerHTML=`
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="h-64 md:h-full min-h-[200px] flex items-center justify-center rounded-lg" style="background:linear-gradient(135deg,#e8f4fd,#d0ecf9)">
+        ${c.imagen_url?`<img src="${c.imagen_url}" alt="${c.nombre}" class="w-full h-full object-cover rounded-lg"/>`:`<div class="opacity-20 text-center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1" class="mx-auto"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>`}
+      </div>
+      <div class="flex flex-col">
+        <p class="text-xs tracking-widest uppercase mb-2 font-semibold" style="color:var(--secondary)">${c.material}</p>
+        <h2 class="serif text-2xl font-semibold mb-3" style="color:var(--primary)">${c.nombre}</h2>
+        ${c.descripcion?`<p class="text-gray-600 text-sm leading-relaxed mb-5">${c.descripcion}</p>`:''}
+        <div class="mb-6"><span class="serif text-3xl font-bold" style="color:var(--primary)">${Fmt.precio(c.precio)}</span></div>
+        <div class="rounded-lg p-4 mb-6" style="background:rgba(103,204,219,.08);border:1px solid rgba(0,169,225,.2)">
+          <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Material</p><p class="text-sm font-medium" style="color:var(--primary)">${c.material}</p>
+        </div>
+        ${c.disponible?`<a href="contacto.html?ataud=${encodeURIComponent(c.nombre)}" class="btn-primary text-center">Solicitar Información</a>`:`<div class="btn-outline opacity-50 cursor-not-allowed text-center">No Disponible</div>`}
+      </div>
+    </div>`;
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+function closeModal(){document.getElementById('modal-overlay').classList.add('hidden');}
+document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.querySelectorAll('.filter-pill').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');activeFilter=btn.dataset.filter;renderProducts();});});
+document.getElementById('sort-select').addEventListener('change',renderProducts);
+async function init(){const{ok,data}=await API.getAtaudes();if(!ok||!data?.length){document.getElementById('productos-grid').innerHTML=`<div class="col-span-3 text-center py-12 text-gray-500">No hay productos disponibles.</div>`;return;}allProducts=data;renderProducts();}
+init();
+</script>
+</body>
+</html>

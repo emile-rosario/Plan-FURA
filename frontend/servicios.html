@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Servicios — Funerarias Rancier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme:{extend:{
+        colors:{primary:{DEFAULT:"#006ab4",light:"#00a9e1",accent:"#67ccdb"}},
+        fontFamily:{serif:["Playfair Display","Georgia","serif"],sans:["DM Sans","system-ui","sans-serif"]}
+      }}
+    }
+  </script>
+  <style>
+    :root{--primary:#006ab4;--secondary:#00a9e1;--accent:#67ccdb;--white:#ffffff}
+    body{font-family:'DM Sans',sans-serif;background:var(--white);color:#333}
+    .serif{font-family:'Playfair Display',serif}
+    .blue-line{height:2px;background:linear-gradient(90deg,transparent,var(--secondary),transparent)}
+    .nav-link{color:#555;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:color .2s}
+    .nav-link:hover,.nav-link.active{color:var(--primary)}
+    .btn-primary{background:var(--secondary);color:var(--white);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;padding:.875rem 2rem;border-radius:6px;transition:all .3s;display:inline-block;text-align:center}
+    .btn-primary:hover{background:var(--primary);box-shadow:0 8px 30px rgba(0,106,180,.3);transform:translateY(-1px)}
+    .btn-outline{border:2px solid var(--secondary);color:var(--secondary);background:transparent;padding:.8rem 2rem;border-radius:6px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;transition:all .3s;display:inline-block;text-align:center}
+    .btn-outline:hover{background:rgba(0,169,225,.08);border-color:var(--primary);color:var(--primary)}
+    .service-card{transition:transform .3s ease,box-shadow .3s ease;border:1px solid #e8f4fd}
+    .service-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,106,180,.08);border-color:rgba(0,169,225,.4)!important}
+    .service-icon{width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(103,204,219,.12);flex-shrink:0}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    .fade-up{animation:fadeUp .7s ease both}.delay-1{animation-delay:.15s}.delay-2{animation-delay:.3s}
+    .whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:999;width:60px;height:60px;border-radius:50%;background:#25D366;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,.4);transition:transform .3s}
+    .whatsapp-float:hover{transform:scale(1.1)}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-gray-100" style="background:rgba(255,255,255,.95);backdrop-filter:blur(16px)">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 flex items-center justify-center rounded-lg" style="background:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>
+        <span class="serif font-semibold text-base" style="color:var(--primary)">Funerarias <span style="color:var(--secondary)">Rancier</span></span>
+      </a>
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="planes-funerarios.html" class="nav-link">Planes</a>
+        <a href="catalogo.html" class="nav-link">Catálogo</a>
+        <a href="servicios.html" class="nav-link active">Servicios</a>
+        <a href="contacto.html" class="nav-link">Contacto</a>
+      </nav>
+      <div class="hidden lg:flex gap-4">
+        <a href="login.html" data-auth="login" class="btn-outline text-xs">Acceso Cliente</a>
+        <a href="dashboard.html" data-auth="logout" class="hidden btn-primary text-xs">Mi Cuenta</a>
+      </div>
+      <button id="menu-btn" class="lg:hidden p-2 text-gray-500"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-100 bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-4">
+      <a href="index.html" class="nav-link py-2">Inicio</a><a href="planes-funerarios.html" class="nav-link py-2">Planes</a><a href="catalogo.html" class="nav-link py-2">Catálogo</a><a href="servicios.html" class="nav-link py-2">Servicios</a><a href="contacto.html" class="nav-link py-2">Contacto</a>
+      <hr class="border-gray-200"/><a href="login.html" class="btn-primary text-center">Acceso Cliente</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="pt-32 pb-20 text-center relative overflow-hidden" style="background:linear-gradient(160deg,#ffffff 0%,#e8f4fd 100%)">
+  <div class="relative max-w-3xl mx-auto px-6">
+    <p class="fade-up text-xs tracking-[.3em] uppercase mb-4 font-semibold" style="color:var(--secondary)">Nuestra Propuesta</p>
+    <h1 class="fade-up delay-1 serif text-5xl lg:text-6xl font-bold mb-4" style="color:var(--primary)">Servicios Integrales</h1>
+    <div class="blue-line w-24 mx-auto mb-6"></div>
+    <p class="fade-up delay-2 text-gray-600 leading-relaxed max-w-xl mx-auto">Brindamos apoyo, serenidad y dignidad en cada paso del camino, asegurando que cada detalle sea manejado con la máxima profesionalidad y respeto.</p>
+  </div>
+</section>
+
+<!-- SERVICIOS GRID -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="service-icon mb-6"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color:var(--primary)">Velaciones</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5">Servicio de velación en el hogar o en funerarias cercanas, con duración flexible de 12 a 24 horas.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Carpas y sillas incluidas</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Cafetera eléctrica y termos</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Recordatorio impreso</li>
+        </ul>
+        <a href="contacto.html" class="text-sm font-semibold tracking-wider uppercase pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Más información →</a>
+      </div>
+
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="service-icon mb-6"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M12 22V12m0 0C12 7 8 3 3 3c0 5 4 9 9 9zm0 0c0-5 4-9 9-9-5 0-9 4-9 9z"/></svg></div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color:var(--primary)">Coronas de Flores</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5">Coronas y arreglos florales para honrar la memoria de sus seres queridos con elegancia y respeto.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Coronas frescas</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Arreglos personalizados</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Con aliados especializados</li>
+        </ul>
+        <a href="contacto.html" class="text-sm font-semibold tracking-wider uppercase pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Más información →</a>
+      </div>
+
+      <!-- Destacado -->
+      <div class="service-card p-8 rounded-xl" style="background:rgba(103,204,219,.06);border-color:rgba(0,169,225,.3)">
+        <div class="service-icon mb-6" style="background:rgba(0,169,225,.15)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="1"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg></div>
+        <div class="text-xs tracking-widest uppercase mb-2 font-semibold" style="color:var(--secondary)">Servicio Destacado</div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color:var(--primary)">Traslados Nacionales</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5">Servicio de carroza y ambulancia a todo el país. Contamos con flota propia y tabla de precios según distancia.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Carroza propia (2 unidades)</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Cobertura nacional</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Autobús de acompañantes</li>
+        </ul>
+        <a href="contacto.html" class="text-sm font-semibold tracking-wider uppercase pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Más información →</a>
+      </div>
+
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="service-icon mb-6"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color:var(--primary)">Cosmetización del Cuerpo</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5">Preparación profesional con el mayor respeto, utilizando técnicas adecuadas para la presentación del ser querido.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Personal especializado</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Máxima discreción</li>
+        </ul>
+        <a href="contacto.html" class="text-sm font-semibold tracking-wider uppercase pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Más información →</a>
+      </div>
+
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="service-icon mb-6"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color:var(--primary)">Ataúdes Metálicos Propios</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5">Somos fabricantes con 5 modelos exclusivos: Digno, Pomposo, Majestuoso, Deluxe y Deluxe Pro.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Fabricación propia</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Mayor durabilidad</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Urnas metálicas disponibles</li>
+        </ul>
+        <a href="catalogo.html" class="text-sm font-semibold tracking-wider uppercase pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Ver catálogo →</a>
+      </div>
+
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="service-icon mb-6"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color:var(--primary)">Lápida Grabada</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5">Servicio de lápida grabada con los datos del ser querido, incluida en varios de nuestros planes funerarios.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Grabado profesional</li>
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Incluido en planes selectos</li>
+        </ul>
+        <a href="contacto.html" class="text-sm font-semibold tracking-wider uppercase pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Más información →</a>
+      </div>
+
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="service-icon mb-6"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color:var(--primary)">Libro de Condolencias</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5">Nos interesa implementar un libro de condolencias virtual para que familiares lejanos puedan expresar sus sentimientos.</p>
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-gray-500 text-xs"><svg class="w-3 h-3" style="color:var(--secondary)" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Próximamente disponible</li>
+        </ul>
+        <a href="contacto.html" class="text-sm font-semibold tracking-wider uppercase pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Más información →</a>
+      </div>
+
+      <!-- CTA Card -->
+      <div class="service-card p-8 rounded-xl flex flex-col items-center justify-center text-center" style="background:linear-gradient(135deg,#006ab4,#00a9e1);border-color:transparent">
+        <div class="w-14 h-14 flex items-center justify-center mb-6 rounded-xl" style="background:rgba(255,255,255,.15)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <p class="text-blue-100 text-xs tracking-widest uppercase mb-3">Disponible 24/7</p>
+        <h3 class="serif text-2xl font-bold text-white mb-3">¿Necesitas ayuda inmediata?</h3>
+        <p class="text-blue-100 text-sm mb-8 leading-relaxed">Estamos disponibles las 24 horas del día, los 365 días del año.</p>
+        <a href="tel:8095642200" class="bg-white font-semibold text-sm uppercase tracking-wider px-6 py-3 rounded-lg w-full mb-3" style="color:var(--primary)">
+          (809) 564-2200</a>
+        <a href="contacto.html" class="border-2 border-white/60 text-white font-semibold text-sm uppercase tracking-wider px-6 py-3 rounded-lg w-full transition hover:bg-white/10">Enviar Mensaje</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="py-24" style="background:#f0f8ff">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <p class="text-xs tracking-[.3em] uppercase mb-4 font-semibold" style="color:var(--secondary)">Nuestro Proceso</p>
+      <h2 class="serif text-4xl font-bold mb-4" style="color:var(--primary)">Cómo le acompañamos</h2>
+      <div class="blue-line w-24 mx-auto"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="text-center">
+        <div class="w-14 h-14 flex items-center justify-center mx-auto mb-5 rounded-xl" style="background:rgba(103,204,219,.15)">
+          <span class="serif text-xl font-bold" style="color:var(--primary)">01</span>
+        </div>
+        <h4 class="font-semibold mb-2 text-sm uppercase tracking-wider" style="color:var(--primary)">Primer Contacto</h4>
+        <p class="text-gray-500 text-xs leading-relaxed">Nos comunicamos de inmediato por teléfono o WhatsApp para entender sus necesidades.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 flex items-center justify-center mx-auto mb-5 rounded-xl" style="background:rgba(103,204,219,.15)">
+          <span class="serif text-xl font-bold" style="color:var(--primary)">02</span>
+        </div>
+        <h4 class="font-semibold mb-2 text-sm uppercase tracking-wider" style="color:var(--primary)">Planificación</h4>
+        <p class="text-gray-500 text-xs leading-relaxed">Coordinamos todos los detalles del servicio según sus deseos y presupuesto.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 flex items-center justify-center mx-auto mb-5 rounded-xl" style="background:rgba(103,204,219,.15)">
+          <span class="serif text-xl font-bold" style="color:var(--primary)">03</span>
+        </div>
+        <h4 class="font-semibold mb-2 text-sm uppercase tracking-wider" style="color:var(--primary)">Ejecución</h4>
+        <p class="text-gray-500 text-xs leading-relaxed">Llevamos a cabo cada servicio con precisión, respeto y la más alta profesionalidad.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 flex items-center justify-center mx-auto mb-5 rounded-xl" style="background:rgba(103,204,219,.15)">
+          <span class="serif text-xl font-bold" style="color:var(--primary)">04</span>
+        </div>
+        <h4 class="font-semibold mb-2 text-sm uppercase tracking-wider" style="color:var(--primary)">Seguimiento</h4>
+        <p class="text-gray-500 text-xs leading-relaxed">Continuamos a su lado con apoyo y gestión de trámites posteriores.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="py-20 text-center" style="background:linear-gradient(135deg,#006ab4,#00a9e1)">
+  <div class="max-w-2xl mx-auto px-6">
+    <p class="text-blue-100 text-xs tracking-[.3em] uppercase mb-5 font-semibold">Proteja a su familia hoy</p>
+    <h2 class="serif text-4xl font-bold text-white mb-4">Contrate un plan y olvídese de preocupaciones</h2>
+    <p class="text-blue-100 text-sm mb-10 leading-relaxed">Nuestros planes funerarios garantizan cobertura completa para toda la familia.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="planes-funerarios.html" class="bg-white font-semibold text-sm uppercase tracking-wider px-6 py-4 rounded-lg" style="color:var(--primary)">Ver Planes Funerarios</a>
+      <a href="contacto.html" class="border-2 border-white/60 text-white font-semibold text-sm uppercase tracking-wider px-6 py-4 rounded-lg transition hover:bg-white/10">Hablar con un Asesor</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-gray-200 py-10" style="background:#f8fbff">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="flex items-center gap-3">
+      <div class="w-7 h-7 flex items-center justify-center rounded-lg" style="background:var(--primary)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>
+      <span class="serif font-semibold text-xs uppercase" style="color:var(--primary)">Funerarias <span style="color:var(--secondary)">Rancier</span></span>
+    </div>
+    <div class="flex gap-8 text-gray-400 text-xs">
+      <a href="index.html" class="hover:text-primary transition-colors">Inicio</a>
+      <a href="planes-funerarios.html" class="hover:text-primary transition-colors">Planes</a>
+      <a href="catalogo.html" class="hover:text-primary transition-colors">Catálogo</a>
+      <a href="contacto.html" class="hover:text-primary transition-colors">Contacto</a>
+    </div>
+    <p class="text-gray-400 text-xs">&copy; 2026 Funerarias Rancier</p>
+  </div>
+</footer>
+
+<a href="https://wa.me/18095692693?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20servicios%20funerarios." target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+
+<script src="assets/js/api.js"></script>
+<script>
+  document.getElementById('menu-btn')?.addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });
+</script>
+</body>
+</html>

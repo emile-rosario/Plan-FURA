@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Planes Funerarios — Funerarias Rancier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config={theme:{extend:{colors:{primary:{DEFAULT:"#006ab4",light:"#00a9e1",accent:"#67ccdb"}},fontFamily:{serif:["Playfair Display","Georgia","serif"],sans:["DM Sans","system-ui","sans-serif"]}}}}
+  </script>
+  <style>
+    :root{--primary:#006ab4;--secondary:#00a9e1;--accent:#67ccdb;--white:#ffffff}
+    body{font-family:'DM Sans',sans-serif;background:var(--white);color:#333}
+    .serif{font-family:'Playfair Display',serif}
+    .blue-line{height:2px;background:linear-gradient(90deg,transparent,var(--secondary),transparent)}
+    .nav-link{color:#555;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:color .2s}
+    .nav-link:hover,.nav-link.active{color:var(--primary)}
+    .btn-primary{background:var(--secondary);color:var(--white);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;padding:.875rem 2rem;border-radius:6px;transition:all .3s;display:inline-block;text-align:center;border:none;cursor:pointer}
+    .btn-primary:hover{background:var(--primary);box-shadow:0 8px 30px rgba(0,106,180,.3);transform:translateY(-1px)}
+    .btn-outline{border:2px solid var(--secondary);color:var(--secondary);background:transparent;padding:.8rem 2rem;border-radius:6px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;transition:all .3s;display:inline-block;text-align:center;cursor:pointer}
+    .btn-outline:hover{background:rgba(0,169,225,.08);border-color:var(--primary);color:var(--primary)}
+    .plan-card{transition:transform .3s ease,box-shadow .3s ease;border:1px solid #e0f0f8}
+    .plan-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,106,180,.1)}
+    .check{width:18px;height:18px;flex-shrink:0;color:var(--secondary)}
+    .whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:999;width:60px;height:60px;border-radius:50%;background:#25D366;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,.4);transition:transform .3s}
+    .whatsapp-float:hover{transform:scale(1.1)}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-gray-100" style="background:rgba(255,255,255,.95);backdrop-filter:blur(16px)">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 flex items-center justify-center rounded-lg" style="background:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>
+        <span class="serif font-semibold text-base" style="color:var(--primary)">Funerarias <span style="color:var(--secondary)">Rancier</span></span>
+      </a>
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Inicio</a><a href="planes-funerarios.html" class="nav-link active">Planes</a><a href="catalogo.html" class="nav-link">Catálogo</a><a href="servicios.html" class="nav-link">Servicios</a><a href="contacto.html" class="nav-link">Contacto</a>
+      </nav>
+      <div class="hidden lg:flex gap-4">
+        <a href="login.html" data-auth="login" class="btn-outline text-xs">Acceso Cliente</a>
+        <a href="dashboard.html" data-auth="logout" class="hidden btn-primary text-xs">Mi Cuenta</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="pt-32 pb-16 text-center relative" style="background:linear-gradient(180deg,#ffffff 0%,#e8f4fd 100%)">
+  <div class="max-w-3xl mx-auto px-6">
+    <p class="text-xs tracking-[.3em] uppercase mb-4 font-semibold" style="color:var(--secondary)">Protección Familiar</p>
+    <h1 class="serif text-5xl lg:text-6xl font-bold mb-4" style="color:var(--primary)">Planes Funerarios</h1>
+    <div class="blue-line w-24 mx-auto mb-6"></div>
+    <p class="text-gray-600 leading-relaxed">Elige el plan que mejor se adapte a tu familia. Paga mensualmente, anual o único. Cobertura completa en casa o en nuestra funeraria, disponible las 24 horas.</p>
+  </div>
+</section>
+
+<!-- PLANS GRID -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div id="msg" class="hidden text-center py-8 text-gray-500 text-sm"></div>
+    <div id="planes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="col-span-4 flex justify-center py-16"><div class="w-10 h-10 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div></div>
+    </div>
+
+    <!-- Tabla comparativa -->
+    <div class="mt-20">
+      <h2 class="serif text-3xl font-bold text-center mb-2" style="color:var(--primary)">Comparar Planes</h2>
+      <div class="blue-line w-24 mx-auto mb-10"></div>
+      <div id="tabla-comparativa" class="overflow-x-auto"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-20" style="background:#f0f8ff">
+  <div class="max-w-3xl mx-auto px-6">
+    <h2 class="serif text-3xl font-bold text-center mb-2" style="color:var(--primary)">Preguntas Frecuentes</h2>
+    <div class="blue-line w-24 mx-auto mb-12"></div>
+    <div class="space-y-4" id="faq"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 text-center" style="background:linear-gradient(135deg,#006ab4,#00a9e1)">
+  <div class="max-w-2xl mx-auto px-6">
+    <p class="text-blue-100 text-xs tracking-widest uppercase mb-4 font-semibold">¿Tienes dudas?</p>
+    <h2 class="serif text-3xl font-bold text-white mb-4">Nuestros asesores están disponibles ahora</h2>
+    <p class="text-blue-100 mb-8 text-sm">Llámenos o escríbanos. Sin compromisos.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="tel:8095642200" class="bg-white font-semibold text-sm uppercase tracking-wider px-6 py-4 rounded-lg" style="color:var(--primary)">(809) 564-2200</a>
+      <a href="contacto.html" class="border-2 border-white/60 text-white font-semibold text-sm uppercase tracking-wider px-6 py-4 rounded-lg transition hover:bg-white/10">Enviar Mensaje</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-8 border-t border-gray-200 text-center text-gray-400 text-xs" style="background:#f8fbff">
+  <p>&copy; 2026 Funerarias Rancier. Todos los derechos reservados.</p>
+</footer>
+
+<a href="https://wa.me/18095692693" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+
+<script src="assets/js/api.js"></script>
+<script>
+const faqs = [
+  {q:"¿Cuándo entra en vigencia la cobertura?",r:"La cobertura entra en vigencia a partir de los 3 meses para menores de 60 años, y a partir de 6 meses para mayores de 60 años."},
+  {q:"¿Cuántos miembros cubre cada plan?",r:"Cada plan cubre hasta 5 personas adicionales de 0-60 años. Las personas de 61-85 años tienen un costo adicional según el plan."},
+  {q:"¿Qué incluye el servicio de velación?",r:"Todos nuestros planes incluyen ambulancia, botellones de agua, capilla velatoria, autobús, carroza fúnebre, sillas, carpa, corona de flores y cafetera eléctrica."},
+  {q:"¿El Plan Deluxe incluye ataúd?",r:"Sí. El Plan Deluxe incluye un ataúd Deluxe metálico de fabricación propia para el velatorio y el día final."},
+  {q:"¿Hay un desembolso al usar el servicio?",r:"Sí, cada plan tiene un desembolso diferente: Plan Digno RD$0 (0-60 años), Pomposo RD$10,000, Majestuoso RD$15,000, Deluxe RD$20,000."},
+  {q:"¿Son fabricantes de ataúdes?",r:"Sí, somos fabricantes de ataúdes metálicos con 5 modelos: Digno, Pomposo, Majestuoso, Deluxe y Deluxe Pro. Esto garantiza mayor durabilidad."},
+  {q:"¿Qué formas de pago aceptan?",r:"Aceptamos pago único, cuotas mensuales y pago anual. Medios: tarjeta de crédito/débito, transferencia bancaria, Azul y CardNet."},
+];
+
+document.getElementById('faq').innerHTML = faqs.map((f,i) => `
+  <div class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+    <button onclick="toggleFaq(${i})" class="w-full flex items-center justify-between p-5 text-left hover:bg-blue-50/50 transition-colors">
+      <span class="text-sm font-medium" style="color:var(--primary)">${f.q}</span>
+      <svg id="faq-icon-${i}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00a9e1" stroke-width="2" class="flex-shrink-0 transition-transform duration-300"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div id="faq-body-${i}" class="hidden px-5 pb-5"><p class="text-gray-600 text-sm leading-relaxed">${f.r}</p></div>
+  </div>
+`).join('');
+
+function toggleFaq(i){const body=document.getElementById(`faq-body-${i}`);const icon=document.getElementById(`faq-icon-${i}`);body.classList.toggle('hidden');icon.style.transform=body.classList.contains('hidden')?'':'rotate(180deg)';}
+
+async function cargarPlanes(){
+  const grid=document.getElementById('planes-grid');
+  const{ok,data}=await API.getPlanes();
+  if(!ok||!data?.length){grid.innerHTML=`<div class="col-span-4 text-center py-12 text-gray-500">No hay planes disponibles.</div>`;return;}
+  const user=Auth.getUser();
+  const planActivo=Auth.isLoggedIn()?(await API.getMiPlan()).data:null;
+
+  grid.innerHTML=data.map(plan=>{
+    let beneficios=[];try{beneficios=JSON.parse(plan.beneficios||'[]');}catch{}
+    const esMiPlan=planActivo&&planActivo.plan_id===plan.id;
+    return `
+    <div class="plan-card flex flex-col p-8 rounded-xl ${plan.destacado?'':'bg-white'}" style="${plan.destacado?'background:rgba(103,204,219,.06);border-color:rgba(0,169,225,.4)':''}">
+      ${plan.destacado?`<div class="text-xs tracking-widest uppercase font-semibold px-3 py-1 rounded-md mb-5 self-start" style="color:var(--primary);background:rgba(103,204,219,.15)">Más Popular</div>`:''}
+      <h3 class="serif text-2xl font-semibold mb-1" style="color:var(--primary)">${plan.nombre}</h3>
+      <p class="text-gray-500 text-xs leading-relaxed mb-6">${plan.descripcion}</p>
+      <div class="mb-6">
+        <span class="serif text-3xl font-bold" style="color:var(--primary)">${Fmt.precio(plan.precio_mensual)}</span>
+        <span class="text-gray-400 text-xs block mt-1">por mes</span>
+      </div>
+      <ul class="space-y-3 mb-8 flex-1">
+        ${beneficios.map(b=>`<li class="flex items-start gap-3 text-gray-600 text-sm"><svg class="check mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${b}</li>`).join('')}
+        ${!beneficios.length?`<li class="text-gray-400 text-xs">Ver detalles al contratar</li>`:''}
+      </ul>
+      ${esMiPlan
+        ?`<div class="btn-primary opacity-70 cursor-default">✓ Plan Activo</div>`
+        :`<button onclick="contratarPlan(${plan.id},'${plan.nombre}')" class="${plan.destacado?'btn-primary':'btn-outline'} w-full cursor-pointer">Contratar Plan</button>`
+      }
+    </div>`;
+  }).join('');
+  renderTabla(data);
+}
+
+function renderTabla(planes){
+  const allBeneficios=new Set();
+  planes.forEach(p=>{try{JSON.parse(p.beneficios||'[]').forEach(b=>allBeneficios.add(b));}catch{}});
+  const filas=[...allBeneficios];
+  document.getElementById('tabla-comparativa').innerHTML=`
+    <table class="w-full text-sm" style="border-collapse:separate;border-spacing:0">
+      <thead><tr>
+        <th class="text-left p-4 text-gray-400 text-xs uppercase tracking-wider border-b border-gray-200">Beneficio</th>
+        ${planes.map(p=>`<th class="p-4 text-center border-b border-gray-200 text-xs uppercase tracking-wider ${p.destacado?'font-bold':''}" style="color:var(--primary)">${p.nombre}</th>`).join('')}
+      </tr></thead>
+      <tbody>
+        ${filas.map(b=>`<tr class="hover:bg-blue-50/30 transition-colors"><td class="p-4 text-gray-600 border-b border-gray-100">${b}</td>
+          ${planes.map(p=>{let bens=[];try{bens=JSON.parse(p.beneficios||'[]');}catch{}return`<td class="p-4 text-center border-b border-gray-100">${bens.includes(b)?`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00a9e1" stroke-width="2.5" class="mx-auto"><polyline points="20 6 9 17 4 12"/></svg>`:`<span class="text-gray-300 text-lg">—</span>`}</td>`;}).join('')}
+        </tr>`).join('')}
+        <tr><td class="p-4 text-gray-500 font-medium">Precio mensual</td>
+          ${planes.map(p=>`<td class="p-4 text-center"><span class="serif font-bold" style="color:var(--primary)">${Fmt.precio(p.precio_mensual)}</span></td>`).join('')}
+        </tr>
+      </tbody>
+    </table>`;
+}
+
+async function contratarPlan(planId,planNombre){
+  if(!Auth.isLoggedIn()){if(confirm(`Para contratar el ${planNombre} necesitas iniciar sesión. ¿Ir al login?`))window.location.href='login.html';return;}
+  const btn=event.target;UI.loading(btn,true,'Procesando...');
+  const{ok,data}=await API.contratarPlan(planId);UI.loading(btn,false);
+  if(ok){UI.toast(`¡Plan "${planNombre}" contratado exitosamente!`,'success');setTimeout(()=>window.location.href='dashboard.html',1500);}
+  else{UI.toast(data?.detail||'Error al contratar el plan.','error');}
+}
+cargarPlanes();
+</script>
+</body>
+</html>

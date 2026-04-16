@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Funerarias Rancier — Servicio digno, humano y confiable. Planes funerarios, ataúdes metálicos y acompañamiento 24/7 en República Dominicana."/>
+  <title>Funerarias Rancier — Servicio Digno, Humano y Confiable</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: "#006ab4", light: "#00a9e1", accent: "#67ccdb" },
+          },
+          fontFamily: {
+            serif: ["Playfair Display", "Georgia", "serif"],
+            sans: ["DM Sans", "system-ui", "sans-serif"],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --primary: #006ab4;
+      --secondary: #00a9e1;
+      --accent: #67ccdb;
+      --white: #ffffff;
+    }
+    * { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: #333; }
+    .serif { font-family: 'Playfair Display', serif; }
+
+    /* Divider */
+    .blue-line { height: 2px; background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
+
+    /* Fade-in animation */
+    @keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform:none; } }
+    .fade-up { animation: fadeUp 0.8s ease both; }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.45s; }
+    .delay-4 { animation-delay: 0.6s; }
+
+    /* Mobile menu */
+    #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; }
+    #mobile-menu.hidden { max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu:not(.hidden) { max-height: 400px; opacity: 1; }
+
+    /* Card hover */
+    .service-card { transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #e8f4fd; }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,106,180,0.1); }
+
+    /* Primary button */
+    .btn-primary {
+      background: var(--secondary); color: var(--white);
+      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.75rem;
+      padding: 0.875rem 2rem; border-radius: 6px; transition: all 0.3s ease;
+      display: inline-block; text-align: center;
+    }
+    .btn-primary:hover { background: var(--primary); box-shadow: 0 8px 30px rgba(0,106,180,0.3); transform: translateY(-1px); }
+
+    .btn-outline {
+      border: 2px solid var(--secondary); color: var(--secondary); background: transparent;
+      padding: 0.8rem 2rem; border-radius: 6px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; font-size: 0.75rem; transition: all 0.3s ease;
+      display: inline-block; text-align: center;
+    }
+    .btn-outline:hover { background: rgba(0,169,225,0.08); border-color: var(--primary); color: var(--primary); }
+
+    /* Nav links */
+    .nav-link { position: relative; color: #555; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--secondary); transform:scaleX(0); transform-origin:left; transition:transform 0.3s ease; }
+    .nav-link:hover, .nav-link.active { color: var(--primary); }
+    .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
+
+    /* Stat counter */
+    .stat-card { border-left: 3px solid var(--secondary); }
+
+    /* Testimonial quote */
+    blockquote::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 5rem; line-height: 1; color: var(--accent); opacity: 0.5; position: absolute; top: -1rem; left: -0.5rem; }
+
+    /* WhatsApp float */
+    .whatsapp-float {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: #25D366; color: white; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,211,102,0.5); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════ -->
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-gray-100" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 flex items-center justify-center rounded-lg" style="background: var(--primary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+            <path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="serif font-semibold text-base" style="color: var(--primary);">Funerarias</span>
+          <span class="serif font-bold text-base" style="color: var(--secondary);"> Rancier</span>
+        </div>
+      </a>
+
+      <!-- Nav Desktop -->
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="index.html" class="nav-link active">Inicio</a>
+        <a href="planes-funerarios.html" class="nav-link">Planes</a>
+        <a href="catalogo.html" class="nav-link">Catálogo</a>
+        <a href="servicios.html" class="nav-link">Servicios</a>
+        <a href="contacto.html" class="nav-link">Contacto</a>
+      </nav>
+
+      <!-- Auth Actions -->
+      <div class="hidden lg:flex items-center gap-4">
+        <a href="login.html" data-auth="login" class="btn-outline text-xs">Acceso Cliente</a>
+        <div data-auth="logout" class="hidden flex items-center gap-3">
+          <span class="text-gray-500 text-sm" data-auth="username"></span>
+          <a href="dashboard.html" class="btn-primary text-xs">Mi Cuenta</a>
+        </div>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button id="menu-btn" class="lg:hidden p-2 text-gray-500 hover:text-primary transition-colors" aria-label="Menú">
+        <svg id="icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg id="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="hidden"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-100 bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-4">
+      <a href="index.html" class="nav-link py-2">Inicio</a>
+      <a href="planes-funerarios.html" class="nav-link py-2">Planes Funerarios</a>
+      <a href="catalogo.html" class="nav-link py-2">Catálogo</a>
+      <a href="servicios.html" class="nav-link py-2">Servicios</a>
+      <a href="contacto.html" class="nav-link py-2">Contacto</a>
+      <hr class="border-gray-200"/>
+      <a href="login.html" data-auth="login" class="btn-primary text-center">Acceso Cliente</a>
+      <a href="dashboard.html" data-auth="logout" class="hidden btn-outline text-center">Mi Cuenta</a>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ -->
+<section class="relative min-h-screen flex items-center overflow-hidden" style="background: linear-gradient(160deg, #ffffff 0%, #e8f4fd 40%, #d0ecf9 100%);">
+  <!-- Decorative circles -->
+  <div class="absolute inset-0 z-0" aria-hidden="true">
+    <div class="absolute top-1/4 right-1/4 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, var(--accent), transparent); filter: blur(80px);"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-64 h-64 rounded-full opacity-8" style="background: radial-gradient(circle, var(--secondary), transparent); filter: blur(60px);"></div>
+  </div>
+
+  <!-- Vertical accent line left -->
+  <div class="absolute left-6 lg:left-12 top-1/4 bottom-1/4 w-0.5 opacity-20" style="background: linear-gradient(to bottom, transparent, var(--primary), transparent);"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-16 w-full">
+    <div class="max-w-3xl">
+      <!-- Eyebrow -->
+      <p class="fade-up tracking-[0.3em] uppercase text-xs font-semibold mb-6" style="color: var(--secondary);">Desde 2010 · República Dominicana</p>
+
+      <!-- Headline -->
+      <h1 class="serif fade-up delay-1 font-bold leading-tight mb-8" style="font-size: clamp(2.5rem, 7vw, 4.5rem); color: var(--primary);">
+        Servicio digno,<br/>
+        <em class="not-italic" style="color: var(--secondary);">humano</em> y<br/>
+        confiable.
+      </h1>
+
+      <!-- Sub -->
+      <p class="fade-up delay-2 text-gray-600 leading-relaxed mb-10 max-w-xl" style="font-size: 1.05rem;">
+        Te brindamos apoyo real en los momentos más frágiles. Más de 15 años sirviendo a familias dominicanas con empatía, compromiso y respeto. Disponibles las 24 horas, los 365 días del año.
+      </p>
+
+      <!-- CTAs -->
+      <div class="fade-up delay-3 flex flex-wrap gap-4 mb-16">
+        <a href="planes-funerarios.html" class="btn-primary">Ver Planes Funerarios</a>
+        <a href="tel:8095642200" class="btn-outline">Llamar Ahora: (809) 564-2200</a>
+      </div>
+
+      <!-- Stats -->
+      <div class="fade-up delay-4 grid grid-cols-3 gap-8 max-w-lg">
+        <div class="stat-card pl-4">
+          <p class="serif text-3xl font-bold" style="color: var(--primary);">15+</p>
+          <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">Años de servicio</p>
+        </div>
+        <div class="stat-card pl-4">
+          <p class="serif text-3xl font-bold" style="color: var(--primary);">24/7</p>
+          <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">Disponibilidad</p>
+        </div>
+        <div class="stat-card pl-4">
+          <p class="serif text-3xl font-bold" style="color: var(--primary);">2k+</p>
+          <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">Familias atendidas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+    <span class="text-gray-500 text-xs tracking-widest uppercase">Scroll</span>
+    <div class="w-px h-10 animate-pulse" style="background: linear-gradient(to bottom, var(--secondary), transparent);"></div>
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="blue-line"></div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SERVICIOS DESTACADOS
+═══════════════════════════════════════════════════════════ -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+    <div class="text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase mb-4 font-semibold" style="color: var(--secondary);">Lo que ofrecemos</p>
+      <h2 class="serif text-4xl lg:text-5xl font-bold" style="color: var(--primary);">Nuestros Servicios</h2>
+      <div class="blue-line w-24 mx-auto mt-6"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Card 1 -->
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="w-12 h-12 flex items-center justify-center mb-6 rounded-lg" style="background: rgba(103,204,219,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color: var(--primary);">Velaciones</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Servicio de velación en el hogar o en funerarias cercanas, con duración flexible de 12 a 24 horas. Incluye montaje, ataúd y acompañamiento continuo.</p>
+        <a href="servicios.html" class="inline-block mt-6 text-sm font-semibold tracking-wider uppercase pb-0.5" style="color: var(--secondary); border-bottom: 2px solid rgba(0,169,225,0.3);">Conocer más →</a>
+      </div>
+
+      <!-- Card 2 (highlighted) -->
+      <div class="service-card p-8 rounded-xl" style="background: rgba(103,204,219,0.08); border-color: rgba(0,169,225,0.3);">
+        <div class="w-12 h-12 flex items-center justify-center mb-6 rounded-lg" style="background: rgba(0,169,225,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="1"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        </div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color: var(--primary);">Planes Funerarios</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Planes previsionales con cobertura completa para toda la familia. Pago único, mensual o anual a su conveniencia.</p>
+        <a href="planes-funerarios.html" class="inline-block mt-6 text-sm font-semibold tracking-wider uppercase pb-0.5" style="color: var(--secondary); border-bottom: 2px solid rgba(0,169,225,0.3);">Ver planes →</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="w-12 h-12 flex items-center justify-center mb-6 rounded-lg" style="background: rgba(103,204,219,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color: var(--primary);">Disponibilidad 24/7</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Nuestro equipo está disponible las 24 horas, los 7 días de la semana, para atender cualquier emergencia con rapidez y profesionalismo.</p>
+        <a href="contacto.html" class="inline-block mt-6 text-sm font-semibold tracking-wider uppercase pb-0.5" style="color: var(--secondary); border-bottom: 2px solid rgba(0,169,225,0.3);">Contactar →</a>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="w-12 h-12 flex items-center justify-center mb-6 rounded-lg" style="background: rgba(103,204,219,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        </div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color: var(--primary);">Ambulancia</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Servicio de ambulancia disponible en todo el país para el traslado inmediato y respetuoso de sus seres queridos.</p>
+        <a href="servicios.html" class="inline-block mt-6 text-sm font-semibold tracking-wider uppercase pb-0.5" style="color: var(--secondary); border-bottom: 2px solid rgba(0,169,225,0.3);">Conocer más →</a>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="w-12 h-12 flex items-center justify-center mb-6 rounded-lg" style="background: rgba(103,204,219,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color: var(--primary);">Carroza Fúnebre</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Carroza fúnebre propia incluida en nuestros planes, para el último acompañamiento con solemnidad y dignidad.</p>
+        <a href="servicios.html" class="inline-block mt-6 text-sm font-semibold tracking-wider uppercase pb-0.5" style="color: var(--secondary); border-bottom: 2px solid rgba(0,169,225,0.3);">Conocer más →</a>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="service-card p-8 rounded-xl bg-white">
+        <div class="w-12 h-12 flex items-center justify-center mb-6 rounded-lg" style="background: rgba(103,204,219,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3 class="serif text-xl font-semibold mb-3" style="color: var(--primary);">Autobús de Acompañantes</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Transporte para familiares y acompañantes incluido en nuestros planes, para que toda la familia pueda estar presente.</p>
+        <a href="servicios.html" class="inline-block mt-6 text-sm font-semibold tracking-wider uppercase pb-0.5" style="color: var(--secondary); border-bottom: 2px solid rgba(0,169,225,0.3);">Conocer más →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PLANES — PREVIEW
+═══════════════════════════════════════════════════════════ -->
+<section class="py-24" style="background: #f0f8ff;">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase mb-4 font-semibold" style="color: var(--secondary);">Cobertura Familiar</p>
+        <h2 class="serif text-4xl lg:text-5xl font-bold" style="color: var(--primary);">Planes Funerarios</h2>
+      </div>
+      <a href="planes-funerarios.html" class="btn-outline mt-6 md:mt-0">Ver todos los planes</a>
+    </div>
+
+    <div id="planes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="col-span-4 text-center py-12 text-gray-500">
+        <div class="inline-block w-8 h-8 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+        <p class="text-sm">Cargando planes...</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     CTA BAND
+═══════════════════════════════════════════════════════════ -->
+<section class="py-20 relative overflow-hidden" style="background: linear-gradient(135deg, #006ab4 0%, #00a9e1 100%);">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <p class="text-xs tracking-[0.3em] uppercase mb-5 font-semibold text-blue-100">Estamos aquí para usted</p>
+    <h2 class="serif text-3xl lg:text-5xl font-bold text-white mb-6">
+      En el momento más difícil,<br/><em class="not-italic text-blue-100">no está solo.</em>
+    </h2>
+    <p class="text-blue-100 mb-10 max-w-xl mx-auto">Llámenos ahora y un especialista le atenderá de inmediato. Disponibles las 24 horas, los 365 días del año.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="tel:8095642200" class="bg-white font-semibold text-sm uppercase tracking-wider px-6 py-4 rounded-lg transition-all hover:shadow-lg hover:-translate-y-0.5" style="color: var(--primary);">
+        <svg class="inline-block w-4 h-4 mr-2 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        (809) 564-2200
+      </a>
+      <a href="https://wa.me/18095692693" class="border-2 border-white/60 text-white font-semibold text-sm uppercase tracking-wider px-6 py-4 rounded-lg transition-all hover:bg-white/10">
+        <svg class="inline-block w-4 h-4 mr-2 -mt-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        WhatsApp: 809 569 2693
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     TESTIMONIOS
+═══════════════════════════════════════════════════════════ -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+    <div class="text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase mb-4 font-semibold" style="color: var(--secondary);">Lo que dicen nuestras familias</p>
+      <h2 class="serif text-4xl font-bold" style="color: var(--primary);">Testimonios</h2>
+      <div class="blue-line w-24 mx-auto mt-6"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="relative p-8 rounded-xl" style="background: rgba(103,204,219,0.06); border: 1px solid #e0f0f8;">
+        <blockquote class="relative">
+          <p class="text-gray-600 text-sm leading-relaxed mt-6">En el momento más duro de mi vida, el equipo de Rancier nos trató con una calidez y profesionalismo que nunca olvidaré. Gracias por todo.</p>
+        </blockquote>
+        <div class="mt-6 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: var(--secondary);">MR</div>
+          <div>
+            <p class="text-sm font-medium" style="color: var(--primary);">María Rodríguez</p>
+            <p class="text-gray-400 text-xs">Santo Domingo</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative p-8 rounded-xl" style="background: rgba(103,204,219,0.06); border: 1px solid #e0f0f8;">
+        <blockquote class="relative">
+          <p class="text-gray-600 text-sm leading-relaxed mt-6">Contratamos el Plan Familiar hace dos años y cuando lo necesitamos, todo fue exactamente como prometieron. Una empresa de palabra.</p>
+        </blockquote>
+        <div class="mt-6 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: var(--secondary);">JM</div>
+          <div>
+            <p class="text-sm font-medium" style="color: var(--primary);">Jorge Marte</p>
+            <p class="text-gray-400 text-xs">Santiago</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative p-8 rounded-xl" style="background: rgba(103,204,219,0.06); border: 1px solid #e0f0f8;">
+        <blockquote class="relative">
+          <p class="text-gray-600 text-sm leading-relaxed mt-6">El personal administrativo manejó todos los trámites por nosotros. En ese momento de dolor, eso fue invaluable. Los recomiendo con confianza.</p>
+        </blockquote>
+        <div class="mt-6 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: var(--secondary);">AC</div>
+          <div>
+            <p class="text-sm font-medium" style="color: var(--primary);">Ana Cabrera</p>
+            <p class="text-gray-400 text-xs">La Romana</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer class="border-t border-gray-200" style="background: #f8fbff;">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 flex items-center justify-center rounded-lg" style="background: var(--primary);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg>
+          </div>
+          <span class="serif font-semibold text-sm uppercase" style="color: var(--primary);">Funerarias <span style="color: var(--secondary);">Rancier</span></span>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed max-w-xs">Desde 2010 acompañando a las familias dominicanas con dignidad, respeto y profesionalismo. Servicio digno, humano y confiable.</p>
+        <div class="flex gap-4 mt-6">
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-primary transition-colors" aria-label="TikTok">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78 2.92 2.92 0 0 1 .88.13v-3.5a6.37 6.37 0 0 0-.88-.07A6.26 6.26 0 0 0 3.23 15.2a6.26 6.26 0 0 0 6.26 6.26 6.26 6.26 0 0 0 6.26-6.26V9.15a8.16 8.16 0 0 0 4.84 1.58V7.28a4.84 4.84 0 0 1-1-.59z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-xs tracking-widest uppercase mb-5 font-semibold" style="color: var(--primary);">Navegación</h4>
+        <ul class="space-y-3 text-gray-500 text-sm">
+          <li><a href="planes-funerarios.html" class="hover:text-primary transition-colors">Planes Funerarios</a></li>
+          <li><a href="catalogo.html" class="hover:text-primary transition-colors">Catálogo de Ataúdes</a></li>
+          <li><a href="servicios.html" class="hover:text-primary transition-colors">Servicios</a></li>
+          <li><a href="contacto.html" class="hover:text-primary transition-colors">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-xs tracking-widest uppercase mb-5 font-semibold" style="color: var(--primary);">Contacto</h4>
+        <ul class="space-y-3 text-gray-500 text-sm">
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--secondary);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.59 1h3"/></svg> (809) 564-2200</li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--secondary);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> funerariarancier@gmail.com</li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--secondary);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> C/ San José #27, Enriquillo de Herrera, Sto. Dgo. Oeste</li>
+          <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--secondary);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Disponibles 24/7</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="blue-line mb-8"></div>
+
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-xs">
+      <p>&copy; 2026 Funerarias Rancier. Todos los derechos reservados. RNC: 131-97317-5</p>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-primary transition-colors">Política de Privacidad</a>
+        <a href="#" class="hover:text-primary transition-colors">Términos de Servicio</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/18095692693?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20sus%20servicios%20funerarios." target="_blank" rel="noopener" class="whatsapp-float" aria-label="Escribir por WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+</a>
+
+<script src="assets/js/api.js"></script>
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', isOpen);
+    iconOpen.classList.toggle('hidden', !isOpen);
+    iconClose.classList.toggle('hidden', isOpen);
+  });
+
+  // Cargar planes
+  async function cargarPlanes() {
+    const container = document.getElementById('planes-container');
+    const { ok, data } = await API.getPlanes();
+    if (!ok || !data?.length) {
+      container.innerHTML = `<div class="col-span-4 text-center py-8 text-gray-500 text-sm">No hay planes disponibles en este momento.</div>`;
+      return;
+    }
+    container.innerHTML = data.slice(0, 4).map(plan => `
+      <div class="p-7 border rounded-xl flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${plan.destacado ? 'border-blue-300' : 'border-gray-200'}" style="background: ${plan.destacado ? 'rgba(103,204,219,0.06)' : '#fff'};">
+        ${plan.destacado ? `<span class="text-xs tracking-widest uppercase font-semibold px-3 py-1 rounded-md mb-4 self-start" style="color: var(--primary); background: rgba(103,204,219,0.15);">Más Popular</span>` : ''}
+        <h3 class="serif text-xl font-semibold mb-2" style="color: var(--primary);">${plan.nombre}</h3>
+        <p class="text-gray-500 text-xs leading-relaxed flex-1 mb-5">${plan.descripcion.slice(0, 90)}...</p>
+        <div class="mb-5">
+          <span class="serif text-2xl font-bold" style="color: var(--primary);">${Fmt.precio(plan.precio_mensual)}</span>
+          <span class="text-gray-400 text-xs">/mes</span>
+        </div>
+        <a href="planes-funerarios.html" class="${plan.destacado ? 'btn-primary' : 'btn-outline'} text-center text-xs">Ver Plan</a>
+      </div>
+    `).join('');
+  }
+  cargarPlanes();
+</script>
+</body>
+</html>
