@@ -20,6 +20,8 @@ class User(Base):
     activo = Column(Boolean, default=True, nullable=False)
     email_verified = Column(Boolean, default=False, nullable=False)
     verification_token = Column(String(128), unique=True, nullable=True)
+    password_reset_token = Column(String(128), unique=True, nullable=True)
+    password_reset_expires = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     last_login = Column(DateTime(timezone=True), nullable=True)
 

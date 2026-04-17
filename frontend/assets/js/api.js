@@ -81,6 +81,11 @@ const API = {
   cancelarPlan: () => apiCall("/suscripciones/mi-plan", { method: "DELETE" }),
 
   contacto: (d) => apiCall("/contacto", { method: "POST", body: JSON.stringify(d) }),
+
+  // Auth extra
+  post: (endpoint, data) => apiCall(endpoint, { method: "POST", body: JSON.stringify(data) }),
+  forgotPassword: (email) => apiCall("/forgot-password", { method: "POST", body: JSON.stringify({ email }) }),
+  resetPassword: (token, password) => apiCall("/reset-password", { method: "POST", body: JSON.stringify({ token, password }) }),
 };
 
 // ── Formatters ─────────────────────────────────────────────────
