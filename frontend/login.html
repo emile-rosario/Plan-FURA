@@ -23,6 +23,7 @@
     .alert-success{background:rgba(0,169,225,.08);border:1px solid rgba(0,169,225,.2);color:var(--primary)}
     @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
     .shake{animation:shake .3s ease}
+    .alert-warning{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);color:#92400e}
   </style>
 </head>
 <body>
@@ -88,12 +89,78 @@
 <script src="assets/js/api.js"></script>
 <script>
   if(Auth.isLoggedIn()) window.location.href='dashboard.html';
-  function switchTab(tab){const isLogin=tab==='login';document.getElementById('form-login').classList.toggle('hidden',!isLogin);document.getElementById('form-register').classList.toggle('hidden',isLogin);document.getElementById('tab-login').style.cssText=isLogin?'color:var(--primary);border-color:var(--secondary)':'color:#9ca3af;border-color:transparent';document.getElementById('tab-register').style.cssText=!isLogin?'color:var(--primary);border-color:var(--secondary)':'color:#9ca3af;border-color:transparent';hideAlert();}
-  function showAlert(msg,type='error'){const el=document.getElementById('alert');el.className=`alert ${type==='error'?'alert-error':'alert-success'}`;el.textContent=msg;el.classList.remove('hidden');if(type==='error'){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),400);}}
+
+  // ── Manejar resultado de verificación de email (redirect del backend) ──
+  (function checkVerificationResult(){
+    const params=new URLSearchParams(window.location.search);
+    const verified=params.get('verified');
+    if(verified){
+      // Limpiar query string de la URL sin recargar
+      history.replaceState(null,'',window.location.pathname);
+      if(verified==='1'){
+        showAlert('✓ ¡Correo verificado con éxito! Ya puedes iniciar sesión.','success');
+      } else if(verified==='error'){
+        showAlert('El enlace de verificación es inválido o ya fue usado.','error');
+      }
+    }
+  })();
+
+  function switchTab(tab){
+    const isLogin=tab==='login';
+    document.getElementById('form-login').classList.toggle('hidden',!isLogin);
+    document.getElementById('form-register').classList.toggle('hidden',isLogin);
+    document.getElementById('tab-login').style.cssText=isLogin?'color:var(--primary);border-color:var(--secondary)':'color:#9ca3af;border-color:transparent';
+    document.getElementById('tab-register').style.cssText=!isLogin?'color:var(--primary);border-color:var(--secondary)':'color:#9ca3af;border-color:transparent';
+    hideAlert();
+  }
+
+  function showAlert(msg,type='error'){
+    const el=document.getElementById('alert');
+    const cls={'error':'alert-error','success':'alert-success','warning':'alert-warning'}[type]||'alert-error';
+    el.className=`alert ${cls}`;
+    el.innerHTML=msg;
+    el.classList.remove('hidden');
+    if(type==='error'){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),400);}
+  }
   function hideAlert(){document.getElementById('alert').classList.add('hidden');}
   function togglePass(id){document.getElementById(id).type=document.getElementById(id).type==='password'?'text':'password';}
-  async function handleLogin(e){e.preventDefault();hideAlert();const btn=document.getElementById('btn-login');UI.loading(btn,true,'Verificando...');const email=document.getElementById('login-email').value.trim(),password=document.getElementById('login-pass').value;const{ok,data}=await API.login({email,password});UI.loading(btn,false);if(ok){Auth.save(data.access_token,{id:data.user_id,nombre:data.user_name,email:data.user_email,rol:data.user_rol});showAlert('Bienvenido. Redirigiendo...','success');setTimeout(()=>window.location.href='dashboard.html',800);}else{showAlert(data?.detail||'Credenciales incorrectas.');}}
-  async function handleRegister(e){e.preventDefault();hideAlert();const btn=document.getElementById('btn-register');UI.loading(btn,true,'Creando cuenta...');const payload={nombre:document.getElementById('reg-nombre').value.trim(),email:document.getElementById('reg-email').value.trim(),telefono:document.getElementById('reg-telefono').value.trim(),password:document.getElementById('reg-pass').value};const{ok,data}=await API.register(payload);UI.loading(btn,false);if(ok){showAlert('¡Cuenta creada! Ahora puedes iniciar sesión.','success');setTimeout(()=>switchTab('login'),1500);}else{const detail=data?.detail;showAlert(Array.isArray(detail)?detail.map(e=>e.msg).join('. '):(detail||'Error al crear la cuenta.'));}}
+
+  async function handleLogin(e){
+    e.preventDefault();hideAlert();
+    const btn=document.getElementById('btn-login');
+    UI.loading(btn,true,'Verificando...');
+    const email=document.getElementById('login-email').value.trim(),password=document.getElementById('login-pass').value;
+    const{ok,data}=await API.login({email,password});
+    UI.loading(btn,false);
+    if(ok){
+      Auth.save(data.access_token,{id:data.user_id,nombre:data.user_name,email:data.user_email,rol:data.user_rol});
+      showAlert('Bienvenido. Redirigiendo...','success');
+      setTimeout(()=>window.location.href='dashboard.html',800);
+    } else {
+      const detail=data?.detail;
+      if(detail==='EMAIL_NOT_VERIFIED'){
+        showAlert('⚠ Debes verificar tu correo antes de iniciar sesión. Revisa tu bandeja de entrada.','warning');
+      } else {
+        showAlert(detail||'Credenciales incorrectas.');
+      }
+    }
+  }
+
+  async function handleRegister(e){
+    e.preventDefault();hideAlert();
+    const btn=document.getElementById('btn-register');
+    UI.loading(btn,true,'Creando cuenta...');
+    const payload={nombre:document.getElementById('reg-nombre').value.trim(),email:document.getElementById('reg-email').value.trim(),telefono:document.getElementById('reg-telefono').value.trim(),password:document.getElementById('reg-pass').value};
+    const{ok,data}=await API.register(payload);
+    UI.loading(btn,false);
+    if(ok){
+      showAlert(`✓ ¡Cuenta creada! Te enviamos un correo a <strong>${payload.email}</strong> para verificar tu cuenta. Revisa también la carpeta de spam.`,'success');
+      document.getElementById('form-register').reset();
+    } else {
+      const detail=data?.detail;
+      showAlert(Array.isArray(detail)?detail.map(e=>e.msg).join('. '):(detail||'Error al crear la cuenta.'));
+    }
+  }
 </script>
 </body>
 </html>

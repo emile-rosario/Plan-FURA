@@ -1,7 +1,7 @@
 """
 Modelo de usuario con soporte para roles y auditoría.
 """
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Index
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Index, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -18,6 +18,8 @@ class User(Base):
     password = Column(String(255), nullable=False)
     rol = Column(String(20), default="cliente", nullable=False)  # cliente | admin
     activo = Column(Boolean, default=True, nullable=False)
+    email_verified = Column(Boolean, default=False, nullable=False)
+    verification_token = Column(String(128), unique=True, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     last_login = Column(DateTime(timezone=True), nullable=True)
 

@@ -41,6 +41,12 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 5
     ALLOWED_IMAGE_TYPES: list[str] = ["image/jpeg", "image/png", "image/webp"]
 
+    # ── Email (Resend) ─────────────────────────────────────────
+    RESEND_API_KEY: str = ""
+    EMAIL_FROM: str = "Funerarias Rancier <onboarding@resend.dev>"
+    FRONTEND_URL: str = "http://127.0.0.1:5500"
+    BACKEND_URL: str = "http://localhost:8000"
+
     # ── App ────────────────────────────────────────────────────
     APP_ENV: str = "development"  # development | production
 
