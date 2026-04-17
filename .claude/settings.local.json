@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr create --title 'feat\\(auth\\): verificación de email al registrarse' --body ' *)",
+      "Bash(where gh *)",
+      "Bash(winget list *)",
+      "Bash(pip install *)",
+      "Bash(findstr /i \"Successfully installed error failed resend\")",
+      "Bash(psql -U funeraria_user -d funeraria_rancier -h localhost -f backend/migrations/add_email_verification.sql)",
+      "Bash(where psql *)",
+      "Bash(uvicorn app.main:app --reload)",
+      "Bash(findstr /i \"started running error failed Traceback Application\")",
+      "Bash(taskkill /F /IM python.exe)",
+      "Bash(taskkill /F /IM uvicorn.exe)",
+      "Bash(curl -s http://localhost:8000/planes)",
+      "Bash(cp \"/c/Users/EMILE/Documents/funeraria-rancier/.claude/worktrees/cool-elgamal-8a26d5/frontend/login.html\" \"/c/Users/EMILE/Documents/funeraria-rancier/frontend/login.html\")",
+      "Bash(cp \"/c/Users/EMILE/Documents/funeraria-rancier/.claude/worktrees/cool-elgamal-8a26d5/frontend/assets/js/api.js\" \"/c/Users/EMILE/Documents/funeraria-rancier/frontend/assets/js/api.js\")",
+      "Bash(tasklist)",
+      "Bash(taskkill /F /PID 10336 /PID 11204 /PID 35080 /PID 17380 /PID 6808 /PID 32976)",
+      "Bash(kill 1978 1899 1910)",
+      "Bash(FRONTEND_URL=\"http://127.0.0.1:5500/frontend\" uvicorn app.main:app --reload)",
+      "Bash(cp /c/Users/EMILE/Documents/funeraria-rancier/.claude/worktrees/cool-elgamal-8a26d5/frontend/contacto.html /c/Users/EMILE/Documents/funeraria-rancier/frontend/contacto.html)",
+      "Bash(cp /c/Users/EMILE/Documents/funeraria-rancier/.claude/worktrees/cool-elgamal-8a26d5/frontend/planes-funerarios.html /c/Users/EMILE/Documents/funeraria-rancier/frontend/planes-funerarios.html)"
+    ]
+  }
+}

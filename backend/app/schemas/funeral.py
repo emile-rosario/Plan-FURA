@@ -75,6 +75,8 @@ class PlanResponse(PlanBase):
 
 class SuscripcionCreate(BaseModel):
     plan_id: int = Field(gt=0)
+    cedula: str = Field(min_length=6, max_length=20)
+    documento_url: Optional[str] = Field(None, max_length=500)
 
 
 class SuscripcionResponse(BaseModel):
@@ -95,6 +97,7 @@ class ContactoCreate(BaseModel):
     telefono: Optional[str] = Field(None, max_length=30)
     asunto: Optional[str] = Field(None, max_length=200)
     mensaje: str = Field(min_length=10, max_length=2000)
+    archivo_adjunto: Optional[str] = Field(None, max_length=500)
 
     @field_validator("telefono")
     @classmethod
@@ -118,6 +121,7 @@ class ContactoDetailResponse(BaseModel):
     telefono: Optional[str] = None
     asunto: Optional[str] = None
     mensaje: str
+    archivo_adjunto: Optional[str] = None
     leido: bool
     fecha: Optional[datetime] = None
     model_config = {"from_attributes": True}

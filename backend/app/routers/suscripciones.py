@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
+from app.email import send_plan_notification
 from app.models.funeral import Suscripcion, Plan, EstadoSuscripcion
 from app.schemas.funeral import SuscripcionCreate, SuscripcionResponse
 from app.security import get_current_user
@@ -22,13 +23,11 @@ def contratar_plan(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    """Contratar un plan funerario (requiere autenticación)."""
-    # Verificar que el plan exista y esté activo
+    """Contratar un plan funerario (requiere autenticación y cédula)."""
     plan = db.query(Plan).filter(Plan.id == data.plan_id, Plan.activo.is_(True)).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan no encontrado o no disponible.")
 
-    # Verificar si ya tiene un plan activo
     suscripcion_activa = db.query(Suscripcion).filter(
         Suscripcion.user_id == current_user.id,
         Suscripcion.estado == EstadoSuscripcion.activo,
@@ -39,19 +38,34 @@ def contratar_plan(
             detail="Ya tienes un plan activo. Cancela el actual para contratar uno nuevo.",
         )
 
-    nueva = Suscripcion(user_id=current_user.id, plan_id=data.plan_id)
+    nueva = Suscripcion(
+        user_id=current_user.id,
+        plan_id=data.plan_id,
+        cedula=data.cedula,
+        documento_url=data.documento_url,
+    )
     db.add(nueva)
     db.commit()
     db.refresh(nueva)
 
-    # Eager-load del plan para incluirlo en la respuesta
     suscripcion = (
         db.query(Suscripcion)
         .options(joinedload(Suscripcion.plan))
         .filter(Suscripcion.id == nueva.id)
         .first()
     )
-    logger.info("Plan contratado: user=%d, plan=%d", current_user.id, data.plan_id)
+
+    # Notificar al admin
+    send_plan_notification(
+        nombre=current_user.nombre,
+        email=current_user.email,
+        telefono=getattr(current_user, "telefono", None),
+        plan_nombre=plan.nombre,
+        cedula=data.cedula,
+        documento_url=data.documento_url,
+    )
+
+    logger.info("Plan contratado: user=%d, plan=%d, cedula=%s", current_user.id, data.plan_id, data.cedula)
     return suscripcion
 
 

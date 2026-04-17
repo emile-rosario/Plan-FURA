@@ -68,6 +68,8 @@ class Suscripcion(Base):
         default=EstadoSuscripcion.activo,
         nullable=False,
     )
+    cedula = Column(String(20), nullable=True)
+    documento_url = Column(String(500), nullable=True)
     fecha_inicio = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     fecha_cancelacion = Column(DateTime(timezone=True), nullable=True)
 
@@ -89,6 +91,7 @@ class MensajeContacto(Base):
     telefono = Column(String(30))
     asunto = Column(String(200))
     mensaje = Column(Text, nullable=False)
+    archivo_adjunto = Column(String(500), nullable=True)  # URL del PDF adjunto
     leido = Column(Boolean, default=False, nullable=False)
     fecha = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 

@@ -46,6 +46,8 @@ class Settings(BaseSettings):
     EMAIL_FROM: str = "Funerarias Rancier <onboarding@resend.dev>"
     FRONTEND_URL: str = "http://127.0.0.1:5500"
     BACKEND_URL: str = "http://localhost:8000"
+    ADMIN_EMAIL: str = "admin@funerariarancier.com"
+    FUNERARIA_PHONE: str = "(809) 564-2200"
 
     # ── App ────────────────────────────────────────────────────
     APP_ENV: str = "development"  # development | production

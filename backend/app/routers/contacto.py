@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.email import send_contact_notification
 from app.models.funeral import MensajeContacto
 from app.schemas.funeral import ContactoCreate, ContactoResponse, ContactoDetailResponse
 from app.security import get_current_admin
@@ -23,6 +24,17 @@ def enviar_mensaje(data: ContactoCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(mensaje)
     logger.info("Mensaje de contacto recibido de: %s", data.email)
+
+    # Notificar al admin por email
+    send_contact_notification(
+        nombre=data.nombre,
+        email=data.email,
+        telefono=data.telefono,
+        asunto=data.asunto,
+        mensaje=data.mensaje,
+        archivo_url=data.archivo_adjunto,
+    )
+
     return mensaje
 
 

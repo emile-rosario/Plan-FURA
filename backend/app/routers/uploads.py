@@ -18,6 +18,9 @@ router = APIRouter(prefix="/uploads", tags=["Uploads"])
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
+ALLOWED_PDF_TYPES = ["application/pdf"]
+MAX_PDF_SIZE_MB = 10
+
 
 @router.post("/imagen")
 async def upload_image(
@@ -52,4 +55,31 @@ async def upload_image(
         f.write(contents)
 
     logger.info("Imagen subida: %s (%d bytes)", filename, len(contents))
+    return {"url": f"/uploads/{filename}", "filename": filename}
+
+
+@router.post("/documento")
+async def upload_documento(file: UploadFile = File(...)):
+    """Subir documento PDF (público — para formulario de contacto y contratación de planes)."""
+    if file.content_type not in ALLOWED_PDF_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="Solo se permiten archivos PDF.",
+        )
+
+    contents = await file.read()
+    max_bytes = MAX_PDF_SIZE_MB * 1024 * 1024
+    if len(contents) > max_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"El archivo supera el límite de {MAX_PDF_SIZE_MB} MB.",
+        )
+
+    filename = f"{uuid.uuid4().hex}.pdf"
+    file_path = UPLOAD_DIR / filename
+
+    with open(file_path, "wb") as f:
+        f.write(contents)
+
+    logger.info("Documento PDF subido: %s (%d bytes)", filename, len(contents))
     return {"url": f"/uploads/{filename}", "filename": filename}

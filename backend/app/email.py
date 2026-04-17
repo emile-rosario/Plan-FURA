@@ -80,6 +80,52 @@ def send_verification_email(to_email: str, nombre: str, token: str) -> bool:
     return _send(to_email, "Verifica tu correo — Funerarias Rancier", _base_html("Verificación", body))
 
 
+def send_contact_notification(nombre: str, email: str, telefono: str, asunto: str, mensaje: str, archivo_url: str = None) -> bool:
+    """Notifica al admin cuando llega un mensaje del formulario de contacto."""
+    archivo_html = ""
+    if archivo_url:
+        full_url = f"{settings.BACKEND_URL}{archivo_url}"
+        archivo_html = f'<p style="margin:12px 0 0;font-size:13px;color:#444;"><strong>📎 Archivo adjunto:</strong> <a href="{full_url}" style="color:#00a9e1;">{full_url}</a></p>'
+
+    body = f"""
+      <h1 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#006ab4;">📬 Nuevo mensaje de contacto</h1>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;width:120px;">Nombre</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;font-weight:600;">{nombre}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Correo</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;"><a href="mailto:{email}" style="color:#00a9e1;">{email}</a></td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Teléfono</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;">{telefono or "No indicado"}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Asunto</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;">{asunto or "Sin asunto"}</td></tr>
+      </table>
+      <div style="margin:20px 0 0;padding:16px;background:#f0f8ff;border-radius:8px;border-left:4px solid #00a9e1;">
+        <p style="margin:0;font-size:13px;color:#444;line-height:1.7;white-space:pre-wrap;">{mensaje}</p>
+      </div>
+      {archivo_html}
+      <p style="margin:20px 0 0;font-size:12px;color:#999;">Responder directamente a: <a href="mailto:{email}" style="color:#00a9e1;">{email}</a> | Tel: {telefono or "N/A"}</p>
+    """
+    return _send(settings.ADMIN_EMAIL, f"📬 Contacto: {asunto or nombre} — Funerarias Rancier", _base_html("Contacto", body))
+
+
+def send_plan_notification(nombre: str, email: str, telefono: str, plan_nombre: str, cedula: str, documento_url: str = None) -> bool:
+    """Notifica al admin cuando un cliente solicita contratar un plan."""
+    doc_html = ""
+    if documento_url:
+        full_url = f"{settings.BACKEND_URL}{documento_url}"
+        doc_html = f'<tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Documento</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;"><a href="{full_url}" style="color:#00a9e1;">Ver PDF adjunto</a></td></tr>'
+
+    body = f"""
+      <h1 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#006ab4;">🎯 Nueva solicitud de plan</h1>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;width:120px;">Cliente</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;font-weight:600;">{nombre}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Correo</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;"><a href="mailto:{email}" style="color:#00a9e1;">{email}</a></td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Teléfono</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;">{telefono or "No indicado"}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Plan</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;font-weight:700;color:#006ab4;">{plan_nombre}</td></tr>
+        <tr><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#666;">Cédula</td><td style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;color:#333;font-weight:600;">{cedula}</td></tr>
+        {doc_html}
+      </table>
+      <p style="margin:20px 0 0;font-size:12px;color:#999;">Contactar al cliente: <a href="mailto:{email}" style="color:#00a9e1;">{email}</a> | Tel: {telefono or "N/A"}</p>
+    """
+    return _send(settings.ADMIN_EMAIL, f"🎯 Nuevo plan contratado: {plan_nombre} — {nombre}", _base_html("Plan", body))
+
+
 def send_password_reset_email(to_email: str, nombre: str, token: str) -> bool:
     url = f"{settings.FRONTEND_URL}/login.html?reset_token={token}"
     body = f"""
