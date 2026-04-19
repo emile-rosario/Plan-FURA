@@ -1,3 +1,3 @@
-from app.routers import auth, coffins, plans, suscripciones, contacto, uploads
+from app.routers import auth, coffins, plans, suscripciones, contacto, uploads, password_reset
 
-__all__ = ["auth", "coffins", "plans", "suscripciones", "contacto", "uploads"]
+__all__ = ["auth", "coffins", "plans", "suscripciones", "contacto", "uploads", "password_reset"]

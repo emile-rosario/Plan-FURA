@@ -4,40 +4,28 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Funerarias Rancier — Servicio digno, humano y confiable. Planes funerarios, ataúdes metálicos y acompañamiento 24/7 en República Dominicana."/>
+  <meta property="og:title" content="Funerarias Rancier — Servicio Digno, Humano y Confiable"/>
+  <meta property="og:description" content="Planes funerarios, ataúdes metálicos de fabricación propia y acompañamiento 24/7. Santo Domingo, Rep. Dominicana."/>
   <title>Funerarias Rancier — Servicio Digno, Humano y Confiable</title>
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/main.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            primary: { DEFAULT: "#006ab4", light: "#00a9e1", accent: "#67ccdb" },
-          },
-          fontFamily: {
-            serif: ["Playfair Display", "Georgia", "serif"],
-            sans: ["DM Sans", "system-ui", "sans-serif"],
-          },
+          colors: { primary: { DEFAULT: "#006ab4", light: "#00a9e1", accent: "#67ccdb" } },
+          fontFamily: { serif: ["Playfair Display", "Georgia", "serif"], sans: ["DM Sans", "system-ui", "sans-serif"] },
         }
       }
     }
   </script>
   <style>
-    :root {
-      --primary: #006ab4;
-      --secondary: #00a9e1;
-      --accent: #67ccdb;
-      --white: #ffffff;
-    }
     * { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: #333; }
-    .serif { font-family: 'Playfair Display', serif; }
+    body { background: #fff; }
 
-    /* Divider */
-    .blue-line { height: 2px; background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
-
-    /* Fade-in animation */
     @keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform:none; } }
     .fade-up { animation: fadeUp 0.8s ease both; }
     .delay-1 { animation-delay: 0.15s; }
@@ -45,53 +33,20 @@
     .delay-3 { animation-delay: 0.45s; }
     .delay-4 { animation-delay: 0.6s; }
 
-    /* Mobile menu */
     #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; }
     #mobile-menu.hidden { max-height: 0; opacity: 0; overflow: hidden; }
     #mobile-menu:not(.hidden) { max-height: 400px; opacity: 1; }
 
-    /* Card hover */
     .service-card { transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #e8f4fd; }
     .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,106,180,0.1); }
 
-    /* Primary button */
-    .btn-primary {
-      background: var(--secondary); color: var(--white);
-      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.75rem;
-      padding: 0.875rem 2rem; border-radius: 6px; transition: all 0.3s ease;
-      display: inline-block; text-align: center;
-    }
-    .btn-primary:hover { background: var(--primary); box-shadow: 0 8px 30px rgba(0,106,180,0.3); transform: translateY(-1px); }
-
-    .btn-outline {
-      border: 2px solid var(--secondary); color: var(--secondary); background: transparent;
-      padding: 0.8rem 2rem; border-radius: 6px; font-weight: 600; letter-spacing: 0.06em;
-      text-transform: uppercase; font-size: 0.75rem; transition: all 0.3s ease;
-      display: inline-block; text-align: center;
-    }
-    .btn-outline:hover { background: rgba(0,169,225,0.08); border-color: var(--primary); color: var(--primary); }
-
-    /* Nav links */
-    .nav-link { position: relative; color: #555; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    /* Underline animation on nav links (enhancement over base nav-link in main.css) */
+    .nav-link { position: relative; }
     .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--secondary); transform:scaleX(0); transform-origin:left; transition:transform 0.3s ease; }
-    .nav-link:hover, .nav-link.active { color: var(--primary); }
     .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
 
-    /* Stat counter */
     .stat-card { border-left: 3px solid var(--secondary); }
-
-    /* Testimonial quote */
     blockquote::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 5rem; line-height: 1; color: var(--accent); opacity: 0.5; position: absolute; top: -1rem; left: -0.5rem; }
-
-    /* WhatsApp float */
-    .whatsapp-float {
-      position: fixed; bottom: 24px; right: 24px; z-index: 999;
-      width: 60px; height: 60px; border-radius: 50%;
-      background: #25D366; color: white; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 6px 20px rgba(37,211,102,0.4);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,211,102,0.5); }
   </style>
 </head>
 <body>
@@ -470,7 +425,7 @@
 </footer>
 
 <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/18095692693?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20sus%20servicios%20funerarios." target="_blank" rel="noopener" class="whatsapp-float" aria-label="Escribir por WhatsApp">
+<a href="https://wa.me/18095692693?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20sus%20servicios%20funerarios." target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Contactar por WhatsApp">
   <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.522 3.86 1.438 5.474L2 22l4.67-1.418A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
 </a>
 

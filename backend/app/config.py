@@ -12,6 +12,16 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
+    # ── Contraseña admin inicial ───────────────────────────────
+    ADMIN_PASSWORD: str = "Admin@2025"
+
+    # ── Hosts permitidos ───────────────────────────────────────
+    ALLOWED_HOSTS: str = "localhost,127.0.0.1"
+
+    @property
+    def allowed_hosts_list(self) -> list[str]:
+        return [h.strip() for h in self.ALLOWED_HOSTS.split(",")]
+
     # ── Base de datos PostgreSQL ───────────────────────────────
     DB_HOST: str = "localhost"
     DB_PORT: int = 5432
@@ -40,6 +50,16 @@ class Settings(BaseSettings):
     # ── Uploads ────────────────────────────────────────────────
     MAX_UPLOAD_SIZE_MB: int = 5
     ALLOWED_IMAGE_TYPES: list[str] = ["image/jpeg", "image/png", "image/webp"]
+
+    # ── Email / SMTP ───────────────────────────────────────────
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM: str = "noreply@funerariarancier.com"
+
+    # ── Frontend URL (para enlaces en emails) ──────────────────
+    FRONTEND_URL: str = "http://localhost:5500"
 
     # ── App ────────────────────────────────────────────────────
     APP_ENV: str = "development"  # development | production

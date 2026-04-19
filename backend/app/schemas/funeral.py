@@ -2,7 +2,7 @@
 Schemas Pydantic — Funeraria Rancier
 Validación de datos de entrada y salida.
 """
-from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
 from decimal import Decimal
@@ -41,6 +41,13 @@ class CoffinResponse(CoffinBase):
     model_config = {"from_attributes": True}
 
 
+class PaginatedCoffins(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    items: List[CoffinResponse]
+
+
 # ── Planes Funerarios ─────────────────────────────────────────
 
 class PlanBase(BaseModel):
@@ -49,7 +56,7 @@ class PlanBase(BaseModel):
     precio_mensual: Decimal = Field(gt=0, decimal_places=2)
     activo: bool = True
     destacado: bool = False
-    beneficios: Optional[str] = None  # JSON string
+    beneficios: Optional[List[str]] = None  # Lista nativa, sin JSON.parse en el frontend
 
 
 class PlanCreate(PlanBase):
@@ -62,13 +69,20 @@ class PlanUpdate(BaseModel):
     precio_mensual: Optional[Decimal] = Field(None, gt=0, decimal_places=2)
     activo: Optional[bool] = None
     destacado: Optional[bool] = None
-    beneficios: Optional[str] = None
+    beneficios: Optional[List[str]] = None
 
 
 class PlanResponse(PlanBase):
     id: int
     created_at: Optional[datetime] = None
     model_config = {"from_attributes": True}
+
+
+class PaginatedPlanes(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    items: List[PlanResponse]
 
 
 # ── Suscripciones ─────────────────────────────────────────────
@@ -111,7 +125,6 @@ class ContactoResponse(BaseModel):
 
 
 class ContactoDetailResponse(BaseModel):
-    """Respuesta completa de mensaje de contacto (para admin)."""
     id: int
     nombre: str
     email: str
@@ -121,3 +134,10 @@ class ContactoDetailResponse(BaseModel):
     leido: bool
     fecha: Optional[datetime] = None
     model_config = {"from_attributes": True}
+
+
+class PaginatedContacto(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    items: List[ContactoDetailResponse]

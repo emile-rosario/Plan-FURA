@@ -3,7 +3,11 @@
  * Módulo centralizado de comunicación con el backend.
  */
 
-const API_URL = "http://127.0.0.1:8000";
+// Detecta entorno: localhost usa dev backend, cualquier otro usa APP_CONFIG.apiUrl
+const _isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
+const API_URL = _isLocal
+  ? "http://127.0.0.1:8000"
+  : (window.APP_CONFIG?.apiUrl || `${location.protocol}//${location.hostname}`);
 
 // ── Sesión ─────────────────────────────────────────────────────
 const Auth = {
@@ -63,7 +67,10 @@ const API = {
   register: (data) => apiCall("/register", { method: "POST", body: JSON.stringify(data) }),
   login: (data) => apiCall("/login", { method: "POST", body: JSON.stringify(data) }),
   me: () => apiCall("/me"),
+  forgotPassword: (email) => apiCall("/forgot-password", { method: "POST", body: JSON.stringify({ email }) }),
+  resetPassword: (token, new_password) => apiCall("/reset-password", { method: "POST", body: JSON.stringify({ token, new_password }) }),
 
+  // Los endpoints paginados devuelven { total, items, skip, limit }
   getAtaudes: (disponible) => {
     const q = disponible !== undefined ? `?disponible=${disponible}` : "";
     return apiCall(`/ataudes${q}`);

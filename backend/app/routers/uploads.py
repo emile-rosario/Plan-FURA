@@ -1,5 +1,5 @@
 """
-Router de uploads — Subida segura de imágenes.
+Router de uploads — Subida segura de imágenes con validación de magic bytes.
 """
 import logging
 import os
@@ -7,7 +7,6 @@ import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
-from fastapi.responses import JSONResponse
 
 from app.config import settings
 from app.security import get_current_admin
@@ -18,6 +17,24 @@ router = APIRouter(prefix="/uploads", tags=["Uploads"])
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
+# Magic bytes de los formatos permitidos
+_MAGIC_SIGNATURES = {
+    b"\xff\xd8\xff": "image/jpeg",
+    b"\x89PNG": "image/png",
+    b"RIFF": "image/webp",  # RIFF....WEBP
+}
+
+
+def _detect_image_type(header: bytes) -> str | None:
+    """Detecta tipo de imagen por magic bytes. Retorna MIME o None si no reconoce."""
+    if header[:3] in _MAGIC_SIGNATURES:
+        return _MAGIC_SIGNATURES[header[:3]]
+    if header[:4] == b"RIFF" and len(header) >= 12 and header[8:12] == b"WEBP":
+        return "image/webp"
+    if header[:4] == b"\x89PNG":
+        return "image/png"
+    return None
+
 
 @router.post("/imagen")
 async def upload_image(
@@ -25,15 +42,15 @@ async def upload_image(
     _admin=Depends(get_current_admin),
 ):
     """Subir imagen de ataúd (solo admin). Máximo 5 MB, solo JPEG/PNG/WebP."""
-    # Validar tipo de contenido
     if file.content_type not in settings.ALLOWED_IMAGE_TYPES:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             detail=f"Tipo de archivo no permitido. Usa: {', '.join(settings.ALLOWED_IMAGE_TYPES)}",
         )
 
-    # Validar tamaño
     contents = await file.read()
+
+    # Validar tamaño
     max_bytes = settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024
     if len(contents) > max_bytes:
         raise HTTPException(
@@ -41,7 +58,14 @@ async def upload_image(
             detail=f"El archivo supera el límite de {settings.MAX_UPLOAD_SIZE_MB} MB.",
         )
 
-    # Generar nombre único seguro (evita path traversal)
+    # Validar magic bytes (evita archivos maliciosos renombrados)
+    detected = _detect_image_type(contents[:12])
+    if detected not in settings.ALLOWED_IMAGE_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="El contenido del archivo no corresponde a una imagen válida.",
+        )
+
     ext = Path(file.filename).suffix.lower() if file.filename else ".jpg"
     if ext not in [".jpg", ".jpeg", ".png", ".webp"]:
         ext = ".jpg"
