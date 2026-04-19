@@ -1,0 +1,169 @@
+/* ═══════════════════════════════════════════════════════════
+   Funeraria Rancier — Estilos compartidos
+   Importado por todas las páginas. Solo estilos comunes;
+   los estilos únicos de cada página van inline en el HTML.
+═══════════════════════════════════════════════════════════ */
+
+/* Variables */
+:root {
+  --primary: #006ab4;
+  --secondary: #00a9e1;
+  --accent: #67ccdb;
+}
+
+/* Base */
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: #333;
+}
+
+/* Typography */
+.serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Layout */
+.blue-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+}
+
+/* Navigation */
+.nav-link {
+  color: #555;
+  font-size: .82rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color .2s;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--secondary);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-size: .75rem;
+  padding: .875rem 1.5rem;
+  border-radius: 6px;
+  transition: all .3s;
+  display: inline-block;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--primary);
+  box-shadow: 0 8px 30px rgba(0, 106, 180, .3);
+  transform: translateY(-1px);
+}
+.btn-primary:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-outline {
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+  background: transparent;
+  padding: .8rem 2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-size: .75rem;
+  transition: all .3s;
+  display: inline-block;
+  text-align: center;
+}
+.btn-outline:hover {
+  background: rgba(0, 169, 225, .08);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Forms */
+.form-input {
+  width: 100%;
+  background: #f0f8ff;
+  border: 1px solid #d0e8f5;
+  color: #333;
+  padding: .875rem 1rem;
+  border-radius: 6px;
+  font-size: .875rem;
+  transition: border-color .2s;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(0, 169, 225, .1);
+}
+.form-input::placeholder {
+  color: #999;
+}
+.form-input.error {
+  border-color: #ef4444;
+}
+
+.form-label {
+  display: block;
+  color: var(--primary);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+  font-weight: 600;
+}
+
+.form-error {
+  color: #f87171;
+  font-size: .75rem;
+  margin-top: .3rem;
+}
+
+/* WhatsApp floating button */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #25d366;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, .4);
+  transition: transform .3s;
+}
+.whatsapp-float:hover {
+  transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.shake {
+  animation: shake .3s ease;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

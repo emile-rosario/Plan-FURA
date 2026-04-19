@@ -4,22 +4,29 @@ GET público; POST/PUT/DELETE solo admin.
 """
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.funeral import Plan
-from app.schemas.funeral import PlanCreate, PlanUpdate, PlanResponse
+from app.schemas.funeral import PlanCreate, PlanUpdate, PlanResponse, PaginatedPlanes
 from app.security import get_current_admin
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/planes", tags=["Planes Funerarios"])
 
 
-@router.get("", response_model=list[PlanResponse])
-def list_plans(db: Session = Depends(get_db)):
-    """Listar planes activos (público)."""
-    return db.query(Plan).filter(Plan.activo.is_(True)).order_by(Plan.precio_mensual).all()
+@router.get("", response_model=PaginatedPlanes)
+def list_plans(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    """Listar planes activos con paginación (público)."""
+    q = db.query(Plan).filter(Plan.activo.is_(True)).order_by(Plan.precio_mensual)
+    total = q.count()
+    items = q.offset(skip).limit(limit).all()
+    return {"total": total, "items": items, "skip": skip, "limit": limit}
 
 
 @router.get("/{plan_id}", response_model=PlanResponse)
@@ -71,10 +78,10 @@ def delete_plan(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Eliminar plan (solo admin)."""
+    """Soft delete de plan — desactiva en lugar de eliminar (solo admin)."""
     plan = db.query(Plan).filter(Plan.id == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan no encontrado.")
-    db.delete(plan)
+    plan.activo = False
     db.commit()
-    logger.info("Plan eliminado: ID %d", plan_id)
+    logger.info("Plan desactivado (soft delete): ID %d", plan_id)

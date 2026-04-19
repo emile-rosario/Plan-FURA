@@ -3,68 +3,125 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Mi cuenta — Funerarias Rancier. Gestiona tu plan y perfil."/>
+  <meta property="og:title" content="Mi Cuenta — Funerarias Rancier"/>
+  <meta property="og:description" content="Panel de cliente Funerarias Rancier."/>
   <title>Mi Cuenta — Funerarias Rancier</title>
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/main.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{--primary:#006ab4;--secondary:#00a9e1;--accent:#67ccdb}
-    body{font-family:'DM Sans',sans-serif;background:#f8fbff;color:#333}
-    .serif{font-family:'Playfair Display',serif}
-    .blue-line{height:2px;background:linear-gradient(90deg,transparent,var(--secondary),transparent)}
-    .sidebar-link{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:8px;color:#888;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;cursor:pointer}
-    .sidebar-link:hover,.sidebar-link.active{color:var(--primary);background:rgba(103,204,219,.1)}
-    .stat-card{padding:1.5rem;border:1px solid #e0f0f8;border-radius:10px;transition:border-color .2s;background:white}
-    .stat-card:hover{border-color:rgba(0,169,225,.4)}
-    .btn-primary{background:var(--secondary);color:#fff;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;padding:.75rem 1.5rem;border-radius:6px;transition:all .3s;cursor:pointer;display:inline-block;border:none}
-    .btn-primary:hover{background:var(--primary)}
-    .btn-danger{border:1px solid rgba(239,68,68,.3);color:#EF4444;background:transparent;padding:.75rem 1.5rem;border-radius:6px;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;cursor:pointer}
-    .btn-danger:hover{background:rgba(239,68,68,.06);border-color:#EF4444}
-    .badge{padding:.25rem .75rem;border-radius:6px;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
-    .badge-activo{background:rgba(34,197,94,.1);color:#16A34A;border:1px solid rgba(34,197,94,.2)}
-    .badge-cancelado{background:rgba(239,68,68,.06);color:#EF4444;border:1px solid rgba(239,68,68,.2)}
-    .section{display:none}.section.active{display:block}
+    body { background: #f8fbff; }
+    .sidebar-link { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; border-radius: 8px; color: #888; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; transition: all .2s; cursor: pointer; }
+    .sidebar-link:hover, .sidebar-link.active { color: var(--primary); background: rgba(103,204,219,.1); }
+    .stat-card { padding: 1.5rem; border: 1px solid #e0f0f8; border-radius: 10px; transition: border-color .2s; background: white; }
+    .stat-card:hover { border-color: rgba(0,169,225,.4); }
+    .badge { padding: .25rem .75rem; border-radius: 6px; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+    .badge-activo { background: rgba(34,197,94,.1); color: #16A34A; border: 1px solid rgba(34,197,94,.2); }
+    .badge-cancelado { background: rgba(239,68,68,.06); color: #EF4444; border: 1px solid rgba(239,68,68,.2); }
+    .btn-danger { border: 1px solid rgba(239,68,68,.3); color: #EF4444; background: transparent; padding: .75rem 1.5rem; border-radius: 6px; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; transition: all .2s; cursor: pointer; }
+    .btn-danger:hover { background: rgba(239,68,68,.06); border-color: #EF4444; }
+    .section { display: none; }
+    .section.active { display: block; }
+    /* Skeleton pulse */
+    .sk { background: #e5f0fa; border-radius: 6px; animation: sk-pulse 1.5s ease-in-out infinite; }
+    @keyframes sk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
   </style>
 </head>
 <body>
 
+<!-- OVERLAY (mobile sidebar) -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden" aria-hidden="true"></div>
+
 <div class="min-h-screen flex">
   <!-- SIDEBAR -->
-  <aside class="w-64 flex-shrink-0 border-r border-gray-200 flex flex-col bg-white">
-    <div class="p-6 border-b border-gray-200">
+  <aside id="sidebar"
+         class="fixed inset-y-0 left-0 z-50 w-64 flex-shrink-0 border-r border-gray-200 flex flex-col bg-white
+                -translate-x-full transition-transform duration-300
+                lg:relative lg:translate-x-0 lg:flex lg:z-auto">
+    <div class="p-6 border-b border-gray-200 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2.5">
         <div class="w-8 h-8 flex items-center justify-center rounded-lg" style="background:var(--primary)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>
         <span class="serif font-semibold text-xs uppercase" style="color:var(--primary)">Rancier</span>
       </a>
+      <!-- Cerrar sidebar en mobile -->
+      <button id="btn-close-sidebar" class="lg:hidden p-1 text-gray-400 hover:text-primary" aria-label="Cerrar menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
     <div class="p-5 border-b border-gray-200">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:var(--secondary)" id="avatar">?</div>
-        <div><p class="text-sm font-semibold" style="color:var(--primary)" id="user-nombre">Cargando...</p><p class="text-gray-400 text-xs" id="user-rol">Cliente</p></div>
+        <!-- Skeleton avatar mientras carga -->
+        <div id="avatar-wrap">
+          <div class="sk w-10 h-10 rounded-full"></div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div id="sk-nombre" class="sk h-3 w-24 mb-1.5 rounded"></div>
+          <div id="sk-rol-badge" class="sk h-2.5 w-14 rounded"></div>
+          <p class="text-sm font-semibold hidden" style="color:var(--primary)" id="user-nombre"></p>
+          <p class="text-gray-400 text-xs hidden" id="user-rol"></p>
+        </div>
       </div>
     </div>
-    <nav class="flex-1 p-4 space-y-1">
-      <div class="sidebar-link active" onclick="showSection('overview')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Resumen</div>
-      <div class="sidebar-link" onclick="showSection('plan')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi Plan</div>
-      <div class="sidebar-link" onclick="showSection('perfil')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mi Perfil</div>
-      <div id="admin-link" class="hidden sidebar-link" onclick="showSection('admin')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Administración</div>
+    <nav class="flex-1 p-4 space-y-1" id="sidebar-nav">
+      <div class="sidebar-link active" data-section="overview">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Resumen
+      </div>
+      <div class="sidebar-link" data-section="plan">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi Plan
+      </div>
+      <div class="sidebar-link" data-section="perfil">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mi Perfil
+      </div>
+      <div id="admin-link" class="hidden sidebar-link" data-section="admin">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Administración
+      </div>
     </nav>
     <div class="p-4 border-t border-gray-200">
-      <button onclick="Auth.logout()" class="sidebar-link w-full text-left" style="color:#EF4444"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Cerrar Sesión</button>
+      <button id="btn-logout" class="sidebar-link w-full text-left" style="color:#EF4444">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Cerrar Sesión
+      </button>
     </div>
   </aside>
 
   <!-- MAIN -->
   <main class="flex-1 overflow-auto">
-    <div class="p-8 max-w-4xl">
+    <!-- Mobile header -->
+    <div class="lg:hidden flex items-center gap-3 p-4 border-b border-gray-200 bg-white sticky top-0 z-30">
+      <button id="btn-open-sidebar" aria-label="Abrir menú" class="p-2 text-gray-500 hover:text-primary rounded-lg">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="serif font-semibold text-sm" style="color:var(--primary)">Funerarias <span style="color:var(--secondary)">Rancier</span></span>
+    </div>
 
+    <div class="p-6 lg:p-8 max-w-4xl">
+
+      <!-- OVERVIEW -->
       <div id="section-overview" class="section active">
-        <h1 class="serif text-3xl font-bold mb-1" style="color:var(--primary)">Bienvenido, <span id="greeting-name" style="color:var(--secondary)">—</span></h1>
+        <h1 class="serif text-3xl font-bold mb-1" style="color:var(--primary)">Bienvenido, <span id="greeting-name" style="color:var(--secondary)">
+          <span class="sk inline-block w-24 h-7 rounded align-middle"></span>
+        </span></h1>
         <p class="text-gray-500 text-sm mb-8">Panel de gestión de tu cuenta funeraria.</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div class="stat-card"><p class="text-gray-400 text-xs uppercase tracking-wider mb-2">Estado de Plan</p><div id="stat-plan"><div class="w-4 h-4 border border-blue-300 border-t-blue-500 rounded-full animate-spin"></div></div></div>
-          <div class="stat-card"><p class="text-gray-400 text-xs uppercase tracking-wider mb-2">Tipo de Cuenta</p><p class="text-lg font-semibold" style="color:var(--primary)" id="stat-rol">—</p></div>
-          <div class="stat-card"><p class="text-gray-400 text-xs uppercase tracking-wider mb-2">Acceso</p><p class="text-emerald-600 text-lg font-semibold">Activo 24/7</p></div>
+          <div class="stat-card">
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-2">Estado de Plan</p>
+            <div id="stat-plan">
+              <div class="sk h-5 w-20 rounded mb-1.5"></div>
+              <div class="sk h-4 w-28 rounded"></div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-2">Tipo de Cuenta</p>
+            <div id="stat-rol">
+              <div class="sk h-5 w-20 rounded"></div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <p class="text-gray-400 text-xs uppercase tracking-wider mb-2">Acceso</p>
+            <p class="text-emerald-600 text-lg font-semibold">Activo 24/7</p>
+          </div>
         </div>
         <div class="border border-gray-200 rounded-xl p-6 bg-white">
           <h3 class="font-semibold mb-4 text-sm uppercase tracking-wider" style="color:var(--primary)">Acciones rápidas</h3>
@@ -76,24 +133,54 @@
         </div>
       </div>
 
+      <!-- MI PLAN -->
       <div id="section-plan" class="section">
         <h2 class="serif text-3xl font-bold mb-1" style="color:var(--primary)">Mi Plan Funerario</h2>
         <p class="text-gray-500 text-sm mb-8">Gestiona tu suscripción activa.</p>
-        <div id="plan-content"><div class="flex justify-center py-16"><div class="w-10 h-10 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div></div></div>
+        <div id="plan-content">
+          <!-- Skeleton mientras carga -->
+          <div class="border rounded-xl p-8" style="border-color:rgba(0,169,225,.2)">
+            <div class="sk h-4 w-24 rounded mb-3"></div>
+            <div class="sk h-7 w-48 rounded mb-4"></div>
+            <div class="space-y-2 mb-6">
+              <div class="sk h-3 w-full rounded"></div>
+              <div class="sk h-3 w-3/4 rounded"></div>
+              <div class="sk h-3 w-2/3 rounded"></div>
+            </div>
+            <div class="sk h-10 w-32 rounded"></div>
+          </div>
+        </div>
       </div>
 
+      <!-- MI PERFIL -->
       <div id="section-perfil" class="section">
         <h2 class="serif text-3xl font-bold mb-1" style="color:var(--primary)">Mi Perfil</h2>
         <p class="text-gray-500 text-sm mb-8">Información de tu cuenta.</p>
-        <div id="perfil-content" class="border border-gray-200 rounded-xl p-8 bg-white"><div class="flex justify-center py-8"><div class="w-8 h-8 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div></div></div>
+        <div id="perfil-content" class="border border-gray-200 rounded-xl p-8 bg-white">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div><div class="sk h-2.5 w-16 rounded mb-2"></div><div class="sk h-4 w-36 rounded"></div></div>
+            <div><div class="sk h-2.5 w-16 rounded mb-2"></div><div class="sk h-4 w-48 rounded"></div></div>
+            <div><div class="sk h-2.5 w-16 rounded mb-2"></div><div class="sk h-4 w-32 rounded"></div></div>
+            <div><div class="sk h-2.5 w-16 rounded mb-2"></div><div class="sk h-4 w-20 rounded"></div></div>
+          </div>
+        </div>
       </div>
 
+      <!-- ADMIN -->
       <div id="section-admin" class="section">
         <h2 class="serif text-3xl font-bold mb-1" style="color:var(--primary)">Administración</h2>
         <p class="text-gray-500 text-sm mb-8">Panel de control del sistema.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="border border-gray-200 rounded-xl p-6 bg-white"><h3 class="font-semibold mb-2" style="color:var(--primary)">Ataúdes</h3><p class="text-gray-500 text-sm mb-4">Gestionar el catálogo.</p><button onclick="cargarAtaudesAdmin()" class="btn-primary">Ver Ataúdes</button></div>
-          <div class="border border-gray-200 rounded-xl p-6 bg-white"><h3 class="font-semibold mb-2" style="color:var(--primary)">Mensajes</h3><p class="text-gray-500 text-sm mb-4">Mensajes del formulario.</p><button onclick="cargarMensajes()" class="btn-primary">Ver Mensajes</button></div>
+          <div class="border border-gray-200 rounded-xl p-6 bg-white">
+            <h3 class="font-semibold mb-2" style="color:var(--primary)">Ataúdes</h3>
+            <p class="text-gray-500 text-sm mb-4">Gestionar el catálogo.</p>
+            <button id="btn-admin-ataudes" class="btn-primary">Ver Ataúdes</button>
+          </div>
+          <div class="border border-gray-200 rounded-xl p-6 bg-white">
+            <h3 class="font-semibold mb-2" style="color:var(--primary)">Mensajes</h3>
+            <p class="text-gray-500 text-sm mb-4">Mensajes del formulario.</p>
+            <button id="btn-admin-mensajes" class="btn-primary">Ver Mensajes</button>
+          </div>
         </div>
         <div id="admin-data" class="mt-8"></div>
       </div>
@@ -102,55 +189,200 @@
   </main>
 </div>
 
+<!-- MODAL — Cancelar Plan -->
+<div id="modal-cancelar" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" style="background:rgba(0,0,0,.5);backdrop-filter:blur(6px)" role="dialog" aria-modal="true" aria-labelledby="modal-cancelar-title">
+  <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-8">
+    <h3 id="modal-cancelar-title" class="serif text-xl font-semibold mb-3" style="color:var(--primary)">¿Cancelar tu plan?</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-2">Al cancelar perderás:</p>
+    <ul class="text-gray-500 text-sm space-y-1 mb-6 pl-4">
+      <li>• La cobertura funeraria de tu grupo familiar</li>
+      <li>• Los beneficios acumulados de tu plan actual</li>
+      <li>• El precio congelado (si aplica)</li>
+    </ul>
+    <p class="text-gray-400 text-xs mb-6">Esta acción no se puede deshacer. Podrás contratar un nuevo plan en cualquier momento.</p>
+    <div class="flex gap-3">
+      <button id="btn-modal-cerrar" class="flex-1 py-3 px-4 rounded-lg border border-gray-200 text-gray-500 text-sm font-medium hover:bg-gray-50 transition-colors">
+        Volver
+      </button>
+      <button id="btn-modal-confirmar" class="flex-1 py-3 px-4 rounded-lg text-white text-sm font-semibold transition-colors" style="background:#EF4444">
+        Sí, cancelar plan
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="assets/js/api.js"></script>
 <script>
-  if(!Auth.isLoggedIn()) window.location.href='login.html';
-  const user=Auth.getUser();
-  async function init(){
-    const{ok,data}=await API.me();const profile=ok?data:user;
-    document.getElementById('user-nombre').textContent=profile.nombre;
-    document.getElementById('user-rol').textContent=profile.rol==='admin'?'Administrador':'Cliente';
-    document.getElementById('greeting-name').textContent=profile.nombre.split(' ')[0];
-    document.getElementById('stat-rol').textContent=profile.rol==='admin'?'Administrador':'Cliente';
-    document.getElementById('avatar').textContent=profile.nombre.slice(0,2).toUpperCase();
-    if(profile.rol==='admin')document.getElementById('admin-link').classList.remove('hidden');
-    const{ok:planOk,data:planData}=await API.getMiPlan();
-    if(planOk&&planData){document.getElementById('stat-plan').innerHTML=`<span class="badge badge-activo">${planData.estado}</span><p class="text-sm mt-1 font-medium" style="color:var(--primary)">${planData.plan?.nombre||'Plan activo'}</p>`;}
-    else{document.getElementById('stat-plan').innerHTML=`<span class="text-gray-400 text-sm">Sin plan activo</span>`;}
-    renderPerfil(profile);await renderPlan();
+  if (!Auth.isLoggedIn()) window.location.href = 'login.html';
+
+  const user = Auth.getUser();
+
+  // ── Sidebar mobile ─────────────────────────────────────────
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  function openSidebar() {
+    sidebar.classList.remove('-translate-x-full');
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
   }
-  function renderPerfil(p){
-    document.getElementById('perfil-content').innerHTML=`
+  function closeSidebar() {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('btn-open-sidebar').addEventListener('click', openSidebar);
+  document.getElementById('btn-close-sidebar').addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // ── Logout ─────────────────────────────────────────────────
+  document.getElementById('btn-logout').addEventListener('click', Auth.logout);
+
+  // ── Sidebar navigation ─────────────────────────────────────
+  function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.getElementById(`section-${name}`)?.classList.add('active');
+    document.querySelector(`[data-section="${name}"]`)?.classList.add('active');
+    // Cerrar sidebar en mobile al navegar
+    if (window.innerWidth < 1024) closeSidebar();
+  }
+
+  document.querySelectorAll('[data-section]').forEach(link => {
+    link.addEventListener('click', () => showSection(link.dataset.section));
+  });
+
+  // ── Admin buttons ──────────────────────────────────────────
+  document.getElementById('btn-admin-ataudes').addEventListener('click', cargarAtaudesAdmin);
+  document.getElementById('btn-admin-mensajes').addEventListener('click', cargarMensajes);
+
+  // ── Cancel plan modal ──────────────────────────────────────
+  const modalCancelar = document.getElementById('modal-cancelar');
+  document.getElementById('btn-modal-cerrar').addEventListener('click', () => modalCancelar.classList.add('hidden'));
+  modalCancelar.addEventListener('click', e => { if (e.target === modalCancelar) modalCancelar.classList.add('hidden'); });
+
+  document.getElementById('btn-modal-confirmar').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-modal-confirmar');
+    btn.disabled = true;
+    btn.textContent = 'Cancelando...';
+    const { ok, data } = await API.cancelarPlan();
+    btn.disabled = false;
+    btn.textContent = 'Sí, cancelar plan';
+    modalCancelar.classList.add('hidden');
+    if (ok) {
+      UI.toast('Plan cancelado correctamente.', 'success');
+      await renderPlan();
+      document.getElementById('stat-plan').innerHTML = `<span class="text-gray-400 text-sm">Sin plan activo</span>`;
+    } else {
+      UI.toast(data?.detail || 'Error al cancelar.', 'error');
+    }
+  });
+
+  // ── Init ───────────────────────────────────────────────────
+  async function init() {
+    const { ok, data } = await API.me();
+    const profile = ok ? data : user;
+
+    // Reemplazar skeletons con datos reales en sidebar
+    document.getElementById('sk-nombre').remove();
+    document.getElementById('sk-rol-badge').remove();
+
+    const avatarWrap = document.getElementById('avatar-wrap');
+    avatarWrap.innerHTML = `<div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:var(--secondary)">${profile.nombre.slice(0, 2).toUpperCase()}</div>`;
+
+    document.getElementById('user-nombre').textContent = profile.nombre;
+    document.getElementById('user-nombre').classList.remove('hidden');
+    document.getElementById('user-rol').textContent = profile.rol === 'admin' ? 'Administrador' : 'Cliente';
+    document.getElementById('user-rol').classList.remove('hidden');
+
+    // Greeting skeleton → nombre
+    document.getElementById('greeting-name').innerHTML = profile.nombre.split(' ')[0];
+
+    // Stat rol skeleton → valor
+    document.getElementById('stat-rol').innerHTML = `<p class="text-lg font-semibold" style="color:var(--primary)">${profile.rol === 'admin' ? 'Administrador' : 'Cliente'}</p>`;
+
+    if (profile.rol === 'admin') document.getElementById('admin-link').classList.remove('hidden');
+
+    // Cargar plan activo
+    const { ok: planOk, data: planData } = await API.getMiPlan();
+    if (planOk && planData) {
+      document.getElementById('stat-plan').innerHTML = `<span class="badge badge-activo">${planData.estado}</span><p class="text-sm mt-1 font-medium" style="color:var(--primary)">${planData.plan?.nombre || 'Plan activo'}</p>`;
+    } else {
+      document.getElementById('stat-plan').innerHTML = `<span class="text-gray-400 text-sm">Sin plan activo</span>`;
+    }
+
+    renderPerfil(profile);
+    await renderPlan();
+  }
+
+  function renderPerfil(p) {
+    document.getElementById('perfil-content').innerHTML = `
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div><p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Nombre</p><p class="font-medium" style="color:var(--primary)">${p.nombre}</p></div>
         <div><p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Correo</p><p class="font-medium" style="color:var(--primary)">${p.email}</p></div>
-        <div><p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Teléfono</p><p class="font-medium" style="color:var(--primary)">${p.telefono||'—'}</p></div>
+        <div><p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Teléfono</p><p class="font-medium" style="color:var(--primary)">${p.telefono || '—'}</p></div>
         <div><p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Rol</p><p class="font-medium capitalize" style="color:var(--primary)">${p.rol}</p></div>
       </div>
       <div class="blue-line mt-6 mb-5"></div>
       <p class="text-gray-400 text-xs">Para actualizar tu información, contacta a nuestro equipo.</p>`;
   }
-  async function renderPlan(){
-    const container=document.getElementById('plan-content');const{ok,data}=await API.getMiPlan();
-    if(ok&&data){let beneficios=[];try{beneficios=JSON.parse(data.plan?.beneficios||'[]');}catch{}
-      container.innerHTML=`
+
+  async function renderPlan() {
+    const container = document.getElementById('plan-content');
+    const { ok, data } = await API.getMiPlan();
+    if (ok && data) {
+      const beneficios = Array.isArray(data.plan?.beneficios) ? data.plan.beneficios : [];
+      container.innerHTML = `
         <div class="border rounded-xl p-8 mb-6" style="background:rgba(103,204,219,.04);border-color:rgba(0,169,225,.3)">
           <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
-            <div><p class="text-xs uppercase tracking-widest mb-1 font-semibold" style="color:var(--secondary)">Plan Activo</p><h3 class="serif text-2xl font-semibold" style="color:var(--primary)">${data.plan?.nombre||'Plan'}</h3><p class="text-gray-400 text-sm mt-1">Desde: ${Fmt.fecha(data.fecha_inicio)}</p></div>
+            <div>
+              <p class="text-xs uppercase tracking-widest mb-1 font-semibold" style="color:var(--secondary)">Plan Activo</p>
+              <h3 class="serif text-2xl font-semibold" style="color:var(--primary)">${data.plan?.nombre || 'Plan'}</h3>
+              <p class="text-gray-400 text-sm mt-1">Desde: ${Fmt.fecha(data.fecha_inicio)}</p>
+            </div>
             <span class="badge badge-activo">${data.estado}</span>
           </div>
-          ${beneficios.length?`<h4 class="text-xs uppercase tracking-wider mb-3 font-semibold" style="color:var(--primary)">Beneficios incluidos</h4><ul class="grid grid-cols-1 md:grid-cols-2 gap-2">${beneficios.map(b=>`<li class="flex items-center gap-2 text-gray-600 text-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00a9e1" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${b}</li>`).join('')}</ul>`:''}
-          <div class="mt-6"><button onclick="cancelarPlan()" class="btn-danger">Cancelar Plan</button></div>
-        </div>`;}
-    else{container.innerHTML=`
+          ${beneficios.length ? `
+            <h4 class="text-xs uppercase tracking-wider mb-3 font-semibold" style="color:var(--primary)">Beneficios incluidos</h4>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              ${beneficios.map(b => `<li class="flex items-center gap-2 text-gray-600 text-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00a9e1" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${b}</li>`).join('')}
+            </ul>` : ''}
+          <div class="mt-6">
+            <button id="btn-cancelar-plan" class="btn-danger">Cancelar Plan</button>
+          </div>
+        </div>`;
+      document.getElementById('btn-cancelar-plan').addEventListener('click', () => {
+        modalCancelar.classList.remove('hidden');
+      });
+    } else {
+      container.innerHTML = `
         <div class="text-center py-16 border border-gray-200 rounded-xl bg-white">
           <p class="serif text-2xl font-bold mb-2" style="color:var(--primary)">Sin plan activo</p>
           <p class="text-gray-500 text-sm mb-6">Contrata un plan para obtener cobertura completa.</p>
           <a href="planes-funerarios.html" class="btn-primary">Ver Planes Disponibles</a>
-        </div>`;}
+        </div>`;
+    }
   }
-  async function cancelarPlan(){if(!confirm('¿Estás seguro de cancelar tu plan?'))return;const{ok,data}=await API.cancelarPlan();if(ok){UI.toast('Plan cancelado.','success');await renderPlan();document.getElementById('stat-plan').innerHTML=`<span class="text-gray-400 text-sm">Sin plan activo</span>`;}else{UI.toast(data?.detail||'Error al cancelar.','error');}}
-  function showSection(name){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));document.getElementById(`section-${name}`).classList.add('active');event.currentTarget?.classList.add('active');}
+
+  async function cargarAtaudesAdmin() {
+    const container = document.getElementById('admin-data');
+    container.innerHTML = '<div class="flex justify-center py-8"><div class="w-8 h-8 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div></div>';
+    const { ok, data } = await API.getAtaudes();
+    const items = data?.items || data || [];
+    if (!ok || !items.length) { container.innerHTML = '<p class="text-gray-400 text-sm">No hay ataúdes.</p>'; return; }
+    container.innerHTML = `<div class="overflow-x-auto rounded-xl border border-gray-200"><table class="w-full text-sm"><thead class="bg-blue-50/50"><tr><th class="text-left p-4 text-gray-400 text-xs uppercase">Nombre</th><th class="text-left p-4 text-gray-400 text-xs uppercase">Material</th><th class="text-right p-4 text-gray-400 text-xs uppercase">Precio</th><th class="text-center p-4 text-gray-400 text-xs uppercase">Disponible</th></tr></thead><tbody>${items.map(a => `<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-4 font-medium" style="color:var(--primary)">${a.nombre}</td><td class="p-4 text-gray-500">${a.material}</td><td class="p-4 text-right font-semibold" style="color:var(--primary)">${Fmt.precio(a.precio)}</td><td class="p-4 text-center">${a.disponible ? '✓' : '—'}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+
+  async function cargarMensajes() {
+    const container = document.getElementById('admin-data');
+    container.innerHTML = '<div class="flex justify-center py-8"><div class="w-8 h-8 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div></div>';
+    const { ok, data } = await API.contacto ? await apiCall('/contacto') : { ok: false };
+    const items = data?.items || data || [];
+    if (!ok || !items.length) { container.innerHTML = '<p class="text-gray-400 text-sm">No hay mensajes.</p>'; return; }
+    container.innerHTML = `<div class="space-y-3">${items.map(m => `<div class="border border-gray-200 rounded-xl p-5 bg-white"><div class="flex justify-between mb-1"><span class="font-medium text-sm" style="color:var(--primary)">${m.nombre}</span><span class="text-gray-400 text-xs">${Fmt.fecha(m.fecha)}</span></div><p class="text-gray-500 text-xs">${m.email}</p><p class="text-gray-600 text-sm mt-2">${m.mensaje}</p></div>`).join('')}</div>`;
+  }
+
   init();
 </script>
 </body>

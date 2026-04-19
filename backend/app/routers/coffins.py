@@ -10,23 +10,28 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.funeral import Coffin
-from app.schemas.funeral import CoffinCreate, CoffinUpdate, CoffinResponse
+from app.schemas.funeral import CoffinCreate, CoffinUpdate, CoffinResponse, PaginatedCoffins
 from app.security import get_current_admin
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/ataudes", tags=["Ataúdes"])
 
 
-@router.get("", response_model=list[CoffinResponse])
+@router.get("", response_model=PaginatedCoffins)
 def list_coffins(
     disponible: Optional[bool] = Query(None, description="Filtrar por disponibilidad"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    """Listar ataúdes (público). Filtra por disponibilidad si se especifica."""
+    """Listar ataúdes con paginación (público)."""
     q = db.query(Coffin)
     if disponible is not None:
         q = q.filter(Coffin.disponible == disponible)
-    return q.order_by(Coffin.precio).all()
+    q = q.order_by(Coffin.precio)
+    total = q.count()
+    items = q.offset(skip).limit(limit).all()
+    return {"total": total, "items": items, "skip": skip, "limit": limit}
 
 
 @router.get("/{coffin_id}", response_model=CoffinResponse)
@@ -78,10 +83,10 @@ def delete_coffin(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Eliminar ataúd (solo admin)."""
+    """Soft delete de ataúd — marca como no disponible (solo admin)."""
     coffin = db.query(Coffin).filter(Coffin.id == coffin_id).first()
     if not coffin:
         raise HTTPException(status_code=404, detail="Ataúd no encontrado.")
-    db.delete(coffin)
+    coffin.disponible = False
     db.commit()
-    logger.info("Ataúd eliminado: ID %d", coffin_id)
+    logger.info("Ataúd desactivado (soft delete): ID %d", coffin_id)
