@@ -171,6 +171,15 @@
                 <textarea id="c-mensaje" class="form-input" rows="5" placeholder="Escriba su mensaje aquí..." required minlength="10" style="resize:vertical"></textarea>
                 <p class="form-error hidden" id="err-mensaje"></p>
               </div>
+              <div class="md:col-span-2">
+                <label class="form-label">Documento adjunto <span class="text-gray-400 font-normal normal-case">(opcional — solo PDF, máx. 10 MB)</span></label>
+                <label id="drop-zone" class="flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-blue-200 rounded-lg cursor-pointer hover:border-blue-400 transition-colors bg-blue-50/30">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00a9e1" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                  <span id="drop-label" class="text-sm text-gray-500">Haz clic para seleccionar o arrastra un PDF aquí</span>
+                  <input id="c-adjunto" type="file" accept="application/pdf" class="hidden" onchange="onFileSelected(this)"/>
+                </label>
+                <p class="form-error hidden" id="err-adjunto"></p>
+              </div>
             </div>
 
             <div class="flex items-center justify-between mt-6">
@@ -201,28 +210,68 @@
 <script>
   const params = new URLSearchParams(location.search);
   if (params.get('ataud')) {
-    document.getElementById('c-asunto').value = '';
     const opt = document.createElement('option');
     opt.value = opt.textContent = `Información sobre: ${params.get('ataud')}`;
     document.getElementById('c-asunto').appendChild(opt);
     document.getElementById('c-asunto').value = opt.value;
   }
+
+  function onFileSelected(input) {
+    const file = input.files[0];
+    document.getElementById('drop-label').textContent = file ? `📎 ${file.name}` : 'Haz clic para seleccionar o arrastra un PDF aquí';
+  }
+
   function showErr(id, msg) { const inp = document.getElementById(id.replace('err-','c-')); if(inp) inp.classList.add('error'); const el = document.getElementById(id); if(el){el.textContent=msg;el.classList.remove('hidden');} }
   function clearErrs() { document.querySelectorAll('.form-error').forEach(e=>{e.classList.add('hidden');e.textContent='';}); document.querySelectorAll('.form-input.error').forEach(e=>e.classList.remove('error')); }
   function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
   async function handleContacto(e) {
     e.preventDefault(); clearErrs();
-    const nombre=document.getElementById('c-nombre').value.trim(), email=document.getElementById('c-email').value.trim(), telefono=document.getElementById('c-telefono').value.trim(), asunto=document.getElementById('c-asunto').value, mensaje=document.getElementById('c-mensaje').value.trim();
-    let valid=true;
-    if(nombre.length<2){showErr('err-nombre','El nombre debe tener al menos 2 caracteres.');valid=false;}
-    if(!validateEmail(email)){showErr('err-email','Ingresa un correo válido.');valid=false;}
-    if(mensaje.length<10){showErr('err-mensaje','El mensaje debe tener al menos 10 caracteres.');valid=false;}
+    const nombre  = document.getElementById('c-nombre').value.trim();
+    const email   = document.getElementById('c-email').value.trim();
+    const telefono= document.getElementById('c-telefono').value.trim();
+    const asunto  = document.getElementById('c-asunto').value;
+    const mensaje = document.getElementById('c-mensaje').value.trim();
+    const fileInput = document.getElementById('c-adjunto');
+
+    let valid = true;
+    if(nombre.length < 2){ showErr('err-nombre','El nombre debe tener al menos 2 caracteres.'); valid=false; }
+    if(!validateEmail(email)){ showErr('err-email','Ingresa un correo válido.'); valid=false; }
+    if(mensaje.length < 10){ showErr('err-mensaje','El mensaje debe tener al menos 10 caracteres.'); valid=false; }
     if(!valid) return;
-    const btn=document.getElementById('btn-enviar'); UI.loading(btn,true,'Enviando...');
-    const{ok,data}=await API.contacto({nombre,email,telefono:telefono||null,asunto:asunto||null,mensaje});
-    UI.loading(btn,false);
-    if(ok){document.getElementById('contact-form').classList.add('hidden');document.getElementById('success-msg').classList.remove('hidden');}
-    else{const detail=data?.detail;UI.toast(Array.isArray(detail)?detail.map(d=>d.msg).join('. '):(detail||'Error al enviar el mensaje.'),'error');}
+
+    const btn = document.getElementById('btn-enviar');
+    UI.loading(btn, true, 'Enviando...');
+
+    // 1. Subir PDF si hay uno adjunto
+    let archivoUrl = null;
+    if(fileInput.files[0]) {
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      try {
+        const res = await fetch(`${API_URL}/uploads/documento`, { method: 'POST', body: formData });
+        if(res.ok) { const d = await res.json(); archivoUrl = d.url; }
+        else { UI.toast('Error al subir el archivo adjunto.', 'error'); UI.loading(btn, false); return; }
+      } catch { UI.toast('Error de conexión al subir el archivo.', 'error'); UI.loading(btn, false); return; }
+    }
+
+    // 2. Enviar formulario
+    const {ok, data} = await API.contacto({
+      nombre, email,
+      telefono: telefono || null,
+      asunto: asunto || null,
+      mensaje,
+      archivo_adjunto: archivoUrl,
+    });
+    UI.loading(btn, false);
+
+    if(ok) {
+      document.getElementById('contact-form').classList.add('hidden');
+      document.getElementById('success-msg').classList.remove('hidden');
+    } else {
+      const detail = data?.detail;
+      UI.toast(Array.isArray(detail) ? detail.map(d=>d.msg).join('. ') : (detail||'Error al enviar el mensaje.'), 'error');
+    }
   }
 </script>
 </body>
