@@ -1,7 +1,3 @@
-"""
-Router de restablecimiento de contraseña.
-Flujo: solicitar token → validar → actualizar contraseña.
-"""
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -32,10 +28,7 @@ class MessageResponse(BaseModel):
 
 @router.post("/forgot-password", response_model=MessageResponse)
 def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    """
-    Solicitar restablecimiento de contraseña.
-    Siempre devuelve 200 para no revelar si el email existe.
-    """
+    # siempre respondemos lo mismo para no revelar si el email existe
     _GENERIC_MSG = "Si ese correo está registrado, recibirás un enlace para restablecer tu contraseña."
 
     user = db.query(User).filter(
@@ -46,7 +39,7 @@ def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
     if not user:
         return {"message": _GENERIC_MSG}
 
-    # Invalidar tokens previos no usados para este usuario
+    # anulamos tokens viejos antes de crear uno nuevo
     db.query(PasswordResetToken).filter(
         PasswordResetToken.user_id == user.id,
         PasswordResetToken.used.is_(False),
@@ -69,7 +62,6 @@ def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
 
 @router.post("/reset-password", response_model=MessageResponse)
 def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
-    """Restablecer contraseña con un token válido."""
     reset_token = db.query(PasswordResetToken).filter(
         PasswordResetToken.token == data.token,
     ).first()

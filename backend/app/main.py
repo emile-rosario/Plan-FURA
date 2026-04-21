@@ -1,7 +1,3 @@
-"""
-Backend Funeraria Rancier — Punto de entrada principal.
-FastAPI + PostgreSQL + JWT + bcrypt + slowapi
-"""
 import logging
 import os
 from contextlib import asynccontextmanager
@@ -20,7 +16,6 @@ from app.database import engine, Base, SessionLocal, check_db_connection
 from app.limiter import limiter
 from app.routers import auth, coffins, plans, uploads, contacto, suscripciones, password_reset
 
-# ── Logging ────────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
@@ -29,10 +24,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# ── Lifespan ───────────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Inicialización y limpieza de la aplicación."""
     logger.info("Iniciando Funeraria Rancier Backend...")
 
     if not check_db_connection():
@@ -45,12 +38,11 @@ async def lifespan(app: FastAPI):
 
     os.makedirs("uploads", exist_ok=True)
 
-    logger.info("✅ Backend iniciado correctamente en modo: %s", settings.APP_ENV)
+    logger.info("✅ Backend listo. Entorno: %s", settings.APP_ENV)
     yield
     logger.info("Backend detenido.")
 
 
-# ── App ────────────────────────────────────────────────────────
 app = FastAPI(
     title="Funeraria Rancier — API",
     description="API REST para gestión de servicios funerarios, planes y ataúdes.",
@@ -60,13 +52,9 @@ app = FastAPI(
     redoc_url="/redoc" if settings.APP_ENV == "development" else None,
 )
 
-
-# ── Rate Limiter ───────────────────────────────────────────────
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-
-# ── Middlewares ────────────────────────────────────────────────
 app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=settings.allowed_hosts_list,
@@ -81,7 +69,6 @@ app.add_middleware(
 )
 
 
-# ── Manejador global de errores ────────────────────────────────
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     logger.error("Error no manejado en %s: %s", request.url.path, str(exc))
@@ -91,11 +78,8 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# ── Static files ───────────────────────────────────────────────
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-
-# ── Routers ────────────────────────────────────────────────────
 app.include_router(auth.router)
 app.include_router(coffins.router)
 app.include_router(plans.router)
@@ -105,7 +89,6 @@ app.include_router(suscripciones.router)
 app.include_router(password_reset.router)
 
 
-# ── Health Check ───────────────────────────────────────────────
 @app.get("/", tags=["Sistema"])
 def root():
     return {
@@ -125,9 +108,8 @@ def health():
     }
 
 
-# ── Seed Data ──────────────────────────────────────────────────
 def seed_data():
-    """Insertar datos de ejemplo si las tablas están vacías."""
+    """Carga datos iniciales si las tablas están vacías."""
     from app.models.funeral import Plan, Coffin
     from app.security import hash_password
     from app.models.user import User
@@ -214,7 +196,7 @@ def seed_data():
                 rol="admin",
             )
             db.add(admin)
-            logger.info("Usuario admin creado: admin@funerariarancier.com")
+            logger.info("Usuario admin creado.")
 
         db.commit()
     except Exception as e:

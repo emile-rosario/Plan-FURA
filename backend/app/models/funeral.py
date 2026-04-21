@@ -1,6 +1,3 @@
-"""
-Modelos de base de datos — PostgreSQL optimizado con índices y relaciones.
-"""
 from sqlalchemy import (
     Column, Integer, String, Numeric, Text, ForeignKey,
     DateTime, Boolean, Index, CheckConstraint, Enum as SAEnum, JSON
@@ -27,7 +24,7 @@ class Plan(Base):
     precio_mensual = Column(Numeric(12, 2), nullable=False)
     activo = Column(Boolean, default=True, nullable=False)
     destacado = Column(Boolean, default=False, nullable=False)
-    beneficios = Column(JSON, default=list)  # Lista nativa — sin json.dumps/loads
+    beneficios = Column(JSON, default=list)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     suscripciones = relationship("Suscripcion", back_populates="plan")

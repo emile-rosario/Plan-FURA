@@ -1,6 +1,3 @@
-"""
-Schemas de usuario — Pydantic v2
-"""
 from pydantic import BaseModel, EmailStr, Field, field_validator
 import re
 

@@ -1,15 +1,10 @@
-/**
- * Funeraria Rancier — API Client & UI Utilities
- * Módulo centralizado de comunicación con el backend.
- */
-
-// Detecta entorno: localhost usa dev backend, cualquier otro usa APP_CONFIG.apiUrl
+// en local apunta al backend de desarrollo, en producción usa APP_CONFIG
 const _isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
 const API_URL = _isLocal
   ? "http://127.0.0.1:8000"
   : (window.APP_CONFIG?.apiUrl || `${location.protocol}//${location.hostname}`);
 
-// ── Sesión ─────────────────────────────────────────────────────
+// sesión del usuario
 const Auth = {
   getToken: () => localStorage.getItem("fr_token"),
   getUser: () => {
@@ -42,7 +37,6 @@ const Auth = {
   },
 };
 
-// ── HTTP Client ────────────────────────────────────────────────
 async function apiCall(endpoint, options = {}) {
   const token = Auth.getToken();
   const headers = { "Content-Type": "application/json", ...options.headers };
@@ -62,7 +56,6 @@ async function apiCall(endpoint, options = {}) {
   }
 }
 
-// ── Endpoints ──────────────────────────────────────────────────
 const API = {
   register: (data) => apiCall("/register", { method: "POST", body: JSON.stringify(data) }),
   login: (data) => apiCall("/login", { method: "POST", body: JSON.stringify(data) }),
@@ -70,7 +63,6 @@ const API = {
   forgotPassword: (email) => apiCall("/forgot-password", { method: "POST", body: JSON.stringify({ email }) }),
   resetPassword: (token, new_password) => apiCall("/reset-password", { method: "POST", body: JSON.stringify({ token, new_password }) }),
 
-  // Los endpoints paginados devuelven { total, items, skip, limit }
   getAtaudes: (disponible) => {
     const q = disponible !== undefined ? `?disponible=${disponible}` : "";
     return apiCall(`/ataudes${q}`);
@@ -89,19 +81,16 @@ const API = {
 
   contacto: (d) => apiCall("/contacto", { method: "POST", body: JSON.stringify(d) }),
 
-  // Auth extra
   post: (endpoint, data) => apiCall(endpoint, { method: "POST", body: JSON.stringify(data) }),
   forgotPassword: (email) => apiCall("/forgot-password", { method: "POST", body: JSON.stringify({ email }) }),
   resetPassword: (token, password) => apiCall("/reset-password", { method: "POST", body: JSON.stringify({ token, password }) }),
 };
 
-// ── Formatters ─────────────────────────────────────────────────
 const Fmt = {
   precio: (n) => "RD$ " + Number(n).toLocaleString("es-DO", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
   fecha: (d) => new Date(d).toLocaleDateString("es-DO", { year: "numeric", month: "long", day: "numeric" }),
 };
 
-// ── UI Helpers ─────────────────────────────────────────────────
 const UI = {
   toast(msg, type = "success", duration = 4000) {
     const t = document.createElement("div");
@@ -160,5 +149,4 @@ const UI = {
   },
 };
 
-// Actualizar navegación al cargar cualquier página
 document.addEventListener("DOMContentLoaded", UI.updateNavAuth);

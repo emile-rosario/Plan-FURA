@@ -1,7 +1,3 @@
-"""
-Utilidad de envío de emails — Funeraria Rancier
-Usa SMTP si está configurado; si no, loguea el mensaje (útil en desarrollo).
-"""
 import logging
 import smtplib
 from email.mime.text import MIMEText
@@ -13,10 +9,6 @@ logger = logging.getLogger(__name__)
 
 
 def send_password_reset_email(to_email: str, reset_token: str) -> bool:
-    """
-    Envía un correo con el enlace de restablecimiento de contraseña.
-    Retorna True si el envío fue exitoso, False si falló.
-    """
     reset_url = f"{settings.FRONTEND_URL}/reset-password.html?token={reset_token}"
 
     subject = "Restablecer contraseña — Funerarias Rancier"

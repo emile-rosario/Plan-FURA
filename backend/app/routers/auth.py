@@ -1,6 +1,3 @@
-"""
-Router de autenticación — registro, login, perfil.
-"""
 import logging
 from datetime import datetime, timezone
 
@@ -20,7 +17,6 @@ router = APIRouter(tags=["Autenticación"])
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("5/minute")
 def register(request: Request, user_data: UserCreate, db: Session = Depends(get_db)):
-    """Registrar un nuevo usuario cliente."""
     existing = db.query(User).filter(User.email == user_data.email).first()
     if existing:
         raise HTTPException(
@@ -45,7 +41,6 @@ def register(request: Request, user_data: UserCreate, db: Session = Depends(get_
 @router.post("/login", response_model=LoginResponse)
 @limiter.limit("5/minute")
 def login(request: Request, login_data: LoginRequest, db: Session = Depends(get_db)):
-    """Iniciar sesión y obtener token JWT."""
     user = db.query(User).filter(User.email == login_data.email).first()
 
     if not user or not verify_password(login_data.password, user.password):
@@ -79,5 +74,4 @@ def login(request: Request, login_data: LoginRequest, db: Session = Depends(get_
 
 @router.get("/me", response_model=UserResponse)
 def get_profile(current_user: User = Depends(get_current_user)):
-    """Obtener perfil del usuario autenticado."""
     return current_user

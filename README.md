@@ -76,9 +76,7 @@ cd frontend
 python -m http.server 5500
 ```
 
-Al iniciar por primera vez el backend, se crean automáticamente datos de prueba y un usuario admin:
-- **Email:** `admin@funerariarancier.com`
-- **Contraseña:** `Admin@2025`
+Al iniciar por primera vez el backend, se crean automáticamente datos de prueba y un usuario admin con las credenciales que están en el archivo `backend/.env` (o `.env.example` como referencia).
 
 ---
 

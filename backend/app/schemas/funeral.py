@@ -1,15 +1,9 @@
-"""
-Schemas Pydantic — Funeraria Rancier
-Validación de datos de entrada y salida.
-"""
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
 from decimal import Decimal
 import re
 
-
-# ── Ataúdes ───────────────────────────────────────────────────
 
 class CoffinBase(BaseModel):
     nombre: str = Field(min_length=2, max_length=150)
@@ -48,15 +42,13 @@ class PaginatedCoffins(BaseModel):
     items: List[CoffinResponse]
 
 
-# ── Planes Funerarios ─────────────────────────────────────────
-
 class PlanBase(BaseModel):
     nombre: str = Field(min_length=2, max_length=100)
     descripcion: str = Field(min_length=2, max_length=2000)
     precio_mensual: Decimal = Field(gt=0, decimal_places=2)
     activo: bool = True
     destacado: bool = False
-    beneficios: Optional[List[str]] = None  # Lista nativa, sin JSON.parse en el frontend
+    beneficios: Optional[List[str]] = None
 
 
 class PlanCreate(PlanBase):
@@ -85,8 +77,6 @@ class PaginatedPlanes(BaseModel):
     items: List[PlanResponse]
 
 
-# ── Suscripciones ─────────────────────────────────────────────
-
 class SuscripcionCreate(BaseModel):
     plan_id: int = Field(gt=0)
 
@@ -100,8 +90,6 @@ class SuscripcionResponse(BaseModel):
     plan: Optional[PlanResponse] = None
     model_config = {"from_attributes": True}
 
-
-# ── Contacto ─────────────────────────────────────────────────
 
 class ContactoCreate(BaseModel):
     nombre: str = Field(min_length=2, max_length=100)

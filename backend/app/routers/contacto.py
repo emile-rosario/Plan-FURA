@@ -1,6 +1,3 @@
-"""
-Router de contacto — Recibir mensajes del formulario.
-"""
 import logging
 
 from fastapi import APIRouter, Depends, Request, status, Query
@@ -19,7 +16,6 @@ router = APIRouter(prefix="/contacto", tags=["Contacto"])
 @router.post("", response_model=ContactoResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("3/hour")
 def enviar_mensaje(request: Request, data: ContactoCreate, db: Session = Depends(get_db)):
-    """Recibir mensaje del formulario de contacto (público). Límite: 3/hora por IP."""
     mensaje = MensajeContacto(**data.model_dump())
     db.add(mensaje)
     db.commit()
@@ -35,7 +31,6 @@ def listar_mensajes(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Listar mensajes de contacto con paginación (solo admin)."""
     q = db.query(MensajeContacto).order_by(MensajeContacto.fecha.desc())
     total = q.count()
     items = q.offset(skip).limit(limit).all()

@@ -1,6 +1,3 @@
-"""
-Router de suscripciones — Contratar y gestionar planes.
-"""
 import logging
 from datetime import datetime, timezone
 
@@ -22,13 +19,10 @@ def contratar_plan(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    """Contratar un plan funerario (requiere autenticación)."""
-    # Verificar que el plan exista y esté activo
     plan = db.query(Plan).filter(Plan.id == data.plan_id, Plan.activo.is_(True)).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan no encontrado o no disponible.")
 
-    # Verificar si ya tiene un plan activo
     suscripcion_activa = db.query(Suscripcion).filter(
         Suscripcion.user_id == current_user.id,
         Suscripcion.estado == EstadoSuscripcion.activo,
@@ -44,7 +38,7 @@ def contratar_plan(
     db.commit()
     db.refresh(nueva)
 
-    # Eager-load del plan para incluirlo en la respuesta
+    # recargamos con el plan incluido para devolverlo en la respuesta
     suscripcion = (
         db.query(Suscripcion)
         .options(joinedload(Suscripcion.plan))
@@ -60,7 +54,6 @@ def get_mi_plan(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    """Obtener el plan activo del usuario autenticado."""
     suscripcion = (
         db.query(Suscripcion)
         .options(joinedload(Suscripcion.plan))
@@ -80,7 +73,6 @@ def cancelar_plan(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    """Cancelar el plan activo del usuario."""
     suscripcion = db.query(Suscripcion).filter(
         Suscripcion.user_id == current_user.id,
         Suscripcion.estado == EstadoSuscripcion.activo,

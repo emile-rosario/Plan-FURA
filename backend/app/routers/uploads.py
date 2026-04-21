@@ -1,6 +1,3 @@
-"""
-Router de uploads — Subida segura de imágenes con validación de magic bytes.
-"""
 import logging
 import os
 import uuid
@@ -17,16 +14,15 @@ router = APIRouter(prefix="/uploads", tags=["Uploads"])
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-# Magic bytes de los formatos permitidos
+# firmas para identificar el tipo real del archivo
 _MAGIC_SIGNATURES = {
     b"\xff\xd8\xff": "image/jpeg",
     b"\x89PNG": "image/png",
-    b"RIFF": "image/webp",  # RIFF....WEBP
+    b"RIFF": "image/webp",
 }
 
 
 def _detect_image_type(header: bytes) -> str | None:
-    """Detecta tipo de imagen por magic bytes. Retorna MIME o None si no reconoce."""
     if header[:3] in _MAGIC_SIGNATURES:
         return _MAGIC_SIGNATURES[header[:3]]
     if header[:4] == b"RIFF" and len(header) >= 12 and header[8:12] == b"WEBP":
@@ -41,7 +37,6 @@ async def upload_image(
     file: UploadFile = File(...),
     _admin=Depends(get_current_admin),
 ):
-    """Subir imagen de ataúd (solo admin). Máximo 5 MB, solo JPEG/PNG/WebP."""
     if file.content_type not in settings.ALLOWED_IMAGE_TYPES:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
@@ -50,7 +45,6 @@ async def upload_image(
 
     contents = await file.read()
 
-    # Validar tamaño
     max_bytes = settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024
     if len(contents) > max_bytes:
         raise HTTPException(
@@ -58,7 +52,7 @@ async def upload_image(
             detail=f"El archivo supera el límite de {settings.MAX_UPLOAD_SIZE_MB} MB.",
         )
 
-    # Validar magic bytes (evita archivos maliciosos renombrados)
+    # revisamos los bytes reales para que no se pueda colar un archivo renombrado
     detected = _detect_image_type(contents[:12])
     if detected not in settings.ALLOWED_IMAGE_TYPES:
         raise HTTPException(

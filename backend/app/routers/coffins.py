@@ -1,7 +1,3 @@
-"""
-Router de ataúdes — CRUD completo.
-GET público; POST/PUT/DELETE solo admin.
-"""
 import logging
 from typing import Optional
 
@@ -24,7 +20,6 @@ def list_coffins(
     limit: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    """Listar ataúdes con paginación (público)."""
     q = db.query(Coffin)
     if disponible is not None:
         q = q.filter(Coffin.disponible == disponible)
@@ -36,7 +31,6 @@ def list_coffins(
 
 @router.get("/{coffin_id}", response_model=CoffinResponse)
 def get_coffin(coffin_id: int, db: Session = Depends(get_db)):
-    """Obtener un ataúd por ID (público)."""
     coffin = db.query(Coffin).filter(Coffin.id == coffin_id).first()
     if not coffin:
         raise HTTPException(status_code=404, detail="Ataúd no encontrado.")
@@ -49,7 +43,6 @@ def create_coffin(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Crear ataúd (solo admin)."""
     coffin = Coffin(**data.model_dump())
     db.add(coffin)
     db.commit()
@@ -65,7 +58,6 @@ def update_coffin(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Actualizar ataúd (solo admin)."""
     coffin = db.query(Coffin).filter(Coffin.id == coffin_id).first()
     if not coffin:
         raise HTTPException(status_code=404, detail="Ataúd no encontrado.")
@@ -83,10 +75,10 @@ def delete_coffin(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Soft delete de ataúd — marca como no disponible (solo admin)."""
+    # marcamos como no disponible en lugar de borrar
     coffin = db.query(Coffin).filter(Coffin.id == coffin_id).first()
     if not coffin:
         raise HTTPException(status_code=404, detail="Ataúd no encontrado.")
     coffin.disponible = False
     db.commit()
-    logger.info("Ataúd desactivado (soft delete): ID %d", coffin_id)
+    logger.info("Ataúd desactivado: ID %d", coffin_id)

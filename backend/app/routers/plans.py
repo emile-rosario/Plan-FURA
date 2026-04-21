@@ -1,7 +1,3 @@
-"""
-Router de planes funerarios — CRUD completo.
-GET público; POST/PUT/DELETE solo admin.
-"""
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query
@@ -22,7 +18,6 @@ def list_plans(
     limit: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    """Listar planes activos con paginación (público)."""
     q = db.query(Plan).filter(Plan.activo.is_(True)).order_by(Plan.precio_mensual)
     total = q.count()
     items = q.offset(skip).limit(limit).all()
@@ -31,7 +26,6 @@ def list_plans(
 
 @router.get("/{plan_id}", response_model=PlanResponse)
 def get_plan(plan_id: int, db: Session = Depends(get_db)):
-    """Obtener un plan por ID (público)."""
     plan = db.query(Plan).filter(Plan.id == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan no encontrado.")
@@ -44,7 +38,6 @@ def create_plan(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Crear plan funerario (solo admin)."""
     plan = Plan(**data.model_dump())
     db.add(plan)
     db.commit()
@@ -60,7 +53,6 @@ def update_plan(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Actualizar plan (solo admin)."""
     plan = db.query(Plan).filter(Plan.id == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan no encontrado.")
@@ -78,10 +70,10 @@ def delete_plan(
     db: Session = Depends(get_db),
     _admin=Depends(get_current_admin),
 ):
-    """Soft delete de plan — desactiva en lugar de eliminar (solo admin)."""
+    # desactivamos en lugar de eliminar para no romper suscripciones existentes
     plan = db.query(Plan).filter(Plan.id == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan no encontrado.")
     plan.activo = False
     db.commit()
-    logger.info("Plan desactivado (soft delete): ID %d", plan_id)
+    logger.info("Plan desactivado: ID %d", plan_id)

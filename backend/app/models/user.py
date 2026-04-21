@@ -1,6 +1,3 @@
-"""
-Modelo de usuario con soporte para roles y auditoría.
-"""
 import enum
 import secrets
 from datetime import datetime, timedelta, timezone
