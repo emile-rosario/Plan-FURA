@@ -181,47 +181,40 @@ def seed_data():
             db.add_all(planes)
             logger.info("Planes de ejemplo insertados.")
 
-        if db.query(Coffin).count() == 0:
-            _desc = (
-                "Fabricado en metal de alta resistencia, diseñado para brindar una presentación "
-                "sobria y elegante. Terminación con pintura electrostática, que ofrece mayor "
-                "durabilidad, excelente acabado y protección contra el desgaste. Ideal para quienes "
-                "buscan calidad, seguridad y una opción digna para despedir a su ser querido."
-            )
-            ataudes = [
-                Coffin(
-                    nombre="Ataúd Digno", material="Metal",
-                    descripcion=_desc,
-                    precio=Decimal("25000.00"), disponible=True,
-                    imagen_url="assets/img/catalogo/ataud-digno.jpeg",
-                ),
-                Coffin(
-                    nombre="Ataúd Pomposo", material="Metal",
-                    descripcion=_desc,
-                    precio=Decimal("35000.00"), disponible=True,
-                    imagen_url="assets/img/catalogo/ataud-pomposo.jpeg",
-                ),
-                Coffin(
-                    nombre="Ataúd Deluxe", material="Metal",
-                    descripcion=_desc,
-                    precio=Decimal("45000.00"), disponible=True,
-                    imagen_url="assets/img/catalogo/deluxe.jpeg",
-                ),
-                Coffin(
-                    nombre="Ataúd Deluxe Pro", material="Metal",
-                    descripcion=_desc,
-                    precio=Decimal("60000.00"), disponible=True, destacado=True,
-                    imagen_url="assets/img/catalogo/deluxe-pro.jpeg",
-                ),
-                Coffin(
-                    nombre="Ataúd Majestuoso Pro", material="Metal",
-                    descripcion=_desc,
-                    precio=Decimal("75000.00"), disponible=True, destacado=True,
-                    imagen_url="assets/img/catalogo/majestuoso-pro.jpeg",
-                ),
-            ]
-            db.add_all(ataudes)
-            logger.info("Ataúdes insertados.")
+        _desc = (
+            "Fabricado en metal de alta resistencia, diseñado para brindar una presentación "
+            "sobria y elegante. Terminación con pintura electrostática, que ofrece mayor "
+            "durabilidad, excelente acabado y protección contra el desgaste. Ideal para quienes "
+            "buscan calidad, seguridad y una opción digna para despedir a su ser querido."
+        )
+        _modelos = [
+            ("Ataúd Digno",        "assets/img/catalogo/ataud-digno.jpeg",    "assets/img/catalogo/ataud-digno-2.jpeg",    Decimal("25000.00"), False),
+            ("Ataúd Pomposo",      "assets/img/catalogo/ataud-pomposo.jpeg",  "assets/img/catalogo/ataud-pomposo-2.jpeg",  Decimal("35000.00"), False),
+            ("Ataúd Deluxe",       "assets/img/catalogo/deluxe.jpeg",         "assets/img/catalogo/deluxe-2.jpeg",         Decimal("45000.00"), False),
+            ("Ataúd Deluxe Pro",   "assets/img/catalogo/deluxe-pro.jpeg",     "assets/img/catalogo/deluxe-pro-2.jpeg",     Decimal("60000.00"), True),
+            ("Ataúd Majestuoso Pro","assets/img/catalogo/majestuoso-pro.jpeg","assets/img/catalogo/majestuoso-pro-2.jpeg", Decimal("75000.00"), True),
+        ]
+
+        # Borra registros que no sean los 5 modelos reales
+        nombres_validos = [m[0] for m in _modelos]
+        db.query(Coffin).filter(~Coffin.nombre.in_(nombres_validos)).delete(synchronize_session=False)
+
+        for nombre, img, img2, precio, destacado in _modelos:
+            existing = db.query(Coffin).filter(Coffin.nombre == nombre).first()
+            if existing:
+                existing.imagen_url   = img
+                existing.imagen_url_2 = img2
+                existing.material     = "Metal"
+                existing.descripcion  = _desc
+                existing.disponible   = True
+                existing.destacado    = destacado
+            else:
+                db.add(Coffin(
+                    nombre=nombre, material="Metal", descripcion=_desc,
+                    precio=precio, disponible=True, destacado=destacado,
+                    imagen_url=img, imagen_url_2=img2,
+                ))
+        logger.info("Ataúdes sincronizados.")
 
         if db.query(User).filter(User.rol == "admin").count() == 0:
             admin = User(
