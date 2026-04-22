@@ -108,15 +108,16 @@
 <script>
 /* ═══════════════════════════════════════
    PALETA DE COLORES — ataúdes metálicos
-   Cada color aplica un CSS filter sobre
-   la imagen base del modelo.
+   Overlay mix-blend-mode:screen sobre imagen
+   en escala de grises: fondo blanco queda
+   intacto, solo el metal oscuro se colorea.
 ═══════════════════════════════════════ */
 const COLORES_ATAUD = [
-  { id:'dark',       nombre:'Dark',       hex:'#2d2d2d', filter:'grayscale(1) brightness(0.28)' },
-  { id:'caoba',      nombre:'Caoba',      hex:'#6b2d0e', filter:'sepia(1) saturate(3.5) hue-rotate(340deg) brightness(0.65)' },
-  { id:'corrugado',  nombre:'Corrugado',  hex:'#b0bec5', filter:'grayscale(0.6) brightness(1.15) saturate(0.4) hue-rotate(195deg)' },
-  { id:'dorado',     nombre:'Dorado',     hex:'#b8860b', filter:'sepia(1) saturate(4) hue-rotate(5deg) brightness(1.05)' },
-  { id:'blanco',     nombre:'Blanco',     hex:'#f0f0f0', filter:'grayscale(1) brightness(2.2) contrast(0.7)' },
+  { id:'dark',      nombre:'Negro',    hex:'#111111' },
+  { id:'caoba',     nombre:'Caoba',    hex:'#7a3010' },
+  { id:'corrugado', nombre:'Plateado', hex:'#7090a8' },
+  { id:'dorado',    nombre:'Dorado',   hex:'#c89000' },
+  { id:'blanco',    nombre:'Blanco',   hex:'#d0d0d0' },
 ];
 
 /* Color e imagen activa por producto */
@@ -128,30 +129,24 @@ function getColor(productId) {
   return COLORES_ATAUD.find(c => c.id === id) || COLORES_ATAUD[0];
 }
 
-function applyColorToImgs(productId, filter) {
-  const single = document.getElementById(`card-img-${productId}`);
-  if (single) single.style.filter = filter;
-  [0, 1].forEach(i => {
-    const img = document.getElementById(`card-img-${productId}-${i}`);
-    if (img) img.style.filter = filter;
-  });
-  ['modal-img-0','modal-img-1'].forEach(imgId => {
-    const mImg = document.getElementById(imgId);
-    if (mImg && mImg.dataset.productId == productId) mImg.style.filter = filter;
-  });
+function applyColorToImgs(productId, hex) {
+  const ov = document.getElementById(`card-color-${productId}`);
+  if (ov) ov.style.background = hex;
+  const mOv = document.getElementById(`modal-color-${productId}`);
+  if (mOv) mOv.style.background = hex;
 }
 
 function selectColor(productId, colorId, event) {
   if (event) event.stopPropagation();
   selectedColors[productId] = colorId;
   const color = COLORES_ATAUD.find(c => c.id === colorId);
-  applyColorToImgs(productId, color.filter);
+  applyColorToImgs(productId, color.hex);
 
   document.querySelectorAll(`#card-dots-${productId} .color-dot`).forEach(dot =>
     dot.classList.toggle('selected', dot.dataset.colorId === colorId));
 
   const modalLabel = document.getElementById('modal-color-label');
-  if (modalLabel && document.getElementById('modal-img')?.dataset.productId == productId) {
+  if (modalLabel) {
     modalLabel.textContent = color.nombre;
     document.querySelectorAll('#modal-color-dots .color-dot-lg').forEach(dot =>
       dot.classList.toggle('selected', dot.dataset.colorId === colorId));
@@ -161,13 +156,11 @@ function selectColor(productId, colorId, event) {
 function switchSlide(productId, idx, event) {
   if (event) event.stopPropagation();
   activeSlide[productId] = idx;
-  const color = getColor(productId);
   [0, 1].forEach(i => {
     const img = document.getElementById(`card-img-${productId}-${i}`);
-    if (img) { img.classList.toggle('hidden', i !== idx); img.style.filter = color.filter; }
+    if (img) img.classList.toggle('hidden', i !== idx);
     const dot = document.getElementById(`slide-dot-${productId}-${i}`);
-    if (dot) dot.classList.toggle('opacity-100', i === idx);
-    if (dot) dot.classList.toggle('opacity-30', i !== idx);
+    if (dot) { dot.classList.toggle('opacity-100', i === idx); dot.classList.toggle('opacity-30', i !== idx); }
   });
 }
 
@@ -200,7 +193,10 @@ function renderProducts(){
     <div class="product-card rounded-xl overflow-hidden bg-white" onclick="openModal(${c.id})">
       <div class="relative h-56 flex items-center justify-center" style="background:linear-gradient(135deg,#e8f4fd,#d0ecf9)">
         ${c.imagen_url
-          ? `<img id="card-img-${c.id}" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img" style="filter:${color.filter}"/>`
+          ? `<div class="w-full h-full" style="isolation:isolate;position:relative">
+               <img id="card-img-${c.id}" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img" style="filter:grayscale(1)"/>
+               <div id="card-color-${c.id}" class="absolute inset-0 pointer-events-none" style="background:${color.hex};mix-blend-mode:screen"></div>
+             </div>`
           : `<div class="flex flex-col items-center gap-2 opacity-30"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>`}
         ${c.destacado ? `<span class="absolute top-3 left-3 text-white text-xs font-bold px-2 py-1 tracking-wider uppercase rounded" style="background:var(--secondary)">Destacado</span>` : ''}
         <div id="card-dots-${c.id}" class="absolute bottom-3 left-0 right-0 flex justify-center gap-2 px-4" onclick="event.stopPropagation()">${swatches}</div>
@@ -224,12 +220,9 @@ let modalSlide = 0;
 
 function switchModalSlide(c, idx) {
   modalSlide = idx;
-  const color = getColor(c.id);
   ['modal-img-0','modal-img-1'].forEach((imgId, i) => {
     const el = document.getElementById(imgId);
-    if (!el) return;
-    el.classList.toggle('hidden', i !== idx);
-    el.style.filter = color.filter;
+    if (el) el.classList.toggle('hidden', i !== idx);
   });
   [0,1].forEach(i => {
     const d = document.getElementById(`modal-slide-dot-${i}`);
@@ -250,15 +243,10 @@ function openModal(id){
     </button>`).join('');
 
   const hasTwo = !!c.imagen_url_2;
-  const imgBlock = c.imagen_url ? `
-    <img id="modal-img-0" data-product-id="${c.id}" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img" style="filter:${color.filter}"/>
-    ${hasTwo ? `<img id="modal-img-1" data-product-id="${c.id}" src="${c.imagen_url_2}" alt="${c.nombre}" class="ataud-img hidden" style="filter:${color.filter}"/>` : ''}
-  ` : `<div id="modal-img-0" data-product-id="${c.id}" class="opacity-20"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1" class="mx-auto"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>`;
-
   const slideNav = hasTwo ? `
-    <div class="absolute top-1/2 -translate-y-1/2 left-2 right-2 flex justify-between">
-      <button class="w-8 h-8 rounded-full bg-white/80 shadow flex items-center justify-center text-lg" onclick="switchModalSlide(allProducts.find(p=>p.id===${c.id}),0)">‹</button>
-      <button class="w-8 h-8 rounded-full bg-white/80 shadow flex items-center justify-center text-lg" onclick="switchModalSlide(allProducts.find(p=>p.id===${c.id}),1)">›</button>
+    <div class="absolute top-1/2 -translate-y-1/2 left-2 right-2 flex justify-between pointer-events-none">
+      <button class="w-8 h-8 rounded-full bg-white/80 shadow flex items-center justify-center text-lg pointer-events-auto" onclick="switchModalSlide(allProducts.find(p=>p.id===${c.id}),0)">‹</button>
+      <button class="w-8 h-8 rounded-full bg-white/80 shadow flex items-center justify-center text-lg pointer-events-auto" onclick="switchModalSlide(allProducts.find(p=>p.id===${c.id}),1)">›</button>
     </div>
     <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
       <span id="modal-slide-dot-0" class="w-2 h-2 rounded-full bg-blue-400 opacity-100"></span>
@@ -266,13 +254,32 @@ function openModal(id){
     </div>` : '';
 
   document.getElementById('modal-content').innerHTML = `
-    <div class="flex flex-col gap-4">
-      <p class="text-xs tracking-widest uppercase font-semibold" style="color:var(--secondary)">${c.material}</p>
-      <h2 class="serif text-2xl font-semibold" style="color:var(--primary)">${c.nombre}</h2>
-      ${c.descripcion ? `<p class="text-gray-600 text-sm leading-relaxed">${c.descripcion}</p>` : ''}
-      ${c.disponible
-        ? `<a href="contacto.html?ataud=${encodeURIComponent(c.nombre)}" class="btn-primary text-center mt-2">Solicitar Información</a>`
-        : `<div class="btn-outline opacity-50 cursor-not-allowed text-center mt-2">No Disponible</div>`}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="relative h-64 rounded-lg overflow-hidden" style="background:linear-gradient(135deg,#e8f4fd,#d0ecf9)">
+        ${c.imagen_url ? `
+          <div class="w-full h-full" style="isolation:isolate;position:relative">
+            <img id="modal-img-0" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img" style="filter:grayscale(1)"/>
+            ${hasTwo ? `<img id="modal-img-1" src="${c.imagen_url_2}" alt="${c.nombre}" class="ataud-img hidden" style="filter:grayscale(1)"/>` : ''}
+            <div id="modal-color-${c.id}" class="absolute inset-0 pointer-events-none" style="background:${color.hex};mix-blend-mode:screen"></div>
+          </div>
+          ${slideNav}
+        ` : ''}
+      </div>
+      <div class="flex flex-col gap-4">
+        <p class="text-xs tracking-widest uppercase font-semibold" style="color:var(--secondary)">${c.material}</p>
+        <h2 class="serif text-2xl font-semibold" style="color:var(--primary)">${c.nombre}</h2>
+        ${c.descripcion ? `<p class="text-gray-600 text-sm leading-relaxed">${c.descripcion}</p>` : ''}
+        <div class="rounded-lg p-4" style="background:rgba(103,204,219,.08);border:1px solid rgba(0,169,225,.2)">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-xs uppercase tracking-wider font-semibold" style="color:var(--primary)">Color</p>
+            <span id="modal-color-label" class="text-xs font-semibold" style="color:var(--secondary)">${color.nombre}</span>
+          </div>
+          <div id="modal-color-dots" class="flex gap-3 flex-wrap">${swatches}</div>
+        </div>
+        ${c.disponible
+          ? `<a href="contacto.html?ataud=${encodeURIComponent(c.nombre)}" class="btn-primary text-center">Solicitar Información</a>`
+          : `<div class="btn-outline opacity-50 cursor-not-allowed text-center">No Disponible</div>`}
+      </div>
     </div>`;
 
   document.getElementById('modal-overlay').classList.remove('hidden');
