@@ -194,6 +194,13 @@ function renderProducts(){
 
     return `
     <div class="product-card rounded-xl overflow-hidden bg-white" onclick="openModal(${c.id})">
+      <div class="relative h-56 flex items-center justify-center" style="background:linear-gradient(135deg,#e8f4fd,#d0ecf9)">
+        ${c.imagen_url
+          ? `<img id="card-img-${c.id}" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img" style="filter:${color.filter}"/>`
+          : `<div class="flex flex-col items-center gap-2 opacity-30"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>`}
+        ${c.destacado ? `<span class="absolute top-3 left-3 text-white text-xs font-bold px-2 py-1 tracking-wider uppercase rounded" style="background:var(--secondary)">Destacado</span>` : ''}
+        <div id="card-dots-${c.id}" class="absolute bottom-3 left-0 right-0 flex justify-center gap-2 px-4" onclick="event.stopPropagation()">${swatches}</div>
+      </div>
       <div class="p-6">
         <p class="text-xs tracking-widest uppercase mb-1 font-semibold" style="color:var(--secondary)">${c.material}</p>
         <h3 class="serif text-lg font-semibold mb-2 leading-snug" style="color:var(--primary)">${c.nombre}</h3>
