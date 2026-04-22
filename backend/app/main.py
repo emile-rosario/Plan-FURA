@@ -182,28 +182,46 @@ def seed_data():
             logger.info("Planes de ejemplo insertados.")
 
         if db.query(Coffin).count() == 0:
+            _desc = (
+                "Fabricado en metal de alta resistencia, diseñado para brindar una presentación "
+                "sobria y elegante. Terminación con pintura electrostática, que ofrece mayor "
+                "durabilidad, excelente acabado y protección contra el desgaste. Ideal para quienes "
+                "buscan calidad, seguridad y una opción digna para despedir a su ser querido."
+            )
             ataudes = [
-                Coffin(nombre="Ataúd Clásico de Pino", material="Madera de Pino",
-                       descripcion="Elegante ataúd artesanal de madera de pino seleccionada.",
-                       precio=Decimal("15000.00"), disponible=True),
-                Coffin(nombre="Ataúd Imperial de Caoba", material="Madera de Caoba",
-                       descripcion="Tallado a mano en caoba premium con acabados dorados.",
-                       precio=Decimal("45000.00"), disponible=True, destacado=True),
-                Coffin(nombre="Ataúd Metálico Acero Inoxidable", material="Acero Inoxidable",
-                       descripcion="Alta durabilidad con sellado hermético certificado.",
-                       precio=Decimal("55000.00"), disponible=True),
-                Coffin(nombre="Ataúd Ecológico de Bambú", material="Bambú Natural",
-                       descripcion="Opción sostenible 100% biodegradable.",
-                       precio=Decimal("22000.00"), disponible=True),
-                Coffin(nombre="Ataúd Presidencial de Cerezo", material="Madera de Cerezo",
-                       descripcion="Madera de cerezo importada con herrajes de bronce.",
-                       precio=Decimal("80000.00"), disponible=True, destacado=True),
-                Coffin(nombre="Ataúd Bronce Ornamental", material="Bronce",
-                       descripcion="El máximo en distinción, fundición artesanal en bronce.",
-                       precio=Decimal("95000.00"), disponible=True),
+                Coffin(
+                    nombre="Ataúd Digno", material="Metal",
+                    descripcion=_desc,
+                    precio=Decimal("25000.00"), disponible=True,
+                    imagen_url="assets/img/catalogo/ataud-digno.jpeg",
+                ),
+                Coffin(
+                    nombre="Ataúd Pomposo", material="Metal",
+                    descripcion=_desc,
+                    precio=Decimal("35000.00"), disponible=True,
+                    imagen_url="assets/img/catalogo/ataud-pomposo.jpeg",
+                ),
+                Coffin(
+                    nombre="Ataúd Deluxe", material="Metal",
+                    descripcion=_desc,
+                    precio=Decimal("45000.00"), disponible=True,
+                    imagen_url="assets/img/catalogo/deluxe.jpeg",
+                ),
+                Coffin(
+                    nombre="Ataúd Deluxe Pro", material="Metal",
+                    descripcion=_desc,
+                    precio=Decimal("60000.00"), disponible=True, destacado=True,
+                    imagen_url="assets/img/catalogo/deluxe-pro.jpeg",
+                ),
+                Coffin(
+                    nombre="Ataúd Majestuoso Pro", material="Metal",
+                    descripcion=_desc,
+                    precio=Decimal("75000.00"), disponible=True, destacado=True,
+                    imagen_url="assets/img/catalogo/majestuoso-pro.jpeg",
+                ),
             ]
             db.add_all(ataudes)
-            logger.info("Ataúdes de ejemplo insertados.")
+            logger.info("Ataúdes insertados.")
 
         if db.query(User).filter(User.rol == "admin").count() == 0:
             admin = User(
