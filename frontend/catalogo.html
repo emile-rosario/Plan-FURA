@@ -129,12 +129,16 @@ function getColor(productId) {
 }
 
 function applyColorToImgs(productId, filter) {
+  const single = document.getElementById(`card-img-${productId}`);
+  if (single) single.style.filter = filter;
   [0, 1].forEach(i => {
     const img = document.getElementById(`card-img-${productId}-${i}`);
     if (img) img.style.filter = filter;
   });
-  const mImg = document.getElementById('modal-img');
-  if (mImg && mImg.dataset.productId == productId) mImg.style.filter = filter;
+  ['modal-img-0','modal-img-1'].forEach(imgId => {
+    const mImg = document.getElementById(imgId);
+    if (mImg && mImg.dataset.productId == productId) mImg.style.filter = filter;
+  });
 }
 
 function selectColor(productId, colorId, event) {
