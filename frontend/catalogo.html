@@ -108,16 +108,17 @@
 <script>
 /* ═══════════════════════════════════════
    PALETA DE COLORES — ataúdes metálicos
-   Overlay mix-blend-mode:screen sobre imagen
-   en escala de grises: fondo blanco queda
-   intacto, solo el metal oscuro se colorea.
+   mix-blend-mode:color preserva luminosidad:
+   fondo blanco (L≈100%) queda intacto,
+   solo el metal oscuro (L≈10%) toma el tono.
 ═══════════════════════════════════════ */
 const COLORES_ATAUD = [
-  { id:'dark',      nombre:'Negro',    hex:'#111111' },
-  { id:'caoba',     nombre:'Caoba',    hex:'#7a3010' },
-  { id:'corrugado', nombre:'Plateado', hex:'#7090a8' },
-  { id:'dorado',    nombre:'Dorado',   hex:'#c89000' },
-  { id:'blanco',    nombre:'Blanco',   hex:'#d0d0d0' },
+  { id:'natural',  nombre:'Original', hex:null },
+  { id:'negro',    nombre:'Negro',    hex:'#1c1c1c' },
+  { id:'caoba',    nombre:'Caoba',    hex:'#8B2500' },
+  { id:'plateado', nombre:'Plateado', hex:'#607080' },
+  { id:'dorado',   nombre:'Dorado',   hex:'#c8900a' },
+  { id:'vino',     nombre:'Vino',     hex:'#6b1030' },
 ];
 
 /* Color e imagen activa por producto */
@@ -125,22 +126,24 @@ const selectedColors = {};
 const activeSlide = {};  /* { productoId: 0|1 } */
 
 function getColor(productId) {
-  const id = selectedColors[productId] || 'dark';
+  const id = selectedColors[productId] || 'natural';
   return COLORES_ATAUD.find(c => c.id === id) || COLORES_ATAUD[0];
 }
 
-function applyColorToImgs(productId, hex) {
-  const ov = document.getElementById(`card-color-${productId}`);
-  if (ov) ov.style.background = hex;
-  const mOv = document.getElementById(`modal-color-${productId}`);
-  if (mOv) mOv.style.background = hex;
+function applyColorToImgs(productId, color) {
+  [document.getElementById(`card-color-${productId}`),
+   document.getElementById(`modal-color-${productId}`)].forEach(ov => {
+    if (!ov) return;
+    if (color.hex) { ov.style.background = color.hex; ov.style.display = ''; }
+    else            { ov.style.display = 'none'; }
+  });
 }
 
 function selectColor(productId, colorId, event) {
   if (event) event.stopPropagation();
   selectedColors[productId] = colorId;
   const color = COLORES_ATAUD.find(c => c.id === colorId);
-  applyColorToImgs(productId, color.hex);
+  applyColorToImgs(productId, color);
 
   document.querySelectorAll(`#card-dots-${productId} .color-dot`).forEach(dot =>
     dot.classList.toggle('selected', dot.dataset.colorId === colorId));
@@ -186,7 +189,8 @@ function renderProducts(){
     const curColor = selectedColors[c.id] || 'dark';
     const swatches = COLORES_ATAUD.map(col => `
       <button class="color-dot${col.id === curColor ? ' selected':''}"
-        style="background:${col.hex}" data-color-id="${col.id}"
+        style="${col.hex ? 'background:'+col.hex : 'background:conic-gradient(#ccc 25%,#fff 25% 50%,#ccc 50% 75%,#fff 75%);background-size:8px 8px'}"
+        data-color-id="${col.id}"
         onclick="selectColor(${c.id},'${col.id}',event)" title="${col.nombre}"></button>`).join('');
 
     return `
@@ -194,8 +198,8 @@ function renderProducts(){
       <div class="relative h-56 flex items-center justify-center" style="background:linear-gradient(135deg,#e8f4fd,#d0ecf9)">
         ${c.imagen_url
           ? `<div class="w-full h-full" style="isolation:isolate;position:relative">
-               <img id="card-img-${c.id}" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img" style="filter:grayscale(1)"/>
-               <div id="card-color-${c.id}" class="absolute inset-0 pointer-events-none" style="background:${color.hex};mix-blend-mode:screen"></div>
+               <img id="card-img-${c.id}" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img"/>
+               <div id="card-color-${c.id}" class="absolute inset-0 pointer-events-none" style="mix-blend-mode:color;opacity:0.9;${color.hex ? 'background:'+color.hex : 'display:none'}"></div>
              </div>`
           : `<div class="flex flex-col items-center gap-2 opacity-30"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#006ab4" stroke-width="1"><path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/></svg></div>`}
         ${c.destacado ? `<span class="absolute top-3 left-3 text-white text-xs font-bold px-2 py-1 tracking-wider uppercase rounded" style="background:var(--secondary)">Destacado</span>` : ''}
@@ -238,7 +242,8 @@ function openModal(id){
 
   const swatches = COLORES_ATAUD.map(col => `
     <button class="color-dot-lg${col.id === curColor ? ' selected':''}"
-      style="background:${col.hex}" data-color-id="${col.id}"
+      style="${col.hex ? 'background:'+col.hex : 'background:conic-gradient(#ccc 25%,#fff 25% 50%,#ccc 50% 75%,#fff 75%);background-size:8px 8px'}"
+      data-color-id="${col.id}"
       onclick="selectColor(${c.id},'${col.id}',event)" title="${col.nombre}">
     </button>`).join('');
 
@@ -258,9 +263,9 @@ function openModal(id){
       <div class="relative h-64 rounded-lg overflow-hidden" style="background:linear-gradient(135deg,#e8f4fd,#d0ecf9)">
         ${c.imagen_url ? `
           <div class="w-full h-full" style="isolation:isolate;position:relative">
-            <img id="modal-img-0" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img" style="filter:grayscale(1)"/>
-            ${hasTwo ? `<img id="modal-img-1" src="${c.imagen_url_2}" alt="${c.nombre}" class="ataud-img hidden" style="filter:grayscale(1)"/>` : ''}
-            <div id="modal-color-${c.id}" class="absolute inset-0 pointer-events-none" style="background:${color.hex};mix-blend-mode:screen"></div>
+            <img id="modal-img-0" src="${c.imagen_url}" alt="${c.nombre}" class="ataud-img"/>
+            ${hasTwo ? `<img id="modal-img-1" src="${c.imagen_url_2}" alt="${c.nombre}" class="ataud-img hidden"/>` : ''}
+            <div id="modal-color-${c.id}" class="absolute inset-0 pointer-events-none" style="mix-blend-mode:color;opacity:0.9;${color.hex ? 'background:'+color.hex : 'display:none'}"></div>
           </div>
           ${slideNav}
         ` : ''}
