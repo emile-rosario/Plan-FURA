@@ -78,14 +78,7 @@
         <button class="filter-pill" data-filter="metal">Metal</button>
         <button class="filter-pill" data-filter="eco">Ecológico</button>
       </div>
-      <div class="flex items-center gap-3">
-        <span class="text-gray-400 text-xs uppercase tracking-wider">Ordenar:</span>
-        <select id="sort-select" class="bg-white border border-gray-200 text-gray-600 text-xs px-3 py-2 rounded-lg focus:border-blue-400 focus:outline-none">
-          <option value="precio-asc">Precio: Menor a mayor</option>
-          <option value="precio-desc">Precio: Mayor a menor</option>
-          <option value="nombre">Nombre A-Z</option>
-        </select>
-      </div>
+      <select id="sort-select" class="hidden"></select>
     </div>
     <p class="text-gray-400 text-xs uppercase tracking-widest mb-8" id="count-label">Cargando...</p>
     <div id="productos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -167,7 +160,7 @@ function selectColor(productId, colorId, event) {
 let allProducts = []; let activeFilter = 'all';
 const materialGroups = { madera:['pino','caoba','cerezo','madera'], metal:['acero','bronce','metal'], eco:['bambú','bambu','ecológico','natural'] };
 function matchFilter(c){ if(activeFilter==='all') return true; const mat=c.material.toLowerCase(); return(materialGroups[activeFilter]||[]).some(k=>mat.includes(k)); }
-function sortProducts(products){ const val=document.getElementById('sort-select').value; return[...products].sort((a,b)=>{ if(val==='precio-asc') return a.precio-b.precio; if(val==='precio-desc') return b.precio-a.precio; return a.nombre.localeCompare(b.nombre); }); }
+function sortProducts(products){ return[...products].sort((a,b)=>a.nombre.localeCompare(b.nombre)); }
 
 /* ═══════════════════════════════════════
    RENDERIZAR TARJETAS
@@ -207,8 +200,7 @@ function renderProducts(){
         <p class="text-xs tracking-widest uppercase mb-1 font-semibold" style="color:var(--secondary)">${c.material}</p>
         <h3 class="serif text-lg font-semibold mb-2 leading-snug" style="color:var(--primary)">${c.nombre}</h3>
         ${c.descripcion ? `<p class="text-gray-500 text-xs leading-relaxed mb-3">${c.descripcion.slice(0,80)}...</p>` : ''}
-        <div class="flex items-center justify-between mt-3">
-          <span class="serif text-xl font-bold" style="color:var(--primary)">${Fmt.precio(c.precio)}</span>
+        <div class="flex items-center justify-end mt-3">
           <button class="card-cta text-xs tracking-widest uppercase font-semibold pb-0.5" style="color:var(--secondary);border-bottom:2px solid rgba(0,169,225,.3)">Ver detalles →</button>
         </div>
       </div>
@@ -246,7 +238,6 @@ function openModal(id){
         <p class="text-xs tracking-widest uppercase mb-2 font-semibold" style="color:var(--secondary)">${c.material}</p>
         <h2 class="serif text-2xl font-semibold mb-3" style="color:var(--primary)">${c.nombre}</h2>
         ${c.descripcion ? `<p class="text-gray-600 text-sm leading-relaxed mb-4">${c.descripcion}</p>` : ''}
-        <div class="mb-5"><span class="serif text-3xl font-bold" style="color:var(--primary)">${Fmt.precio(c.precio)}</span></div>
 
         <!-- Selector de color -->
         <div class="rounded-lg p-4 mb-5" style="background:rgba(103,204,219,.08);border:1px solid rgba(0,169,225,.2)">
