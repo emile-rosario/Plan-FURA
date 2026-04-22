@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Funerarias Rancier — Servicio digno, humano y confiable. Planes funerarios, ataúdes metálicos y acompañamiento 24/7 en República Dominicana."/>
-  <meta property="og:title" content="Funerarias Rancier — Servicio Digno, Humano y Confiable"/>
+  <meta name="description" content="PlanFura — Servicio digno, humano y confiable. Planes funerarios, ataúdes metálicos y acompañamiento 24/7 en República Dominicana."/>
+  <meta property="og:title" content="PlanFura — Servicio Digno, Humano y Confiable"/>
   <meta property="og:description" content="Planes funerarios, ataúdes metálicos de fabricación propia y acompañamiento 24/7. Santo Domingo, Rep. Dominicana."/>
-  <title>Funerarias Rancier — Servicio Digno, Humano y Confiable</title>
+  <title>PlanFura — Servicio Digno, Humano y Confiable</title>
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -24,14 +24,15 @@
   </script>
   <style>
     * { scroll-behavior: smooth; }
-    body { background: #fff; }
+    body { background: #1a1a2e; }
+
+    :root { --dark: #0d2459; }
 
     @keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform:none; } }
     .fade-up { animation: fadeUp 0.8s ease both; }
     .delay-1 { animation-delay: 0.15s; }
     .delay-2 { animation-delay: 0.3s; }
     .delay-3 { animation-delay: 0.45s; }
-    .delay-4 { animation-delay: 0.6s; }
 
     #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; }
     #mobile-menu.hidden { max-height: 0; opacity: 0; overflow: hidden; }
@@ -40,13 +41,70 @@
     .service-card { transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #e8f4fd; }
     .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,106,180,0.1); }
 
-    /* Underline animation on nav links (enhancement over base nav-link in main.css) */
     .nav-link { position: relative; }
     .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--secondary); transform:scaleX(0); transform-origin:left; transition:transform 0.3s ease; }
     .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
 
-    .stat-card { border-left: 3px solid var(--secondary); }
+    .btn-dark {
+      background: var(--dark);
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .8rem;
+      padding: .9rem 2rem;
+      border-radius: 6px;
+      transition: all .3s;
+      display: inline-block;
+    }
+    .btn-dark:hover { background: #162e6e; box-shadow: 0 8px 30px rgba(13,36,89,.3); transform: translateY(-1px); }
+
+    /* Hero */
+    .hero-section {
+      background-image: url('assets/img/hero-bg-final.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-color: #1a1a2e;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      margin-top: 0;
+    }
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 1;
+    }
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      padding: 5rem 6rem;
+      max-width: 700px;
+    }
+    .feature-badge { display:flex; align-items:center; gap:.5rem; font-size:.85rem; color:#444; }
+    .feature-badge svg { flex-shrink:0; }
+
+    /* Plan cards */
+    .plan-card { border: 1px solid #e5e7eb; border-radius:12px; padding:1.75rem; background:#fff; display:flex; flex-direction:column; transition: box-shadow .3s, transform .3s; }
+    .plan-card:hover { box-shadow: 0 12px 40px rgba(0,106,180,.12); transform: translateY(-3px); }
+    .plan-card.destacado { border-color: #c7dff5; background: #f5f9ff; }
+    .plan-badge { display:inline-block; font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:.3rem .75rem; border-radius:20px; color:var(--primary); background:rgba(0,106,180,.1); margin-bottom:.75rem; }
+    .plan-beneficio { display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:#555; padding:.25rem 0; }
+    .plan-beneficio svg { flex-shrink:0; color:var(--primary); }
+
     blockquote::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 5rem; line-height: 1; color: var(--accent); opacity: 0.5; position: absolute; top: -1rem; left: -0.5rem; }
+
+    @media (max-width: 768px) {
+      .hero-section { min-height: 70vh; }
+      .hero-text { padding: 4rem 1.5rem; max-width: none; }
+    }
   </style>
 </head>
 <body>
@@ -54,20 +112,15 @@
 <!-- ═══════════════════════════════════════════════════════════
      HEADER
 ═══════════════════════════════════════════════════════════ -->
-<header class="fixed top-0 left-0 right-0 z-50 border-b border-gray-100" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);">
+<header class="fixed top-0 left-0 right-0 z-50" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);">
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
 
       <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-3">
-        <div class="w-9 h-9 flex items-center justify-center rounded-lg" style="background: var(--primary);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
-            <path d="M12 2L8 6H4v12l4 4h8l4-4V6h-4L12 2z"/>
-          </svg>
-        </div>
+      <a href="index.html" class="flex items-center gap-2 h-14">
+        <img src="assets/img/Isotipo plan fura.png" alt="PlanFura" style="height:90px;"/>
         <div>
-          <span class="serif font-semibold text-base" style="color: var(--primary);">Funerarias</span>
-          <span class="serif font-bold text-base" style="color: var(--secondary);"> Rancier</span>
+          <span class="serif font-bold text-xl" style="color: var(--primary);">PlanFura</span>
         </div>
       </a>
 
@@ -116,67 +169,35 @@
 <!-- ═══════════════════════════════════════════════════════════
      HERO
 ═══════════════════════════════════════════════════════════ -->
-<section class="relative min-h-screen flex items-center overflow-hidden" style="background: linear-gradient(160deg, #ffffff 0%, #e8f4fd 40%, #d0ecf9 100%);">
-  <!-- Decorative circles -->
-  <div class="absolute inset-0 z-0" aria-hidden="true">
-    <div class="absolute top-1/4 right-1/4 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, var(--accent), transparent); filter: blur(80px);"></div>
-    <div class="absolute bottom-1/4 left-1/3 w-64 h-64 rounded-full opacity-8" style="background: radial-gradient(circle, var(--secondary), transparent); filter: blur(60px);"></div>
-  </div>
-
-  <!-- Vertical accent line left -->
-  <div class="absolute left-6 lg:left-12 top-1/4 bottom-1/4 w-0.5 opacity-20" style="background: linear-gradient(to bottom, transparent, var(--primary), transparent);"></div>
-
-  <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-16 w-full">
-    <div class="max-w-3xl">
-      <!-- Eyebrow -->
-      <p class="fade-up tracking-[0.3em] uppercase text-xs font-semibold mb-6" style="color: var(--secondary);">Desde 2010 · República Dominicana</p>
-
-      <!-- Headline -->
-      <h1 class="serif fade-up delay-1 font-bold leading-tight mb-8" style="font-size: clamp(2.5rem, 7vw, 4.5rem); color: var(--primary);">
-        Servicio digno,<br/>
-        <em class="not-italic" style="color: var(--secondary);">humano</em> y<br/>
-        confiable.
+<section class="hero-section">
+  <div class="hero-text">
+    <div class="max-w-lg w-full">
+      <h1 class="serif fade-up font-bold leading-tight mb-6" style="font-size: clamp(1.4rem, 2.4vw, 2.1rem); color: #fff;">
+        Acompañamos con respeto<br/>en los momentos más difíciles
       </h1>
-
-      <!-- Sub -->
-      <p class="fade-up delay-2 text-gray-600 leading-relaxed mb-10 max-w-xl" style="font-size: 1.05rem;">
-        Te brindamos apoyo real en los momentos más frágiles. Más de 15 años sirviendo a familias dominicanas con empatía, compromiso y respeto. Disponibles las 24 horas, los 365 días del año.
+      <p class="fade-up delay-1 leading-relaxed mb-8" style="font-size:1rem; color: #e8f4fd;">
+        Brindamos servicios funerarios completos y personalizados<br/>para honrar la vida de quienes amamos.
       </p>
-
-      <!-- CTAs -->
-      <div class="fade-up delay-3 flex flex-wrap gap-4 mb-16">
-        <a href="planes-funerarios.html" class="btn-primary">Ver Planes Funerarios</a>
-        <a href="tel:8095642200" class="btn-outline">Llamar Ahora: (809) 564-2200</a>
+      <div class="fade-up delay-2 mb-10">
+        <a href="planes-funerarios.html" class="btn-dark">Ver Planes</a>
       </div>
-
-      <!-- Stats -->
-      <div class="fade-up delay-4 grid grid-cols-3 gap-8 max-w-lg">
-        <div class="stat-card pl-4">
-          <p class="serif text-3xl font-bold" style="color: var(--primary);">15+</p>
-          <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">Años de servicio</p>
+      <div class="fade-up delay-3 flex flex-wrap gap-6">
+        <div class="feature-badge" style="color: #e8f4fd;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+          Atención 24/7
         </div>
-        <div class="stat-card pl-4">
-          <p class="serif text-3xl font-bold" style="color: var(--primary);">24/7</p>
-          <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">Disponibilidad</p>
+        <div class="feature-badge" style="color: #e8f4fd;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+          Planes accesibles
         </div>
-        <div class="stat-card pl-4">
-          <p class="serif text-3xl font-bold" style="color: var(--primary);">2k+</p>
-          <p class="text-gray-500 text-xs uppercase tracking-widest mt-1">Familias atendidas</p>
+        <div class="feature-badge" style="color: #e8f4fd;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+          Asesoría personalizada
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-    <span class="text-gray-500 text-xs tracking-widest uppercase">Scroll</span>
-    <div class="w-px h-10 animate-pulse" style="background: linear-gradient(to bottom, var(--secondary), transparent);"></div>
-  </div>
 </section>
-
-<!-- Divider -->
-<div class="blue-line"></div>
-
 
 <!-- ═══════════════════════════════════════════════════════════
      SERVICIOS DESTACADOS
@@ -260,22 +281,23 @@
 <!-- ═══════════════════════════════════════════════════════════
      PLANES — PREVIEW
 ═══════════════════════════════════════════════════════════ -->
-<section class="py-24" style="background: #f0f8ff;">
+<section class="py-20 bg-white">
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
-      <div>
-        <p class="text-xs tracking-[0.3em] uppercase mb-4 font-semibold" style="color: var(--secondary);">Cobertura Familiar</p>
-        <h2 class="serif text-4xl lg:text-5xl font-bold" style="color: var(--primary);">Planes Funerarios</h2>
-      </div>
-      <a href="planes-funerarios.html" class="btn-outline mt-6 md:mt-0">Ver todos los planes</a>
+    <div class="text-center mb-12">
+      <h2 class="serif text-4xl font-bold mb-3" style="color: var(--dark);">Nuestros Planes</h2>
+      <p class="text-gray-500 text-sm">Opciones que se adaptan a tus necesidades y presupuesto.</p>
     </div>
 
     <div id="planes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="col-span-4 text-center py-12 text-gray-500">
+      <div class="col-span-4 text-center py-12 text-gray-400">
         <div class="inline-block w-8 h-8 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
         <p class="text-sm">Cargando planes...</p>
       </div>
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="planes-funerarios.html" class="btn-outline">Ver todos los planes</a>
     </div>
 
   </div>
@@ -415,7 +437,7 @@
     <div class="blue-line mb-8"></div>
 
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-xs">
-      <p>&copy; 2026 Funerarias Rancier. Todos los derechos reservados. RNC: 131-97317-5</p>
+      <p>&copy; 2026 PlanFura. Todos los derechos reservados. RNC: 131-97317-5</p>
       <div class="flex gap-6">
         <a href="#" class="hover:text-primary transition-colors">Política de Privacidad</a>
         <a href="#" class="hover:text-primary transition-colors">Términos de Servicio</a>
@@ -447,22 +469,31 @@
   async function cargarPlanes() {
     const container = document.getElementById('planes-container');
     const { ok, data } = await API.getPlanes();
-    if (!ok || !data?.length) {
-      container.innerHTML = `<div class="col-span-4 text-center py-8 text-gray-500 text-sm">No hay planes disponibles en este momento.</div>`;
+    const planes = data?.items || [];
+    if (!ok || !planes.length) {
+      container.innerHTML = `<div class="col-span-4 text-center py-8 text-gray-400 text-sm">No hay planes disponibles en este momento.</div>`;
       return;
     }
-    container.innerHTML = data.slice(0, 4).map(plan => `
-      <div class="p-7 border rounded-xl flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${plan.destacado ? 'border-blue-300' : 'border-gray-200'}" style="background: ${plan.destacado ? 'rgba(103,204,219,0.06)' : '#fff'};">
-        ${plan.destacado ? `<span class="text-xs tracking-widest uppercase font-semibold px-3 py-1 rounded-md mb-4 self-start" style="color: var(--primary); background: rgba(103,204,219,0.15);">Más Popular</span>` : ''}
-        <h3 class="serif text-xl font-semibold mb-2" style="color: var(--primary);">${plan.nombre}</h3>
-        <p class="text-gray-500 text-xs leading-relaxed flex-1 mb-5">${plan.descripcion.slice(0, 90)}...</p>
-        <div class="mb-5">
-          <span class="serif text-2xl font-bold" style="color: var(--primary);">${Fmt.precio(plan.precio_mensual)}</span>
-          <span class="text-gray-400 text-xs">/mes</span>
+    const checkIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+    container.innerHTML = planes.slice(0, 4).map(plan => {
+      const beneficios = Array.isArray(plan.beneficios) ? plan.beneficios : [];
+      const beneficiosHtml = beneficios.map(b => `
+        <div class="plan-beneficio">${checkIcon}<span>${b}</span></div>
+      `).join('');
+      return `
+        <div class="plan-card ${plan.destacado ? 'destacado' : ''}">
+          ${plan.destacado ? `<span class="plan-badge">Más Popular</span>` : ''}
+          <h3 class="serif text-xl font-semibold mb-2" style="color: var(--primary);">${plan.nombre}</h3>
+          <p class="text-gray-400 text-xs leading-relaxed mb-4">${plan.descripcion.slice(0, 100)}...</p>
+          <div class="mb-5">
+            <span class="serif text-2xl font-bold" style="color: var(--primary);">${Fmt.precio(plan.precio_mensual)}</span>
+            <span class="text-gray-400 text-xs"> /mes</span>
+          </div>
+          ${beneficiosHtml ? `<div class="border-t border-gray-100 pt-4 mb-5 flex-1">${beneficiosHtml}</div>` : '<div class="flex-1"></div>'}
+          <a href="planes-funerarios.html" class="${plan.destacado ? 'btn-primary' : 'btn-outline'} text-center text-xs mt-2">Ver Plan</a>
         </div>
-        <a href="planes-funerarios.html" class="${plan.destacado ? 'btn-primary' : 'btn-outline'} text-center text-xs">Ver Plan</a>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
   cargarPlanes();
 </script>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Revisión Técnica — Funeraria Rancier</title>
+  <style>
+    :root {
+      --primary: #006ab4;
+      --secondary: #00a9e1;
+      --accent: #67ccdb;
+      --red: #dc2626;
+      --orange: #d97706;
+      --green: #16a34a;
+      --blue: #2563eb;
+      --bg: #f8fbff;
+      --card: #ffffff;
+      --border: #e0eef7;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    /* ── Layout ── */
+    .page { max-width: 1000px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* ── Header ── */
+    .header {
+      border-left: 5px solid var(--primary);
+      padding: 24px 28px;
+      background: white;
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 2px 16px rgba(0,106,180,0.08);
+      margin-bottom: 40px;
+    }
+    .header h1 { font-size: 1.8rem; color: var(--primary); font-weight: 700; margin-bottom: 6px; }
+    .header p { color: var(--muted); font-size: 0.9rem; }
+    .header .meta { display: flex; gap: 24px; margin-top: 14px; flex-wrap: wrap; }
+    .meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--muted); }
+
+    /* ── Score Banner ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .score-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .score-num {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .score-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+    .score-green { color: var(--green); }
+    .score-orange { color: var(--orange); }
+    .score-red { color: var(--red); }
+
+    /* ── Section ── */
+    .section { margin-bottom: 44px; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+
+    /* ── Issue Cards ── */
+    .issue {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .issue-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .issue-header:hover { background: #f8fbff; }
+    .severity {
+      flex-shrink: 0;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-top: 2px;
+    }
+    .sev-critical { background: #fee2e2; color: #b91c1c; }
+    .sev-high     { background: #fef3c7; color: #92400e; }
+    .sev-medium   { background: #dbeafe; color: #1d4ed8; }
+    .sev-low      { background: #dcfce7; color: #166534; }
+    .issue-title { font-weight: 600; color: var(--text); font-size: 0.95rem; flex: 1; }
+    .issue-body { padding: 0 20px 18px 20px; border-top: 1px solid #f1f5f9; padding-top: 14px; }
+    .issue-body p { color: var(--muted); font-size: 0.88rem; margin-bottom: 10px; }
+    .issue-body strong { color: var(--text); }
+
+    /* ── Code Blocks ── */
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+    code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+    .kw  { color: #93c5fd; }
+    .str { color: #86efac; }
+    .cm  { color: #64748b; font-style: italic; }
+    .fn  { color: #fde68a; }
+    .num { color: #f9a8d4; }
+    .tag { color: #67e8f9; }
+
+    /* ── Priority List ── */
+    .priority-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+    .priority-table th {
+      text-align: left; padding: 10px 14px; background: #f1f5f9;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted); font-weight: 600;
+    }
+    .priority-table td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+    .priority-table tr:last-child td { border-bottom: none; }
+    .priority-table tr:hover td { background: #f8fbff; }
+
+    /* ── Summary boxes ── */
+    .callout {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 0.88rem;
+      display: flex;
+      gap: 12px;
+    }
+    .callout-warn { background: #fffbeb; border-left: 4px solid #f59e0b; color: #78350f; }
+    .callout-info { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1e40af; }
+    .callout-danger { background: #fef2f2; border-left: 4px solid #ef4444; color: #7f1d1d; }
+    .callout-ok { background: #f0fdf4; border-left: 4px solid #22c55e; color: #14532d; }
+
+    /* ── Tags ── */
+    .tag-area { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag-pill {
+      font-size: 0.72rem; padding: 2px 8px; border-radius: 4px;
+      background: #e0f0ff; color: #1d4ed8; font-weight: 500;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: white; }
+      .issue { box-shadow: none; border: 1px solid #ccc; }
+    }
+    @media (max-width: 640px) {
+      .score-grid { grid-template-columns: repeat(2, 1fr); }
+      .page { padding: 24px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ HEADER ══════════════════════════════════════════════════ -->
+  <div class="header">
+    <h1>🏛️ Revisión Técnica — Funeraria Rancier</h1>
+    <p>Análisis completo de mejoras para backend (FastAPI/Python) y frontend (HTML/TailwindCSS/JS)</p>
+    <div class="meta">
+      <span class="meta-item">📅 Fecha: Abril 2026</span>
+      <span class="meta-item">🔧 Stack: FastAPI + PostgreSQL + HTML/TailwindCSS</span>
+      <span class="meta-item">📂 Archivos revisados: 18 archivos</span>
+    </div>
+  </div>
+
+  <!-- ══ SCORES ══════════════════════════════════════════════════ -->
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-num score-orange">7/10</div>
+      <div class="score-label">Seguridad Backend</div>
+    </div>
+    <div class="score-card">
+      <div class="score-num score-orange">6/10</div>
+      <div class="score-label">Arquitectura Backend</div>
+    </div>
+    <div class="score-card">
+      <div class="score-num score-orange">6/10</div>
+      <div class="score-label">UI / Diseño Frontend</div>
+    </div>
+    <div class="score-card">
+      <div class="score-num score-red">4/10</div>
+      <div class="score-label">Accesibilidad</div>
+    </div>
+    <div class="score-card">
+      <div class="score-num score-red">3/10</div>
+      <div class="score-label">Rendimiento Frontend</div>
+    </div>
+    <div class="score-card">
+      <div class="score-num score-green">9/10</div>
+      <div class="score-label">Estructura de Código</div>
+    </div>
+  </div>
+
+  <div class="callout callout-ok">
+    ✅ <div><strong>Puntos fuertes:</strong> La arquitectura FastAPI está bien organizada, los routers están separados correctamente, bcrypt usa costo 12, se evita enumeración de usuarios en login, las migraciones SQL están versionadas, y el frontend usa Tailwind con consistencia visual.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECCIÓN 1: BACKEND — SEGURIDAD
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon" style="background:#fee2e2;">🔐</div>
+      Backend — Seguridad
+    </div>
+
+    <!-- B-SEC-1 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-critical">Crítico</span>
+        <span class="issue-title">Sin Rate Limiting — Fuerza Bruta en /login y /register</span>
+      </div>
+      <div class="issue-body">
+        <p>Los endpoints <code>/login</code> y <code>/register</code> no tienen ningún límite de peticiones. Un atacante puede probar miles de contraseñas o crear miles de cuentas sin restricción.</p>
+        <p><strong>Solución:</strong> Agregar <code>slowapi</code> (rate limiter para FastAPI):</p>
+        <pre><code><span class="cm"># requirements.txt</span>
+slowapi==0.1.9
+
+<span class="cm"># main.py</span>
+<span class="kw">from</span> slowapi <span class="kw">import</span> Limiter, _rate_limit_exceeded_handler
+<span class="kw">from</span> slowapi.util <span class="kw">import</span> get_remote_address
+<span class="kw">from</span> slowapi.errors <span class="kw">import</span> RateLimitExceeded
+
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+<span class="cm"># auth.py — en el endpoint login:</span>
+<span class="fn">@router.post</span>(<span class="str">"/login"</span>)
+<span class="fn">@limiter.limit</span>(<span class="str">"5/minute"</span>)
+<span class="kw">async def</span> <span class="fn">login</span>(request: Request, ...):</code></pre>
+      </div>
+    </div>
+
+    <!-- B-SEC-2 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-critical">Crítico</span>
+        <span class="issue-title">Credencial admin hardcodeada en seed_data()</span>
+      </div>
+      <div class="issue-body">
+        <p>La contraseña <code>Admin@2025</code> está visible en texto plano dentro del código fuente en <code>main.py</code>. Cualquiera con acceso al repositorio conoce la contraseña de producción.</p>
+        <p><strong>Solución:</strong> Leerla desde variables de entorno:</p>
+        <pre><code><span class="cm"># config.py — agregar:</span>
+ADMIN_EMAIL: str = <span class="str">"admin@funerariarancier.com"</span>
+ADMIN_PASSWORD: str = <span class="str">""</span>  <span class="cm"># Obligatorio en .env</span>
+
+<span class="cm"># main.py — seed_data():</span>
+admin = User(
+    password=hash_password(settings.ADMIN_PASSWORD),
+    <span class="cm"># ...</span>
+)</code></pre>
+      </div>
+    </div>
+
+    <!-- B-SEC-3 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Sin Refresh Token — Solo Access Token (60 min)</span>
+      </div>
+      <div class="issue-body">
+        <p>El sistema solo emite access tokens de 60 minutos sin refresh token. El usuario queda deslogueado cada hora obligando a re-autenticarse, o si se alarga el tiempo se crea una ventana de ataque mayor.</p>
+        <p><strong>Solución:</strong> Implementar par de tokens access (15 min) + refresh (7 días) almacenado en cookie HttpOnly:</p>
+        <pre><code><span class="kw">def</span> <span class="fn">create_refresh_token</span>(data: dict) -> str:
+    <span class="kw">return</span> create_access_token(data, expires_delta=timedelta(days=<span class="num">7</span>))
+
+<span class="cm"># En login — devolver refresh en cookie HttpOnly:</span>
+response.set_cookie(
+    key=<span class="str">"refresh_token"</span>, value=refresh_token,
+    httponly=<span class="kw">True</span>, secure=<span class="kw">True</span>, samesite=<span class="str">"lax"</span>,
+    max_age=<span class="num">604800</span>
+)</code></pre>
+      </div>
+    </div>
+
+    <!-- B-SEC-4 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Token JWT almacenado en localStorage — Vulnerable a XSS</span>
+      </div>
+      <div class="issue-body">
+        <p>En <code>api.js</code>, el token se guarda con <code>localStorage.setItem("fr_token", token)</code>. Cualquier script inyectado (XSS) puede leerlo y suplantar al usuario. Esta es una vulnerabilidad estándar documentada por OWASP.</p>
+        <p><strong>Solución:</strong> Mover el access token a memoria JS (variable) y el refresh token a cookie HttpOnly que el servidor establece. El frontend nunca debería poder leer el refresh token.</p>
+      </div>
+    </div>
+
+    <!-- B-SEC-5 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">TrustedHostMiddleware importado pero nunca configurado</span>
+      </div>
+      <div class="issue-body">
+        <p>En <code>main.py</code> se importa <code>TrustedHostMiddleware</code> pero nunca se registra en la app. No tiene efecto alguno actualmente.</p>
+        <p><strong>Solución:</strong></p>
+        <pre><code>app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=[<span class="str">"funerariarancier.com"</span>, <span class="str">"www.funerariarancier.com"</span>]
+)</code></pre>
+      </div>
+    </div>
+
+    <!-- B-SEC-6 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Endpoints /forgot-password y /reset-password no existen en backend</span>
+      </div>
+      <div class="issue-body">
+        <p>El archivo <code>api.js</code> llama a <code>/forgot-password</code> y <code>/reset-password</code>, y existen migraciones SQL para estas tablas, pero los routers nunca fueron implementados en Python. El frontend intentará llamar a rutas que devuelven 404.</p>
+        <p><strong>Solución:</strong> Crear <code>backend/app/routers/password_reset.py</code> que implemente el flujo completo con email de recuperación (usando la dependencia <code>email.py</code> ya existente).</p>
+        <div class="tag-area">
+          <span class="tag-pill">password_reset.py faltante</span>
+          <span class="tag-pill">email.py ya está listo</span>
+          <span class="tag-pill">migraciones SQL ya existen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- B-SEC-7 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Verificación de email no implementada</span>
+      </div>
+      <div class="issue-body">
+        <p>Existe la migración <code>add_email_verification.sql</code> pero no hay lógica en los routers que envíe el email de verificación ni que bloquee usuarios no verificados. El registro acepta cualquier email sin validar que realmente le pertenece al usuario.</p>
+        <p><strong>Solución:</strong> En <code>register</code>, enviar email con token único. Agregar campo <code>email_verificado</code> al modelo User y bloquearlo en el login hasta verificar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECCIÓN 2: BACKEND — ARQUITECTURA Y CALIDAD
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon" style="background:#dbeafe;">⚙️</div>
+      Backend — Arquitectura y Calidad de Código
+    </div>
+
+    <!-- B-ARCH-1 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Sin paginación en endpoints de listado</span>
+      </div>
+      <div class="issue-body">
+        <p>Los endpoints <code>GET /ataudes</code>, <code>GET /planes</code> y <code>GET /contacto</code> devuelven todos los registros sin límite. Con 1000+ ataúdes o mensajes, la respuesta será enorme y lenta.</p>
+        <p><strong>Solución:</strong> Agregar parámetros <code>skip</code> y <code>limit</code>:</p>
+        <pre><code><span class="fn">@router.get</span>(<span class="str">""</span>, response_model=list[CoffinResponse])
+<span class="kw">def</span> <span class="fn">list_coffins</span>(
+    skip: int = Query(<span class="num">0</span>, ge=<span class="num">0</span>),
+    limit: int = Query(<span class="num">20</span>, ge=<span class="num">1</span>, le=<span class="num">100</span>),
+    disponible: Optional[bool] = Query(<span class="kw">None</span>),
+    db: Session = Depends(get_db),
+):
+    q = db.query(Coffin)
+    <span class="kw">if</span> disponible <span class="kw">is not None</span>:
+        q = q.filter(Coffin.disponible == disponible)
+    total = q.count()
+    items = q.order_by(Coffin.precio).offset(skip).limit(limit).all()
+    <span class="kw">return</span> {<span class="str">"total"</span>: total, <span class="str">"items"</span>: items, <span class="str">"skip"</span>: skip, <span class="str">"limit"</span>: limit}</code></pre>
+      </div>
+    </div>
+
+    <!-- B-ARCH-2 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Campo <code>beneficios</code> almacenado como Text/JSON string en lugar de JSONB</span>
+      </div>
+      <div class="issue-body">
+        <p>El campo <code>beneficios</code> en el modelo <code>Plan</code> es <code>Column(Text)</code> que guarda un string JSON (<code>json.dumps([...])</code>). PostgreSQL tiene tipo nativo <code>JSONB</code> que permite índices, queries y validación automática.</p>
+        <p><strong>Solución:</strong></p>
+        <pre><code><span class="kw">from</span> sqlalchemy.dialects.postgresql <span class="kw">import</span> JSONB
+
+<span class="kw">class</span> <span class="fn">Plan</span>(Base):
+    <span class="cm"># ...</span>
+    beneficios = Column(JSONB, default=list)  <span class="cm"># ✅ tipo nativo, sin json.dumps</span></code></pre>
+        <p>También eliminar los <code>json.dumps()</code> en <code>seed_data()</code>.</p>
+      </div>
+    </div>
+
+    <!-- B-ARCH-3 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Sin tests unitarios ni de integración</span>
+      </div>
+      <div class="issue-body">
+        <p>El <code>requirements.txt</code> incluye <code>pytest</code> e <code>httpx</code> (cliente de testing para FastAPI), pero no existe ningún archivo de pruebas en el proyecto. Cambios en producción se hacen sin red de seguridad.</p>
+        <p><strong>Solución:</strong> Crear <code>backend/tests/</code> con al menos:</p>
+        <div class="tag-area">
+          <span class="tag-pill">test_auth.py — register/login/token</span>
+          <span class="tag-pill">test_planes.py — CRUD admin</span>
+          <span class="tag-pill">test_suscripciones.py — contratar/cancelar</span>
+          <span class="tag-pill">conftest.py — base de datos de test</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- B-ARCH-4 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Rol de usuario como string sin validación — debería ser Enum</span>
+      </div>
+      <div class="issue-body">
+        <p>En el modelo <code>User</code>, el campo <code>rol</code> es <code>Column(String(20))</code>. Nada impide que se guarde <code>"superadmin"</code>, <code>"moderator"</code> u otro valor inválido. La lógica de autorización se basa en comparar strings.</p>
+        <p><strong>Solución:</strong></p>
+        <pre><code><span class="kw">class</span> <span class="fn">RolUsuario</span>(str, enum.Enum):
+    cliente = <span class="str">"cliente"</span>
+    admin = <span class="str">"admin"</span>
+
+<span class="kw">class</span> <span class="fn">User</span>(Base):
+    rol = Column(SAEnum(RolUsuario, name=<span class="str">"rol_usuario"</span>), default=RolUsuario.cliente)</code></pre>
+      </div>
+    </div>
+
+    <!-- B-ARCH-5 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Formulario de contacto sin validación de spam ni anti-flood</span>
+      </div>
+      <div class="issue-body">
+        <p>El endpoint <code>POST /contacto</code> es completamente público y sin ningún límite. Un bot puede enviar miles de mensajes, inundando la base de datos y el correo del administrador.</p>
+        <p><strong>Solución:</strong> Aplicar rate limiting (<code>3/hour</code> por IP) y agregar un honeypot field oculto en el formulario frontend. Opcionalmente, integrar reCAPTCHA v3 invisible.</p>
+      </div>
+    </div>
+
+    <!-- B-ARCH-6 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Sin logs de auditoría para acciones admin</span>
+      </div>
+      <div class="issue-body">
+        <p>Las operaciones destructivas (eliminar plan, eliminar ataúd) solo tienen un <code>logger.info()</code> que va a stdout. No hay tabla de auditoría persistente que registre quién hizo qué y cuándo.</p>
+        <p><strong>Solución:</strong> Crear modelo <code>AuditLog</code> en la base de datos con campos: <code>user_id</code>, <code>accion</code>, <code>entidad</code>, <code>entidad_id</code>, <code>timestamp</code>. Registrar todas las operaciones admin.</p>
+      </div>
+    </div>
+
+    <!-- B-ARCH-7 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-low">Bajo</span>
+        <span class="issue-title">Delete físico en lugar de soft delete</span>
+      </div>
+      <div class="issue-body">
+        <p>Los endpoints <code>DELETE /planes/{id}</code> y <code>DELETE /ataudes/{id}</code> eliminan el registro permanentemente. Esto puede romper referencias históricas (ej: una suscripción que referencia un plan eliminado).</p>
+        <p><strong>Solución:</strong> Ya tienes el campo <code>activo</code> en Plan y <code>disponible</code> en Coffin. Cambiar delete a soft delete: <code>plan.activo = False</code> en lugar de <code>db.delete(plan)</code>. Agregar la FK con <code>ondelete="RESTRICT"</code> ya previene algunos casos.</p>
+      </div>
+    </div>
+
+    <!-- B-ARCH-8 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-low">Bajo</span>
+        <span class="issue-title">Archivos subidos sin validación real de contenido (magic bytes)</span>
+      </div>
+      <div class="issue-body">
+        <p>En <code>uploads.py</code>, la validación se basa solo en <code>file.content_type</code>, que es un header enviado por el cliente y puede ser falsificado. Se puede subir un ejecutable renombrándolo a .jpg.</p>
+        <p><strong>Solución:</strong> Validar los "magic bytes" reales del archivo:</p>
+        <pre><code><span class="kw">import</span> imghdr
+
+detected = imghdr.what(<span class="kw">None</span>, h=contents[:32])
+<span class="kw">if</span> detected <span class="kw">not in</span> [<span class="str">"jpeg"</span>, <span class="str">"png"</span>, <span class="str">"webp"</span>]:
+    <span class="kw">raise</span> HTTPException(<span class="num">415</span>, <span class="str">"El contenido no es una imagen válida."</span>)</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECCIÓN 3: FRONTEND — RENDIMIENTO
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon" style="background:#fef3c7;">⚡</div>
+      Frontend — Rendimiento y Configuración
+    </div>
+
+    <!-- F-PERF-1 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-critical">Crítico</span>
+        <span class="issue-title">API_URL hardcodeada a localhost — No funcionará en producción</span>
+      </div>
+      <div class="issue-body">
+        <p>En <code>api.js</code>, la URL del backend es <code>const API_URL = "http://127.0.0.1:8000"</code>. Cuando el sitio se despliegue en producción, todas las llamadas API fallarán porque apuntarán a la máquina local del desarrollador.</p>
+        <p><strong>Solución:</strong> Usar una variable de entorno o detectar el entorno automáticamente:</p>
+        <pre><code><span class="kw">const</span> API_URL = window.location.hostname === <span class="str">"localhost"</span>
+    ? <span class="str">"http://127.0.0.1:8000"</span>
+    : <span class="str">"https://api.funerariarancier.com"</span>;
+
+<span class="cm">// O mejor: un archivo de configuración separado por entorno</span>
+<span class="cm">// config.js → window.APP_CONFIG = { apiUrl: "..." }</span></code></pre>
+      </div>
+    </div>
+
+    <!-- F-PERF-2 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Tailwind CSS cargado desde CDN — Sin purge, bundle ~3.5 MB</span>
+      </div>
+      <div class="issue-body">
+        <p>Todas las páginas cargan <code>&lt;script src="https://cdn.tailwindcss.com"&gt;</code>. Esto incluye las ~3.5 MB completas de Tailwind sin ningún purge. En producción, debería compilarse solo con las clases usadas (típicamente 5-15 KB).</p>
+        <p><strong>Solución A (simple):</strong> Instalar Tailwind CLI y compilar un CSS optimizado.</p>
+        <p><strong>Solución B (mínima):</strong> Si quieres mantener CDN para el prototipo, al menos agrega:</p>
+        <pre><code><span class="tag">&lt;script&gt;</span>tailwind.config = { <span class="cm">/* config aquí */</span> }<span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;link</span> rel=<span class="str">"preload"</span> as=<span class="str">"style"</span> href=<span class="str">"https://cdn.tailwindcss.com"</span><span class="tag">/&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <!-- F-PERF-3 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">CSS duplicado en cada página HTML — Sin stylesheet compartido</span>
+      </div>
+      <div class="issue-body">
+        <p>Cada página (<code>index.html</code>, <code>login.html</code>, <code>dashboard.html</code>, etc.) tiene su propio bloque <code>&lt;style&gt;</code> repitiendo las mismas reglas: <code>.btn-primary</code>, <code>.nav-link</code>, <code>.blue-line</code>, variables CSS, etc. Cambiar el color primario requiere editar 7 archivos.</p>
+        <p><strong>Solución:</strong> Crear <code>frontend/assets/css/main.css</code> con todos los estilos compartidos y referenciarlos en cada página. Mantener solo los estilos únicos de cada página inline.</p>
+      </div>
+    </div>
+
+    <!-- F-PERF-4 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Fuentes de Google cargadas sin <code>font-display: swap</code></span>
+      </div>
+      <div class="issue-body">
+        <p>Las fuentes se cargan con <code>&lt;link href="https://fonts.googleapis.com/css2?..."&gt;</code> pero sin especificar <code>&amp;display=swap</code>. Esto puede causar FOIT (Flash of Invisible Text) donde el texto es invisible mientras la fuente carga.</p>
+        <p><strong>Solución:</strong></p>
+        <pre><code><span class="tag">&lt;link</span> href=<span class="str">"https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&amp;family=DM+Sans:wght@400;600&amp;display=swap"</span> rel=<span class="str">"stylesheet"</span><span class="tag">/&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <!-- F-PERF-5 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Sin favicon ni meta OG — Pobre SEO y compartibilidad</span>
+      </div>
+      <div class="issue-body">
+        <p>El sitio no tiene favicon (se muestra el icono genérico del browser), ni metaetiquetas Open Graph para cuando se comparte en redes sociales. Solo <code>index.html</code> tiene <code>&lt;meta name="description"&gt;</code>; las otras páginas no.</p>
+        <p><strong>Agregar a todas las páginas:</strong></p>
+        <pre><code><span class="tag">&lt;link</span> rel=<span class="str">"icon"</span> href=<span class="str">"assets/img/favicon.ico"</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;meta</span> property=<span class="str">"og:title"</span> content=<span class="str">"Funerarias Rancier"</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;meta</span> property=<span class="str">"og:description"</span> content=<span class="str">"Servicio digno y humano."</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;meta</span> property=<span class="str">"og:image"</span> content=<span class="str">"assets/img/og-image.jpg"</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;meta</span> name=<span class="str">"description"</span> content=<span class="str">"..."</span><span class="tag">/&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECCIÓN 4: FRONTEND — UI/UX Y ACCESIBILIDAD
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon" style="background:#f3e8ff;">🎨</div>
+      Frontend — UI/UX y Accesibilidad
+    </div>
+
+    <!-- F-UX-1 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Dashboard no es responsive en mobile — Sidebar fija de 264px</span>
+      </div>
+      <div class="issue-body">
+        <p>El <code>dashboard.html</code> tiene un sidebar con clase <code>w-64</code> (256px) que nunca se oculta en pantallas pequeñas. En un teléfono de 375px solo quedan ~119px para el contenido principal, haciendo la interfaz inutilizable.</p>
+        <p><strong>Solución:</strong> Convertir el sidebar en un drawer deslizable en mobile usando clases responsive de Tailwind:</p>
+        <pre><code><span class="tag">&lt;aside</span> id=<span class="str">"sidebar"</span>
+  class=<span class="str">"fixed inset-y-0 left-0 z-40 w-64 -translate-x-full
+          lg:relative lg:translate-x-0 transition-transform duration-300"</span><span class="tag">&gt;</span>
+  <span class="cm">&lt;!-- contenido sidebar --&gt;</span>
+<span class="tag">&lt;/aside&gt;</span>
+<span class="tag">&lt;div</span> id=<span class="str">"overlay"</span> class=<span class="str">"fixed inset-0 bg-black/40 z-30 hidden lg:hidden"</span><span class="tag">&gt;&lt;/div&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <!-- F-UX-2 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Animaciones sin respeto a <code>prefers-reduced-motion</code></span>
+      </div>
+      <div class="issue-body">
+        <p>Las animaciones <code>fadeUp</code> y transiciones en cards se aplican a todos los usuarios. Personas con epilepsia fotosensible o mareos vestibulares necesitan que las animaciones se desactiven cuando tienen activada la opción de sistema "reducir movimiento".</p>
+        <p><strong>Agregar al CSS global:</strong></p>
+        <pre><code><span class="fn">@media</span> (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: <span class="num">0.01ms</span> !important;
+    animation-iteration-count: <span class="num">1</span> !important;
+    transition-duration: <span class="num">0.01ms</span> !important;
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- F-UX-3 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-high">Alto</span>
+        <span class="issue-title">Sin skeleton screens ni estados de carga en el dashboard</span>
+      </div>
+      <div class="issue-body">
+        <p>El dashboard carga los datos del usuario, el plan activo y las estadísticas de forma asíncrona. Durante la carga, los espacios están vacíos o muestran "—" y "Cargando...". Esto crea un efecto de Layout Shift (CLS alto) y una experiencia visual inestable.</p>
+        <p><strong>Solución:</strong> Agregar skeleton placeholders mientras se esperan los datos:</p>
+        <pre><code><span class="tag">&lt;div</span> class=<span class="str">"animate-pulse space-y-3"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> class=<span class="str">"h-4 bg-gray-200 rounded w-3/4"</span><span class="tag">&gt;&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> class=<span class="str">"h-4 bg-gray-200 rounded w-1/2"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <!-- F-UX-4 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Formulario de login sin label visible en inputs</span>
+      </div>
+      <div class="issue-body">
+        <p>Los campos de email y contraseña en <code>login.html</code> usan solo <code>placeholder</code> como guía. Cuando el usuario empieza a escribir, el placeholder desaparece y no hay label visible que indique qué campo es. Esto viola WCAG 2.1 criterio 1.3.5 y dificulta el uso para personas con discapacidades cognitivas.</p>
+        <p><strong>Solución:</strong> Siempre acompañar el placeholder con un <code>&lt;label&gt;</code> explícito, aunque sea con un diseño "flotante" (floating label pattern).</p>
+      </div>
+    </div>
+
+    <!-- F-UX-5 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Navegación del dashboard usa <code>onclick</code> inline en HTML</span>
+      </div>
+      <div class="issue-body">
+        <p>Los elementos del sidebar usan <code>onclick="showSection('overview')"</code> directamente en el HTML. Esto mezcla estructura y comportamiento, dificulta el mantenimiento y el testing, y puede fallar en entornos con Content Security Policy estricto.</p>
+        <p><strong>Solución:</strong> Usar <code>data-*</code> atributos y event listeners en JS:</p>
+        <pre><code><span class="tag">&lt;div</span> class=<span class="str">"sidebar-link"</span> data-section=<span class="str">"overview"</span><span class="tag">&gt;</span>Resumen<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">// En el JS:</span>
+document.querySelectorAll(<span class="str">'[data-section]'</span>).forEach(el => {
+    el.addEventListener(<span class="str">'click'</span>, () => showSection(el.dataset.section));
+});</code></pre>
+      </div>
+    </div>
+
+    <!-- F-UX-6 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Sin página 404 personalizada</span>
+      </div>
+      <div class="issue-body">
+        <p>El sitio no tiene una página <code>404.html</code>. Cuando un usuario escribe una URL incorrecta o un enlace está roto, verá el error genérico del servidor en lugar de una página de la marca con navegación de vuelta al inicio.</p>
+        <p><strong>Solución:</strong> Crear <code>frontend/404.html</code> con el diseño de la marca, un mensaje amigable y un botón "Volver al inicio".</p>
+      </div>
+    </div>
+
+    <!-- F-UX-7 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Botón WhatsApp flotante sin aria-label ni texto de ayuda</span>
+      </div>
+      <div class="issue-body">
+        <p>El botón flotante de WhatsApp en <code>index.html</code> es solo un ícono SVG dentro de un <code>&lt;a&gt;</code>. Sin texto alternativo, los lectores de pantalla lo anuncian como "link" sin indicar para qué sirve.</p>
+        <p><strong>Solución:</strong></p>
+        <pre><code><span class="tag">&lt;a</span> href=<span class="str">"https://wa.me/..."</span>
+   class=<span class="str">"whatsapp-float"</span>
+   aria-label=<span class="str">"Contactar por WhatsApp"</span>
+   title=<span class="str">"Contáctanos por WhatsApp"</span>
+   target=<span class="str">"_blank"</span>
+   rel=<span class="str">"noopener noreferrer"</span><span class="tag">&gt;</span>
+  <span class="cm">&lt;!-- SVG aquí --&gt;</span>
+<span class="tag">&lt;/a&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <!-- F-UX-8 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-medium">Medio</span>
+        <span class="issue-title">Sin confirmación visual al cancelar suscripción — acción destructiva sin diálogo</span>
+      </div>
+      <div class="issue-body">
+        <p>El botón "Cancelar Plan" en el dashboard ejecuta la cancelación directamente. Cancelar un plan funerario activo es una acción seria e irreversible que debería tener un diálogo de confirmación explícito.</p>
+        <p><strong>Solución:</strong> Mostrar un modal de confirmación con texto claro sobre las consecuencias antes de proceder. El botón destructivo debe estar en rojo y separado del botón de cancelar el diálogo.</p>
+      </div>
+    </div>
+
+    <!-- F-UX-9 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-low">Bajo</span>
+        <span class="issue-title">El catálogo no tiene estado vacío cuando no hay ataúdes disponibles</span>
+      </div>
+      <div class="issue-body">
+        <p>Si la API devuelve una lista vacía de ataúdes, el grid simplemente queda en blanco sin ningún mensaje al usuario explicando por qué no hay contenido.</p>
+        <p><strong>Solución:</strong> Mostrar un empty state con icono, texto explicativo y un call-to-action (ej: "Contáctanos para consultar disponibilidad").</p>
+      </div>
+    </div>
+
+    <!-- F-UX-10 -->
+    <div class="issue">
+      <div class="issue-header">
+        <span class="severity sev-low">Bajo</span>
+        <span class="issue-title">Sin indicador de "scroll para más" en la landing page de hero</span>
+      </div>
+      <div class="issue-body">
+        <p>La sección hero de <code>index.html</code> ocupa toda la pantalla. No hay ninguna indicación visual de que hay más contenido debajo. Muchos usuarios, especialmente en mobile, pueden no darse cuenta de que hay servicios, planes y testimonios debajo del fold.</p>
+        <p><strong>Solución:</strong> Agregar un indicador de scroll animado (flecha o punto pulsante) al fondo de la sección hero que desaparezca al hacer scroll.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECCIÓN 5: NUEVAS FUNCIONALIDADES RECOMENDADAS
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon" style="background:#dcfce7;">🚀</div>
+      Funcionalidades Nuevas Recomendadas
+    </div>
+
+    <table class="priority-table">
+      <thead>
+        <tr>
+          <th>Prioridad</th>
+          <th>Funcionalidad</th>
+          <th>Impacto</th>
+          <th>Esfuerzo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="severity sev-critical" style="display:inline-block">Crítico</span></td>
+          <td><strong>Pasarela de pagos</strong> — Integración con Azul Pay, CardNet o Stripe para cobrar planes mensualmente de forma automática</td>
+          <td>💰 Ingresos</td>
+          <td>Alto</td>
+        </tr>
+        <tr>
+          <td><span class="severity sev-high" style="display:inline-block">Alto</span></td>
+          <td><strong>Panel Admin completo</strong> — Actualmente el dashboard admin solo existe en el código JS, no hay una interfaz completa para gestionar usuarios, mensajes y suscripciones desde la web</td>
+          <td>⚙️ Operativo</td>
+          <td>Medio</td>
+        </tr>
+        <tr>
+          <td><span class="severity sev-high" style="display:inline-block">Alto</span></td>
+          <td><strong>Notificaciones por email</strong> — Email de bienvenida al registrarse, confirmación al contratar plan, recordatorio de pago mensual. El módulo <code>email.py</code> ya existe pero no se usa</td>
+          <td>📧 Retención</td>
+          <td>Bajo</td>
+        </tr>
+        <tr>
+          <td><span class="severity sev-medium" style="display:inline-block">Medio</span></td>
+          <td><strong>Búsqueda y filtros en el catálogo</strong> — Filtrar ataúdes por material, rango de precio y disponibilidad. Actualmente solo hay filtro por <code>disponible</code></td>
+          <td>🔍 UX</td>
+          <td>Bajo</td>
+        </tr>
+        <tr>
+          <td><span class="severity sev-medium" style="display:inline-block">Medio</span></td>
+          <td><strong>Historial de suscripciones</strong> — El usuario actualmente solo ve su plan activo. No hay forma de ver planes anteriores o el historial de cambios</td>
+          <td>📋 UX</td>
+          <td>Bajo</td>
+        </tr>
+        <tr>
+          <td><span class="severity sev-medium" style="display:inline-block">Medio</span></td>
+          <td><strong>Chat en vivo / WhatsApp Business API</strong> — El botón de WhatsApp es un enlace genérico. Integrar WhatsApp Business API para atención automatizada 24/7</td>
+          <td>💬 Ventas</td>
+          <td>Medio</td>
+        </tr>
+        <tr>
+          <td><span class="severity sev-low" style="display:inline-block">Bajo</span></td>
+          <td><strong>Modo oscuro</strong> — El sitio solo tiene tema claro. Dado el contexto (servicios funerarios), un tema oscuro elegante sería muy apropiado y mejor recibido por muchos usuarios</td>
+          <td>🎨 UX</td>
+          <td>Bajo</td>
+        </tr>
+        <tr>
+          <td><span class="severity sev-low" style="display:inline-block">Bajo</span></td>
+          <td><strong>Galería fotográfica de instalaciones</strong> — No hay sección que muestre las instalaciones físicas. Para una funeraria, generar confianza visual es fundamental</td>
+          <td>🏛️ Confianza</td>
+          <td>Bajo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECCIÓN 6: ROADMAP DE IMPLEMENTACIÓN
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon" style="background:#e0f2fe;">🗺️</div>
+      Roadmap Sugerido de Implementación
+    </div>
+
+    <div class="callout callout-danger">
+      🔥 <div><strong>Semana 1 — Seguridad urgente:</strong> Rate limiting en login/register · Remover contraseña admin del código · Configurar TrustedHostMiddleware · Implementar /forgot-password · Cambiar API_URL del frontend</div>
+    </div>
+
+    <div class="callout callout-warn">
+      ⚠️ <div><strong>Semana 2 — Arquitectura:</strong> Agregar paginación a listados · Cambiar beneficios a JSONB · Rol a Enum · Crear CSS compartido · Activar font-display:swap · Favicon y meta OG</div>
+    </div>
+
+    <div class="callout callout-info">
+      🔵 <div><strong>Semana 3 — UX y Frontend:</strong> Dashboard responsive en mobile · Skeleton screens · Confirmación en acciones destructivas · prefers-reduced-motion · Labels en formularios · Página 404</div>
+    </div>
+
+    <div class="callout callout-ok">
+      ✅ <div><strong>Semana 4+ — Nuevas features:</strong> Email automático (bienvenida, confirmación plan) · Panel admin completo · Filtros en catálogo · Tests unitarios (al menos auth + planes)</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;color:var(--muted);font-size:0.82rem;margin-top:48px;padding-top:24px;border-top:1px solid var(--border);">
+    Revisión generada para Funeraria Rancier · Abril 2026 · FastAPI v0.115 + TailwindCSS
+  </div>
+
+</div>
+</body>
+</html>

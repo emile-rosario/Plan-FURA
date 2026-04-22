@@ -47,6 +47,7 @@ class Coffin(Base):
     descripcion = Column(Text)
     precio = Column(Numeric(12, 2), nullable=False)
     imagen_url = Column(String(500))
+    imagen_url_2 = Column(String(500))
     disponible = Column(Boolean, default=True, nullable=False)
     destacado = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

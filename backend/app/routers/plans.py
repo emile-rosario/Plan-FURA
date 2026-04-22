@@ -2,6 +2,7 @@
 Router de planes funerarios — CRUD completo.
 GET público; POST/PUT/DELETE solo admin.
 """
+import json
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query
@@ -16,6 +17,16 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/planes", tags=["Planes Funerarios"])
 
 
+def _fix_beneficios(plan: Plan) -> Plan:
+    """Convierte beneficios de string JSON a lista si es necesario."""
+    if isinstance(plan.beneficios, str):
+        try:
+            plan.beneficios = json.loads(plan.beneficios)
+        except (ValueError, TypeError):
+            plan.beneficios = []
+    return plan
+
+
 @router.get("", response_model=PaginatedPlanes)
 def list_plans(
     skip: int = Query(0, ge=0),
@@ -25,7 +36,7 @@ def list_plans(
     """Listar planes activos con paginación (público)."""
     q = db.query(Plan).filter(Plan.activo.is_(True)).order_by(Plan.precio_mensual)
     total = q.count()
-    items = q.offset(skip).limit(limit).all()
+    items = [_fix_beneficios(p) for p in q.offset(skip).limit(limit).all()]
     return {"total": total, "items": items, "skip": skip, "limit": limit}
 
 
@@ -35,7 +46,7 @@ def get_plan(plan_id: int, db: Session = Depends(get_db)):
     plan = db.query(Plan).filter(Plan.id == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan no encontrado.")
-    return plan
+    return _fix_beneficios(plan)
 
 
 @router.post("", response_model=PlanResponse, status_code=status.HTTP_201_CREATED)

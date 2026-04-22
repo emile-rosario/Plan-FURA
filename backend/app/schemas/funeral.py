@@ -2,11 +2,13 @@
 Schemas Pydantic — Funeraria Rancier
 Validación de datos de entrada y salida.
 """
-from pydantic import BaseModel, EmailStr, Field, field_validator
-from typing import Optional, List
+import json
+import re
 from datetime import datetime
 from decimal import Decimal
-import re
+from typing import Optional, List
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
 # ── Ataúdes ───────────────────────────────────────────────────
@@ -17,6 +19,7 @@ class CoffinBase(BaseModel):
     descripcion: Optional[str] = Field(None, max_length=1000)
     precio: Decimal = Field(gt=0, decimal_places=2)
     imagen_url: Optional[str] = Field(None, max_length=500)
+    imagen_url_2: Optional[str] = Field(None, max_length=500)
     disponible: bool = True
     destacado: bool = False
 
@@ -31,6 +34,7 @@ class CoffinUpdate(BaseModel):
     descripcion: Optional[str] = Field(None, max_length=1000)
     precio: Optional[Decimal] = Field(None, gt=0, decimal_places=2)
     imagen_url: Optional[str] = Field(None, max_length=500)
+    imagen_url_2: Optional[str] = Field(None, max_length=500)
     disponible: Optional[bool] = None
     destacado: Optional[bool] = None
 
@@ -56,7 +60,17 @@ class PlanBase(BaseModel):
     precio_mensual: Decimal = Field(gt=0, decimal_places=2)
     activo: bool = True
     destacado: bool = False
-    beneficios: Optional[List[str]] = None  # Lista nativa, sin JSON.parse en el frontend
+    beneficios: Optional[List[str]] = None
+
+    @field_validator("beneficios", mode="before")
+    @classmethod
+    def parse_beneficios(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except (ValueError, TypeError):
+                return []
+        return v
 
 
 class PlanCreate(PlanBase):
