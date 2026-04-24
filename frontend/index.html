@@ -64,7 +64,6 @@
       background-image: url('assets/img/hero-bg-final.jpeg');
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
       background-color: #1a1a2e;
       min-height: 90vh;
       display: flex;
@@ -72,6 +71,9 @@
       overflow: hidden;
       position: relative;
       margin-top: 0;
+    }
+    @media (min-width: 1024px) {
+      .hero-section { background-attachment: fixed; }
     }
     .hero-section::before {
       content: '';
