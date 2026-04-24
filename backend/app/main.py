@@ -137,45 +137,54 @@ def seed_data():
         if db.query(Plan).count() == 0:
             planes = [
                 Plan(
-                    nombre="Plan Esencial",
-                    descripcion="Servicio completo de velación, traslado y trámites legales básicos.",
-                    precio_mensual=Decimal("850.00"),
+                    nombre="Plan Digno",
+                    descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$.",
+                    precio_mensual=Decimal("350.00"),
                     beneficios=[
-                        "Velación 24 horas", "Traslado local", "Trámites legales",
-                        "Urna básica", "Servicio de capilla"
+                        "Ambulancia D.N. y prov. Sto. Dgo.",
+                        "Botellones de agua",
+                        "Ataúd Digno",
+                        "Autobus para acompañantes",
+                        "Carroza funebre"
                     ],
                     activo=True, destacado=False,
                 ),
                 Plan(
-                    nombre="Plan Familiar",
-                    descripcion="Cobertura para 4 miembros del núcleo familiar, sala VIP y flores.",
-                    precio_mensual=Decimal("1500.00"),
+                    nombre="Plan Pomposo",
+                    descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$10,000.",
+                    precio_mensual=Decimal("500.00"),
                     beneficios=[
-                        "Todo del Plan Esencial", "Cobertura familiar (4 personas)",
-                        "Sala VIP", "Arreglo floral incluido", "Libro de condolencias"
+                        "Ambulancia D.N. y prov. Sto. Dgo.",
+                        "Botellones de agua",
+                        "Ataúd Pomposo",
+                        "Capilla velatoria",
+                        "Autobus para acompañantes"
+                    ],
+                    activo=True, destacado=False,
+                ),
+                Plan(
+                    nombre="Plan Majestuoso",
+                    descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$15,000.",
+                    precio_mensual=Decimal("750.00"),
+                    beneficios=[
+                        "Ambulancia D.N. y prov. Sto. Dgo.",
+                        "Botellones de agua",
+                        "Ataúd Majestuoso",
+                        "Capilla velatoria",
+                        "Autobus para acompañantes"
+                    ],
+                    activo=True, destacado=False,
+                ),
+                Plan(
+                    nombre="Plan Deluxe",
+                    descripcion="Servicio funerario completo en casa o funeraria. El plan mas completo. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$20,000.",
+                    precio_mensual=Decimal("900.00"),
+                    beneficios=[
+                        "Ambulancia D.N. y prov. Sto. Dgo.",
+                        "Botellones de agua",
+                        "Ataúd Deluxe"
                     ],
                     activo=True, destacado=True,
-                ),
-                Plan(
-                    nombre="Plan Premium",
-                    descripcion="Cobertura completa con transmisión en vivo y acompañamiento 24/7.",
-                    precio_mensual=Decimal("2800.00"),
-                    beneficios=[
-                        "Cobertura familiar ilimitada", "Sala de honor",
-                        "Transmisión en vivo", "Libro digital de condolencias",
-                        "Acompañamiento 24/7", "Transporte internacional"
-                    ],
-                    activo=True, destacado=False,
-                ),
-                Plan(
-                    nombre="Plan Previsión",
-                    descripcion="Ahorro anticipado. Congela el precio actual del servicio.",
-                    precio_mensual=Decimal("600.00"),
-                    beneficios=[
-                        "Precio congelado", "Sin cuota de inscripción",
-                        "Transferible", "Cobertura inmediata"
-                    ],
-                    activo=True, destacado=False,
                 ),
             ]
             db.add_all(planes)
