@@ -134,61 +134,62 @@ def seed_data():
 
     db = SessionLocal()
     try:
-        if db.query(Plan).count() == 0:
-            planes = [
-                Plan(
-                    nombre="Plan Digno",
-                    descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$.",
-                    precio_mensual=Decimal("350.00"),
-                    beneficios=[
-                        "Ambulancia D.N. y prov. Sto. Dgo.",
-                        "Botellones de agua",
-                        "Ataúd Digno",
-                        "Autobus para acompañantes",
-                        "Carroza funebre"
-                    ],
-                    activo=True, destacado=False,
-                ),
-                Plan(
-                    nombre="Plan Pomposo",
-                    descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$10,000.",
-                    precio_mensual=Decimal("500.00"),
-                    beneficios=[
-                        "Ambulancia D.N. y prov. Sto. Dgo.",
-                        "Botellones de agua",
-                        "Ataúd Pomposo",
-                        "Capilla velatoria",
-                        "Autobus para acompañantes"
-                    ],
-                    activo=True, destacado=False,
-                ),
-                Plan(
-                    nombre="Plan Majestuoso",
-                    descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$15,000.",
-                    precio_mensual=Decimal("750.00"),
-                    beneficios=[
-                        "Ambulancia D.N. y prov. Sto. Dgo.",
-                        "Botellones de agua",
-                        "Ataúd Majestuoso",
-                        "Capilla velatoria",
-                        "Autobus para acompañantes"
-                    ],
-                    activo=True, destacado=False,
-                ),
-                Plan(
-                    nombre="Plan Deluxe",
-                    descripcion="Servicio funerario completo en casa o funeraria. El plan mas completo. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$20,000.",
-                    precio_mensual=Decimal("900.00"),
-                    beneficios=[
-                        "Ambulancia D.N. y prov. Sto. Dgo.",
-                        "Botellones de agua",
-                        "Ataúd Deluxe"
-                    ],
-                    activo=True, destacado=True,
-                ),
-            ]
-            db.add_all(planes)
-            logger.info("Planes de ejemplo insertados.")
+        # Limpiar planes viejos y reinsertar los nuevos
+        db.query(Plan).delete(synchronize_session=False)
+        planes = [
+            Plan(
+                nombre="Plan Digno",
+                descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$.",
+                precio_mensual=Decimal("350.00"),
+                beneficios=[
+                    "Ambulancia D.N. y prov. Sto. Dgo.",
+                    "Botellones de agua",
+                    "Ataúd Digno",
+                    "Autobus para acompañantes",
+                    "Carroza funebre"
+                ],
+                activo=True, destacado=False,
+            ),
+            Plan(
+                nombre="Plan Pomposo",
+                descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$10,000.",
+                precio_mensual=Decimal("500.00"),
+                beneficios=[
+                    "Ambulancia D.N. y prov. Sto. Dgo.",
+                    "Botellones de agua",
+                    "Ataúd Pomposo",
+                    "Capilla velatoria",
+                    "Autobus para acompañantes"
+                ],
+                activo=True, destacado=False,
+            ),
+            Plan(
+                nombre="Plan Majestuoso",
+                descripcion="Servicio funerario completo en casa o funeraria. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$15,000.",
+                precio_mensual=Decimal("750.00"),
+                beneficios=[
+                    "Ambulancia D.N. y prov. Sto. Dgo.",
+                    "Botellones de agua",
+                    "Ataúd Majestuoso",
+                    "Capilla velatoria",
+                    "Autobus para acompañantes"
+                ],
+                activo=True, destacado=False,
+            ),
+            Plan(
+                nombre="Plan Deluxe",
+                descripcion="Servicio funerario completo en casa o funeraria. El plan mas completo. Cobertura 3 meses menores 60, 6 meses mayores. Desembolso RD$20,000.",
+                precio_mensual=Decimal("900.00"),
+                beneficios=[
+                    "Ambulancia D.N. y prov. Sto. Dgo.",
+                    "Botellones de agua",
+                    "Ataúd Deluxe"
+                ],
+                activo=True, destacado=True,
+            ),
+        ]
+        db.add_all(planes)
+        logger.info("Planes actualizados.")
 
         _desc = (
             "Fabricado en metal de alta resistencia, diseñado para brindar una presentación "
