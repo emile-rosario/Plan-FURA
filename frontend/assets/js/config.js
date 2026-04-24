@@ -4,5 +4,5 @@
  * En desarrollo (localhost/127.0.0.1) api.js usa http://127.0.0.1:8000 directamente.
  */
 window.APP_CONFIG = {
-  apiUrl: "https://api.funerariarancier.com", // URL del backend en producción
+  apiUrl: "https://plan-fura-production.up.railway.app", // URL del backend en producción
 };
